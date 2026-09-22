@@ -2,15 +2,21 @@
 #include "Image.h"
 
 enum FilterType {
-    Grayscale, BlackandWhite, NegativeEffect, EdgeDetection, SunlightEffect, 
-    FlipHorizontally, FlipVertically,
+    Grayscale, BlackandWhite, Invert,NegativeEffect, EdgeDetection, SunlightEffect, 
+    FlipHorizontally, FlipVertically,DarkenandLighten,
     Rotation90, Rotation180, Rotation270
 };
 
+
+namespace Adjustments {
+	void Brightness(Image& image, int brightness);
+
+}
 namespace ImageFilter {
 
 	void blackandWhite(Image& image);
-
+	void Invert(Image& image);
+	void DarkenandLighten(Image& image, int brightness);
 	void rotate90(Image& image);
 	void rotate180(Image& image);
 	void rotate270(Image& image);
