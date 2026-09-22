@@ -9,11 +9,16 @@
 
 
 void Adjustments::Brightness(Image& image, int brightness) {
+
     brightness = std::max(-100, std::min(100, brightness));
+
     for (int w = 0; w < image.width; w++) {
         for (int h = 0; h < image.height; h++) {
-            for (int c = 0; c < std::min(3, image.channels); c++) {
+            for (int c = 0; c < image.channels; c++) {
 
+                if((image.channels == 4 || image.channels == 2) && (c == image.channels - 1)) {
+                    continue; 
+                }
 
                 unsigned char currentPixel = image.getPixel(w, h, c);
                 int newPixelValue = (static_cast<int>(currentPixel)) * (1.0+(brightness / 100.0));
@@ -28,7 +33,12 @@ void Adjustments::Brightness(Image& image, int brightness) {
 void ImageFilter::Invert(Image& image) {
         for (int w=0; w<image.width; w++) {
             for (int h=0; h<image.height; h++) {
-                for(int c=0; c<std::min(3, image.channels); c++) {
+                for(int c=0; c<image.channels; c++) {
+
+                    if((image.channels == 4 || image.channels == 2) && (c == image.channels - 1)) {
+                    continue; 
+                    }
+
                     unsigned char currentPixel = image.getPixel(w, h, c);
                     image.setPixel(w, h, c, 255 - currentPixel);
                 }
