@@ -9,6 +9,7 @@
 
 
 void Adjustments::Brightness(Image& image, int brightness) {
+    brightness = std::max(-100, std::min(100, brightness));
     for (int w = 0; w < image.width; w++) {
         for (int h = 0; h < image.height; h++) {
             for (int c = 0; c < image.channels; c++) {
