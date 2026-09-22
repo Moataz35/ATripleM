@@ -31,7 +31,7 @@ void ImageFilter::Invert(Image& image) {
                 }
             }
         }
-}
+    }
     
 void ImageFilter::DarkenandLighten(Image& image, int brightness) {
         Adjustments::Brightness(image, brightness);
