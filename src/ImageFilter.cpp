@@ -22,20 +22,7 @@ namespace Adjustments {
     }
 
 
-    void Contrast(Image& image, float contrast) {
-        float factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
-        for (int w = 0; w < image.width; w++) {
-            for (int h = 0; h < image.height; h++) {
-                for (int c = 0; c < image.channels; c++) {
-                    unsigned char currentPixel = image.getPixel(w, h, c);
-                    int newPixelValue = static_cast<int>(factor * (currentPixel - 128) + 128);
-                    newPixelValue = std::max(0, std::min(255, newPixelValue));
-                    image.setPixel(w, h, c, static_cast<unsigned char>(newPixelValue));
-                }
-            }
-        }
-    }
-
+    
 }
 
 namespace ImageFilter {

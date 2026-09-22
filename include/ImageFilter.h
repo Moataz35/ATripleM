@@ -7,6 +7,11 @@ enum FilterType {
     Rotation90, Rotation180, Rotation270
 };
 
+
+namespace Adjustments {
+	void Brightness(Image& image, int brightness);
+
+}
 namespace ImageFilter {
 
 	void blackandWhite(Image& image);
