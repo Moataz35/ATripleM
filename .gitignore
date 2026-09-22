@@ -1,0 +1,7 @@
+build/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.slnx
+*.pdb
+*.exe
