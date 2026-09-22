@@ -5,3 +5,5 @@ build/
 *.slnx
 *.pdb
 *.exe
+test/
+*.bat

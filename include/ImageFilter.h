@@ -9,9 +9,9 @@ enum FilterType {
 
 namespace ImageFilter {
 
-	void blackandWhite(Image& image);
+	void BlackandWhite(Image& image);
 
-	void rotate90(Image& image);
-	void rotate180(Image& image);
-	void rotate270(Image& image);
+	void Rotate90(Image& image);
+	void Rotate180(Image& image);
+	void Rotate270(Image& image);
 }
