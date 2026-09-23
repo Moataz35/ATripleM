@@ -32,21 +32,47 @@ bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
 
 }
 
+bool ImageEditor::isImageLoaded() {
+    if (currentImage.imageData == nullptr) {
+        throw std::runtime_error("ERROR! No image loaded.");
+        return false;
+    }
+    return true;
+}
+
+
 void ImageEditor::reset() {
+    if(!isImageLoaded()) {
+        throw std::runtime_error("ERROR! No image loaded.");
+        return;
+    }
+
+    if(changes.empty()) {
+        throw std::runtime_error("No changes to reset.");
+        return;
+    }
+
     changes.push_back(currentImage);
     currentImage = originalImage;
     changes.clear();
     while(!changesUndone.empty()) { 
         changesUndone.pop();
     }
-    std::cout << "Image reset to original state." << std::endl;
-
+    return;
 }
 
+
+
 void ImageEditor::undo() {
-    if(changes.empty()) {
-        std::cerr << "No changes to undo." << std::endl;
+    if(!isImageLoaded()) {
+        throw std::runtime_error("ERROR! No image loaded.");
         return;
+    }
+
+    if(changes.empty()) {
+        throw std::runtime_error("No changes to undo.");
+        return;
+
     }
     changesUndone.push(currentImage);
     currentImage = changes.back();
@@ -55,10 +81,17 @@ void ImageEditor::undo() {
 }
 
 void ImageEditor::redo() {
-    if(changesUndone.empty()) {
-        std::cerr << "No changes to redo." << std::endl;
+
+    if(!isImageLoaded()) {
+        throw std::runtime_error("ERROR! No image loaded.");
         return;
     }
+
+    if(changesUndone.empty()) {
+        throw std::runtime_error("No changes to redo.");
+        return;
+    }
+    
     changes.push_back(currentImage);
     currentImage = changesUndone.top();
     changesUndone.pop();
@@ -67,9 +100,5 @@ void ImageEditor::redo() {
 
 void ImageEditor::applyFilter(FilterType filterType) {
     saveState();
-    
 }
 
-bool ImageEditor::isImageLoaded() {
-    return true;
-}

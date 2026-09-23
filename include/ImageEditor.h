@@ -4,6 +4,7 @@
 #include <deque>
 #include <stack>
 #include <string>
+#include <stdexcept>
 
 class ImageEditor {
 private:
