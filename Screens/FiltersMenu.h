@@ -1,8 +1,14 @@
 #include<iostream>
+#include"..\include\ImageEditor.h"
+#include"input_validation_library.h"
+#include"string.h"
+#include<conio.h>
+#include"Screen.h"
+
 
 class FiltersMenuScreen : Screen{
     
-    Editor &editor;
+    ImageEditor &editor;
 
     enum enFilterMenuOptions{Grayscale = 1, BlackAndWhite , InvertImage , AddFrame , Flip , 
     Rotate , DarkenAndLighten , Resize, Merge , DetectEdges , Crop , Blur , SunLight,
@@ -15,7 +21,7 @@ class FiltersMenuScreen : Screen{
     }
 
 public:
-    FiltersMenuScreen(Editor &ed) : editor(ed){}
+    FiltersMenuScreen(ImageEditor &ed) : editor(ed){}
 
     void show(){
         bool running = true;

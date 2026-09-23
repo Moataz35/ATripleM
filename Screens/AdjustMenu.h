@@ -1,8 +1,13 @@
 #include<iostream>
+#include"..\include\ImageEditor.h"
+#include"input_validation_library.h"
+#include"string.h"
+#include<conio.h>
+#include"Screen.h"
 
 class AdjustMenuScreen : Screen{
     
-    Editor &editor;
+    ImageEditor &editor;
 
     enum enAdjustMenuOptions{Brightness = 1, Contrast , Saturation , BackToMain};
 
@@ -12,7 +17,7 @@ class AdjustMenuScreen : Screen{
     }
 
 public:
-    AdjustMenuScreen(Editor &ed) : editor(ed){}
+    AdjustMenuScreen(ImageEditor &ed) : editor(ed){}
 
     void show(){
         bool running = true;

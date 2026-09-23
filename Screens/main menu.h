@@ -1,7 +1,7 @@
 #pragma once
 
 #include<iostream>
-#include"..\Editor.h"
+#include"..\include\ImageEditor.h"
 #include"input_validation_library.h"
 #include"string.h"
 #include<conio.h>
