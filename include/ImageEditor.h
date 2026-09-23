@@ -4,6 +4,7 @@
 #include <deque>
 #include <stack>
 #include <string>
+#include <stdexcept>
 
 class ImageEditor {
 private:
@@ -21,6 +22,8 @@ public:
     bool loadImageFromFile(const std::string& imageFilePath);
 
     bool saveToSameImage();
+
+    void saveState();
 
     bool saveNewCopy(const std::string& newFilePath);
 
