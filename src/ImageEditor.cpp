@@ -1,8 +1,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "Image.h"
-#include "ImageFilter.h"
-#include "ImageEditor.h"
+
+#include"..\include\Image.h"
+#include"..\include\ImageFilter.h"
+#include"..\include\ImageEditor.h"
 #include <string>
 
 ImageEditor::ImageEditor(const std::string& imageFilePath) {

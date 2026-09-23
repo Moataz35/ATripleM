@@ -11,7 +11,7 @@
 
 class MainMenuScreen : protected Screen{
 
-    Editor &editor;
+    ImageEditor &editor;
 
     enum enMenuOptions{Filters = 1, Adjust , Undo , Redo , Reset , Exit};
 
@@ -23,7 +23,7 @@ class MainMenuScreen : protected Screen{
     
 public:
 
-    MainMenuScreen(Editor &ed) : editor(ed){}
+    MainMenuScreen(ImageEditor &ed) : editor(ed){}
 
     void show(){
         bool running = true;

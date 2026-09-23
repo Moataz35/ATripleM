@@ -4,16 +4,13 @@
 #include"string.h"
 #include<conio.h>
 #include"Screen.h"
+#include"..\include\ImageFilter.h"
 
 
 class FiltersMenuScreen : Screen{
     
     ImageEditor &editor;
 
-    enum enFilterMenuOptions{Grayscale = 1, BlackAndWhite , InvertImage , AddFrame , Flip , 
-    Rotate , DarkenAndLighten , Resize, Merge , DetectEdges , Crop , Blur , SunLight,
-    OldTV , PurpleEffect , Infrared , Skew , Oil , BackToMain
-    };
 
     static void _goBackToFiltersMenu(){
         std::cout << "\npress any key to go back to filters menu ...";
@@ -57,87 +54,87 @@ public:
                 "\t\t\tInvalid number, please enter a number in range 1 - 19 : "
             );
 
-            switch (static_cast<enFilterMenuOptions>(choiceNumber)) {
+            switch (static_cast<FilterType>(choiceNumber)) {
 
-                case enFilterMenuOptions::Grayscale:
+                case FilterType::Grayscale:
                     
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::BlackAndWhite:
+                case FilterType::BlackAndWhite:
                     
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::InvertImage:
+                case FilterType::InvertImage:
                    
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::AddFrame:
+                case FilterType::AddFrame:
                     
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Flip:
+                case FilterType::Flip:
                     
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Rotate:
+                case FilterType::Rotate:
                     
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::DarkenAndLighten:
+                case FilterType::DarkenAndLighten:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Resize:
+                case FilterType::Resize:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Merge:
+                case FilterType::Merge:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::DetectEdges:
+                case FilterType::DetectEdges:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Crop:
+                case FilterType::Crop:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Blur:
+                case FilterType::Blur:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::SunLight:
+                case FilterType::SunLight:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::OldTV:
+                case FilterType::OldTV:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::PurpleEffect:
+                case FilterType::PurpleEffect:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Infrared:
+                case FilterType::Infrared:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Skew:
+                case FilterType::Skew:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::Oil:
+                case FilterType::Oil:
                     _goBackToFiltersMenu();
                     break;
 
-                case enFilterMenuOptions::BackToMain:
+                default:
                     running = false;
                     break;
             }
