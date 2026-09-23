@@ -22,6 +22,8 @@ public:
 
     bool saveToSameImage();
 
+    void saveState();
+
     bool saveNewCopy(const std::string& newFilePath);
 
     void reset();
