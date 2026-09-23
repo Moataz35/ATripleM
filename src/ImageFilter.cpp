@@ -1,11 +1,7 @@
-#include "Image.h"
-#include "ImageFilter.h"
+#include"..\include\Image.h"
+#include"..\include\ImageFilter.h"
+#include"..\include\ImageEditor.h"
 #include <algorithm>
-
-
-
-
-
 
 
 void Adjustments::Brightness(Image& image, int brightness) {
@@ -66,3 +62,19 @@ void ImageFilter::rotate270(Image& image) {
         
 }
 
+
+void ImageFilter::grayscale(Image& image){
+
+    for (int w = 0; w < image.width; w++) {
+        for (int h = 0 ; h < image.height ; h++) {
+            unsigned char &r = image.getPixel(w , h, 0);
+            unsigned char &g = image.getPixel(w , h, 1);
+            unsigned char &b = image.getPixel(w , h, 2);
+
+            unsigned char gray = (r + g + b) /3;
+
+            r = g = b = gray;
+        }
+    }
+    
+}
