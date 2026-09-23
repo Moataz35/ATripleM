@@ -2,9 +2,9 @@
 #include "Image.h"
 
 enum FilterType {
-    Grayscale, BlackandWhite, Invert,NegativeEffect, EdgeDetection, SunlightEffect, 
-    FlipHorizontally, FlipVertically,DarkenandLighten,
-    Rotation90, Rotation180, Rotation270
+    Grayscale = 1, BlackAndWhite , InvertImage , AddFrame , Flip , 
+    Rotate , DarkenAndLighten , Resize, Merge , DetectEdges , Crop , Blur , SunLight,
+    OldTV , PurpleEffect , Infrared , Skew , Oil
 };
 
 

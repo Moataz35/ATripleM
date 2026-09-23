@@ -1,11 +1,7 @@
-#include "Image.h"
-#include "ImageFilter.h"
+#include"Image.h"
+#include"ImageFilter.h"
+#include"ImageEditor.h"
 #include <algorithm>
-
-
-
-
-
 
 
 void Adjustments::Brightness(Image& image, int brightness) {

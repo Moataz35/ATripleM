@@ -22,14 +22,14 @@
 #define JPG_TYPE 4
 #define UNSUPPORTED_TYPE -1
 
-
 // stb_image header definitions
-#include "stb_image.h"
-#include "stb_image_write.h"
+#include "..\lib\include\stb_image_write.h"
+#include "..\lib\include\stb_image.h"
 #define pixel unsigned int
 
 #include <iostream>
 #include <exception>
+#include<cstring>
 
 
 /**
