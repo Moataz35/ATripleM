@@ -32,23 +32,20 @@ public:
             std::cout << "\t\t\t[3]  Invert Image Colors\n";
             std::cout << "\t\t\t[4]  Add Frame\n";
             std::cout << "\t\t\t[5]  Flip Image (Horizontal/Vertical)\n";
-            std::cout << "\t\t\t[6]  Rotate Image 90 Degree\n";
-            std::cout << "\t\t\t[7]  Rotate Image 180 Degree\n";
-            std::cout << "\t\t\t[8]  Rotate Image 270 Degree\n";
-            std::cout << "\t\t\t[9]  Darken Image\n";
-            std::cout << "\t\t\t[10]  Lighten Image\n";
-            std::cout << "\t\t\t[11]  Resize Image\n";
-            std::cout << "\t\t\t[12]  Merge Images\n";
-            std::cout << "\t\t\t[13] Detect Edges\n";
-            std::cout << "\t\t\t[14] Crop Image\n";
-            std::cout << "\t\t\t[15] Blur Image\n";
-            std::cout << "\t\t\t[16] Sunlight Effect\n";
-            std::cout << "\t\t\t[17] Old TV Effect\n";
-            std::cout << "\t\t\t[18] Purple Effect\n";
-            std::cout << "\t\t\t[19] Infrared Effect\n";
-            std::cout << "\t\t\t[20] Skew Image\n";
-            std::cout << "\t\t\t[21] Oil Painting Effect\n";
-            std::cout << "\t\t\t[22] Back to Main Menu\n";
+            std::cout << "\t\t\t[6]  Rotate Image\n";
+            std::cout << "\t\t\t[7]  Darken & Lighten\n";
+            std::cout << "\t\t\t[8]  Resize Image\n";
+            std::cout << "\t\t\t[9]  Merge Images\n";
+            std::cout << "\t\t\t[10] Detect Edges\n";
+            std::cout << "\t\t\t[11] Crop Image\n";
+            std::cout << "\t\t\t[12] Blur Image\n";
+            std::cout << "\t\t\t[13] Sunlight Effect\n";
+            std::cout << "\t\t\t[14] Old TV Effect\n";
+            std::cout << "\t\t\t[15] Purple Effect\n";
+            std::cout << "\t\t\t[16] Infrared Effect\n";
+            std::cout << "\t\t\t[17] Skew Image\n";
+            std::cout << "\t\t\t[18] Oil Painting Effect\n";
+            std::cout << "\t\t\t[19] Back to Main Menu\n";
             std::cout << "\t\t\t=======================================\n";
 
             int choiceNumber = InputValidation::readIntInRange(
@@ -81,26 +78,6 @@ public:
 
                 case FilterType::Flip:
                     
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Rotate90:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Rotate180:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Rotate270:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Darken:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Lighten:
                     _goBackToFiltersMenu();
                     break;
 
