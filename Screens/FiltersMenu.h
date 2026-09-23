@@ -1,10 +1,10 @@
 #include<iostream>
-#include"..\include\ImageEditor.h"
+#include"ImageEditor.h"
 #include"input_validation_library.h"
 #include"string.h"
 #include<conio.h>
 #include"Screen.h"
-#include"..\include\ImageFilter.h"
+#include"ImageFilter.h"
 
 
 class FiltersMenuScreen : Screen{
@@ -13,7 +13,7 @@ class FiltersMenuScreen : Screen{
 
 
     static void _goBackToFiltersMenu(){
-        std::cout << "\npress any key to go back to filters menu ...";
+        std::cout << "\n\t\t\tpress any key to go back to filters menu ...";
         getch();
     }
 

@@ -1,5 +1,5 @@
 #include<iostream>
-#include"..\include\ImageEditor.h"
+#include"ImageEditor.h"
 #include"input_validation_library.h"
 #include"string.h"
 #include<conio.h>
@@ -12,7 +12,7 @@ class AdjustMenuScreen : Screen{
     enum enAdjustMenuOptions{Brightness = 1, Contrast , Saturation , BackToMain};
 
     static void _goBackToAdjustMenu(){
-        std::cout << "\npress any key to go back to Adjust menu ...";
+        std::cout << "\n\t\t\tpress any key to go back to Adjust menu ...";
         getch();
     }
 
