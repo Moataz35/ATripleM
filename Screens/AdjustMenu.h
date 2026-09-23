@@ -1,5 +1,5 @@
 #include<iostream>
-#include"..\include\ImageEditor.h"
+#include"ImageEditor.h"
 #include"input_validation_library.h"
 #include"string.h"
 #include<conio.h>
