@@ -3,7 +3,7 @@
 #include "Image.h"
 #include "ImageFilter.h"
 #include "ImageEditor.h"
-#include <string>
+
 
 
 
@@ -34,7 +34,6 @@ bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
 
 bool ImageEditor::isImageLoaded() {
     if (currentImage.imageData == nullptr) {
-        throw std::runtime_error("ERROR! No image loaded.");
         return false;
     }
     return true;
@@ -44,12 +43,10 @@ bool ImageEditor::isImageLoaded() {
 void ImageEditor::reset() {
     if(!isImageLoaded()) {
         throw std::runtime_error("ERROR! No image loaded.");
-        return;
     }
 
     if(changes.empty()) {
         throw std::runtime_error("No changes to reset.");
-        return;
     }
 
     changes.push_back(currentImage);
@@ -58,7 +55,6 @@ void ImageEditor::reset() {
     while(!changesUndone.empty()) { 
         changesUndone.pop();
     }
-    return;
 }
 
 
@@ -66,13 +62,10 @@ void ImageEditor::reset() {
 void ImageEditor::undo() {
     if(!isImageLoaded()) {
         throw std::runtime_error("ERROR! No image loaded.");
-        return;
     }
 
     if(changes.empty()) {
         throw std::runtime_error("No changes to undo.");
-        return;
-
     }
     changesUndone.push(currentImage);
     currentImage = changes.back();
@@ -83,12 +76,10 @@ void ImageEditor::redo() {
 
     if(!isImageLoaded()) {
         throw std::runtime_error("ERROR! No image loaded.");
-        return;
     }
 
     if(changesUndone.empty()) {
         throw std::runtime_error("No changes to redo.");
-        return;
     }
 
     changes.push_back(currentImage);
