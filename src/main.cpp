@@ -1,6 +1,6 @@
 #include<iostream>
-#include "../Screens/main menu.h";
-#include "../include/ImageEditor.h";
+#include "main menu.h";
+#include "ImageEditor.h";
 
 
 int main() {
