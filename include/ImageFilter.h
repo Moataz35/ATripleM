@@ -20,4 +20,6 @@ namespace ImageFilter {
 	void rotate90(Image& image);
 	void rotate180(Image& image);
 	void rotate270(Image& image);
+
+	void grayscale(Image& image);
 }
