@@ -77,7 +77,6 @@ void ImageEditor::undo() {
     changesUndone.push(currentImage);
     currentImage = changes.back();
     changes.pop_back();
-    std::cout << "Undo successful." << std::endl;
 }
 
 void ImageEditor::redo() {
@@ -91,11 +90,10 @@ void ImageEditor::redo() {
         throw std::runtime_error("No changes to redo.");
         return;
     }
-    
+
     changes.push_back(currentImage);
     currentImage = changesUndone.top();
     changesUndone.pop();
-    std::cout << "Redo successful." << std::endl;
 }
 
 void ImageEditor::applyFilter(FilterType filterType) {
