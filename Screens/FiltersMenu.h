@@ -13,7 +13,7 @@ class FiltersMenuScreen : Screen{
 
 
     static void _goBackToFiltersMenu(){
-        std::cout << "\npress any key to go back to filters menu ...";
+        std::cout << "\n\t\t\tpress any key to go back to filters menu ...";
         getch();
     }
 
