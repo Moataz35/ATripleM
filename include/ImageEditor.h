@@ -13,7 +13,7 @@ private:
     std::deque<Image> changes;
     std::stack<Image> changesUndone;
     bool modified;
-
+    std::string originalFilePath;
 public:
     ImageEditor() = default;
 

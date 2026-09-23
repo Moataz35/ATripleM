@@ -5,17 +5,20 @@
 #include"ImageFilter.h"
 #include"ImageEditor.h"
 #include <string>
+#include <exception>
 
 ImageEditor::ImageEditor(const std::string& imageFilePath) {
-
+    loadImageFromFile(imageFilePath);
 }
 
 bool ImageEditor::loadImageFromFile(const std::string& imageFilePath) {
-
+    originalImage.loadNewImage(imageFilePath);
+    originalFilePath = imageFilePath;
+    return true;
 }
 
 bool ImageEditor::saveToSameImage() {
-
+    currentImage.saveImage(originalFilePath);
 }
 
 void ImageEditor::saveState() {
@@ -27,7 +30,7 @@ void ImageEditor::saveState() {
 }
 
 bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
-
+    currentImage.saveImage(newFilePath);
 }
 
 bool ImageEditor::isImageLoaded() {
@@ -86,6 +89,42 @@ void ImageEditor::redo() {
 }
 
 void ImageEditor::applyFilter(FilterType filterType) {
-    saveState();
-}
+    changes.push_back(currentImage);
 
+    switch (filterType) {
+        case FilterType::Grayscale:
+            ImageFilter::grayscale(currentImage);
+            break;
+
+        case FilterType::BlackAndWhite:
+            ImageFilter::BlackandWhite(currentImage);
+            break;
+
+        case FilterType::InvertImage:
+            ImageFilter::Invert(currentImage);
+            break;
+
+        case FilterType::Darken:
+            ImageFilter::DarkenandLighten(currentImage, -50);
+            break;
+
+        case FilterType::Lighten:
+            ImageFilter::DarkenandLighten(currentImage, 50);
+            break;
+
+        case FilterType::Rotate90:
+            ImageFilter::Rotate90(currentImage);
+            break;
+
+        case FilterType::Rotate180:
+            ImageFilter::Rotate180(currentImage);
+            break;
+
+        case FilterType::Rotate270:
+            ImageFilter::Rotate270(currentImage);
+            break;
+
+        default:
+            throw std::invalid_argument("Unsupported Filter");
+    }
+}

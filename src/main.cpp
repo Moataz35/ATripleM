@@ -5,7 +5,7 @@
 
 int main() {
     ImageEditor editor;
-    MainMenuScreen mianMenu(editor);
-    mianMenu.show();
+    MainMenuScreen mainMenu(editor);
+    mainMenu.show();
     return 0;
 }
