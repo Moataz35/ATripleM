@@ -54,16 +54,79 @@ void Adjustments::Brightness(Image& image, int brightness) {
         }
     }
 }
+
 void ImageFilter::Rotate90(Image& image) {
-    
+    Image newImage;
+    newImage.width = image.height;
+    newImage.height = image.width;
+    newImage.channels = image.channels;
+    newImage.imageData = new unsigned char[newImage.width * newImage.height * image.channels];
+
+    int originaly = 0;
+    for (int x = newImage.width - 1; x >= 0; x--) {
+
+        int originalx = 0;
+        for (int y = 0; y < newImage.height; y++) {
+
+            for (int c = 0; c < newImage.channels; c++) {
+
+                unsigned char currentPixelValue = image.getPixel(originalx, originaly, c);
+                newImage.setPixel(x, y, c, currentPixelValue);
+            }
+            originalx++;
+        }
+        originaly++;
+    }
+
+    image = newImage;
 }
 
 void ImageFilter::Rotate180(Image& image) {
-    
+    Image newImage(image);
+
+    int originaly = 0;
+    for (int y = image.height - 1; y >= 0; y--) {
+
+        int originalx = 0;
+        for (int x = image.width - 1; x >= 0; x--) {
+
+            for (int c = 0; c < image.channels; c++) {
+
+                unsigned char currentPixelValue = image.getPixel(originalx, originaly, c);
+                newImage.setPixel(x, y, c, currentPixelValue);
+            }
+            originalx++;
+        }
+        originaly++;
+    }
+
+    image = newImage;
 }
 
 void ImageFilter::Rotate270(Image& image) {
-    
+    Image newImage;
+    newImage.width = image.height;
+    newImage.height = image.width;
+    newImage.channels = image.channels;
+    newImage.imageData = new unsigned char[newImage.width * newImage.height * newImage.channels];
+
+    int originaly = 0;
+    for (int x = 0; x < newImage.width; x++) {
+
+        int originalx = 0;
+        for (int y = newImage.height - 1; y >= 0; y--) {
+
+            for (int c = 0; c < newImage.channels; c++) {
+
+                unsigned char currentPixelValue = image.getPixel(originalx, originaly, c);
+                newImage.setPixel(x, y, c, currentPixelValue);
+            }
+            originalx++;
+        }
+        originaly++;
+    }
+
+    image = newImage;
 }
 
 

@@ -19,6 +19,7 @@ bool ImageEditor::loadImageFromFile(const std::string& imageFilePath) {
 
 bool ImageEditor::saveToSameImage() {
     currentImage.saveImage(originalFilePath);
+    return true;
 }
 
 void ImageEditor::saveState() {
@@ -31,6 +32,7 @@ void ImageEditor::saveState() {
 
 bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
     currentImage.saveImage(newFilePath);
+    return true;
 }
 
 bool ImageEditor::isImageLoaded() {
