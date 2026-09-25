@@ -67,12 +67,12 @@ public:
                     break;
 
                 case FilterType::InvertImage:
-                   
+
                     _goBackToFiltersMenu();
                     break;
 
                 case FilterType::AddFrame:
-                    
+
                     _goBackToFiltersMenu();
                     break;
 
