@@ -7,6 +7,9 @@ enum FilterType {
     OldTV, PurpleEffect, Infrared, Skew, Oil
 };
 
+enum AdjustmentType{
+	Brightness =1, Contrast, Saturation , BackToMain
+};
 
 namespace Adjustments {
 	void Brightness(Image& image, int brightness);

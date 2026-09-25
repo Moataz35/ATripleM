@@ -138,3 +138,24 @@ void ImageEditor::applyFilter(FilterType filterType) {
         }
         modified = true;
 }
+void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
+    changes.push_back(currentImage);
+
+    switch (adjustType)
+    {
+        case AdjustmentType::Brightness:
+            Adjustments::Brightness(currentImage, value);
+            break;
+        case AdjustmentType::Contrast:
+
+            break;
+        case AdjustmentType::Saturation:
+
+            break;
+        default:
+            throw std::invalid_argument("Unsupported Feature");
+
+            
+    }
+    modified = true;
+}

@@ -4,6 +4,7 @@
 #include"string.h"
 #include<conio.h>
 #include"Screen.h"
+#include "AdjustmentScreen.h"
 
 class AdjustMenuScreen : Screen{
     
@@ -41,7 +42,7 @@ public:
             switch (static_cast<enAdjustMenuOptions>(choiceNumber)) {
 
                 case enAdjustMenuOptions::Brightness:
-                    
+                    AdjustmentScreen::adjustmentScreen(editor, "Brightness", AdjustmentType::Brightness);
                     _goBackToAdjustMenu();
                     break;
                 case enAdjustMenuOptions::Contrast:

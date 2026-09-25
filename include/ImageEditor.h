@@ -35,6 +35,8 @@ public:
 
     void applyFilter(FilterType filterType);
 
+    void applyAdjust(AdjustmentType adjustType, int value);
+
     bool isModified();
 
 private:
