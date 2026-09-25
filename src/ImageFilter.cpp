@@ -168,19 +168,18 @@ void ImageFilter::grayscale(Image& image){
 
 
 void ImageFilter::AddFrame(Image& image, int Framewidth, bool Fancy) {
-    Image newImage;
     for (int w = 0; w < image.width; w++) {
         for (int h = 0; h < image.height; h++) {
             
             if (w < Framewidth || w >= image.width - Framewidth || 
                 h < Framewidth || h >= image.height - Framewidth) {
                 
-                image.setPixel(w, h, 0, 22);
-                image.setPixel(w, h, 1, 113);
-                image.setPixel(w, h, 2, 220);
+                image.setPixel(w, h, 0, 15);
+                image.setPixel(w, h, 1, 22);
+                image.setPixel(w, h, 2, 118);
             }
 
-            if (Fancy==true) {
+            if (Fancy) {
                 if (w == 0 || w == image.width - 1 || h == 0 || h == image.height - 1 ||
                     w == Framewidth || w == image.width - Framewidth - 1 ||
                     h == Framewidth || h == image.height - Framewidth - 1) {
@@ -192,5 +191,4 @@ void ImageFilter::AddFrame(Image& image, int Framewidth, bool Fancy) {
             }
         }
     }
-    image = newImage;
 }
