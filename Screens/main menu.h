@@ -15,10 +15,6 @@ class MainMenuScreen : protected Screen{
 
     enum enMenuOptions{Filters = 1, Adjust , Undo , Redo , Reset , Exit};
 
-    static void _goBackToMainMenu(){
-        std::cout << "\npress any key to go back to the main menu ...";
-        getch();
-    }
 
     
 public:

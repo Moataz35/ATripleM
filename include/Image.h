@@ -47,7 +47,7 @@ private:
     bool isValidFilename(const std::string& filename) {
         const char* extension = strrchr(filename.c_str(), '.');
         if (extension == nullptr) {
-            std::cerr << "Invalid filename: " << filename << std::endl;
+            std::cerr << "\t\t\tInvalid filename: " << filename << std::endl;
             return false;
         }
 
@@ -172,14 +172,14 @@ public:
      */
     bool loadNewImage(const std::string& filename) {
         if (!isValidFilename(filename)) {
-            std::cerr << "Couldn't Load Image" << '\n';
+            std::cerr << "\t\t\tCouldn't Load Image" << '\n';
             throw std::invalid_argument("The file extension does not exist");
         }
 
         const char* extension = strrchr(filename.c_str(), '.');
         short extensionType = getExtensionType(extension);
         if (extensionType == UNSUPPORTED_TYPE) {
-            std::cerr << "Unsupported File Format" << '\n';
+            std::cerr << "\t\t\tUnsupported File Format" << '\n';
             throw std::invalid_argument("File Extension is not supported, Only .JPG, JPEG, .BMP, .PNG, .TGA are supported");
         }
         if (imageData != nullptr) {
@@ -193,7 +193,7 @@ public:
         // containing an unnecessary 4th (alpha) channel.
 
         if (imageData == nullptr) {
-            std::cerr << "File Doesn't Exist" << '\n';
+            std::cerr << "\t\t\tFile Doesn't Exist" << '\n';
             throw std::invalid_argument("Invalid filename, File Does not Exist");
         }
 
@@ -210,7 +210,7 @@ public:
 
     bool saveImage(const std::string& outputFilename) {
         if (!isValidFilename(outputFilename)) {
-            std::cerr << "Not Supported Format" << '\n';
+            std::cerr << "\t\t\tNot Supported Format" << '\n';
             throw std::invalid_argument("The file extension does not exist");
         }
 
@@ -218,7 +218,7 @@ public:
         const char* extension = strrchr(outputFilename.c_str(), '.');
         short extensionType = getExtensionType(extension);
         if (extensionType == UNSUPPORTED_TYPE) {
-            std::cerr << "File Extension is not supported, Only .JPG, JPEG, .BMP, .PNG, .TGA are supported" << '\n';
+            std::cerr << "\t\t\tFile Extension is not supported, Only .JPG, JPEG, .BMP, .PNG, .TGA are supported" << '\n';
             throw std::invalid_argument("File Extension is not supported, Only .JPG, JPEG, .BMP, .PNG, .TGA are supported");
         }
 

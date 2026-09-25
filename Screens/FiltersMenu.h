@@ -5,17 +5,43 @@
 #include<conio.h>
 #include"Screen.h"
 #include"ImageFilter.h"
+#include"FilterScreen.h"
 
 
 class FiltersMenuScreen : Screen{
     
     ImageEditor &editor;
 
+    enum FiltersMenuOption {
+        Grayscale = 1,
+        BlackAndWhite,
+        InvertColors,
+        AddFrame,
+        Flip,
+        Rotate,
+        Darken,
+        Lighten,
+        Resize,
+        Merge,
+        DetectEdges,
+        Crop,
+        Blur,
+        Sunlight,
+        OldTV,
+        PurpleEffect,
+        Infrared,
+        Skew,
+        OilPainting,
+        ApplyChanges,
+        Cancel
+    };
+
 
     static void _goBackToFiltersMenu(){
         std::cout << "\n\t\t\tpress any key to go back to filters menu ...";
         getch();
     }
+
 
 public:
     FiltersMenuScreen(ImageEditor &ed) : editor(ed){}
@@ -33,97 +59,128 @@ public:
             std::cout << "\t\t\t[4]  Add Frame\n";
             std::cout << "\t\t\t[5]  Flip Image (Horizontal/Vertical)\n";
             std::cout << "\t\t\t[6]  Rotate Image\n";
-            std::cout << "\t\t\t[7]  Darken & Lighten\n";
-            std::cout << "\t\t\t[8]  Resize Image\n";
-            std::cout << "\t\t\t[9]  Merge Images\n";
-            std::cout << "\t\t\t[10] Detect Edges\n";
-            std::cout << "\t\t\t[11] Crop Image\n";
-            std::cout << "\t\t\t[12] Blur Image\n";
-            std::cout << "\t\t\t[13] Sunlight Effect\n";
-            std::cout << "\t\t\t[14] Old TV Effect\n";
-            std::cout << "\t\t\t[15] Purple Effect\n";
-            std::cout << "\t\t\t[16] Infrared Effect\n";
-            std::cout << "\t\t\t[17] Skew Image\n";
-            std::cout << "\t\t\t[18] Oil Painting Effect\n";
-            std::cout << "\t\t\t[19] Back to Main Menu\n";
+            std::cout << "\t\t\t[7]  Darken\n";
+            std::cout << "\t\t\t[8]  Lighten\n";
+            std::cout << "\t\t\t[9]  Resize Image\n";
+            std::cout << "\t\t\t[10] Merge Images\n";
+            std::cout << "\t\t\t[11] Detect Edges\n";
+            std::cout << "\t\t\t[12] Crop Image\n";
+            std::cout << "\t\t\t[13] Blur Image\n";
+            std::cout << "\t\t\t[14] Sunlight Effect\n";
+            std::cout << "\t\t\t[15] Old TV Effect\n";
+            std::cout << "\t\t\t[16] Purple Effect\n";
+            std::cout << "\t\t\t[17] Infrared Effect\n";
+            std::cout << "\t\t\t[18] Skew Image\n";
+            std::cout << "\t\t\t[19] Oil Painting Effect\n";
+            std::cout << "\t\t\t[20] Apply Changes\n";
+            std::cout << "\t\t\t[21] Cancel\n";
             std::cout << "\t\t\t=======================================\n";
 
             int choiceNumber = InputValidation::readIntInRange(
-                1, 19, 
-                "\t\t\tChoose what do you want to do [1 - 19] : ", 
-                "\t\t\tInvalid number, please enter a number in range 1 - 19 : "
+                1, 21, 
+                "\t\t\tChoose what do you want to do [1 - 21] : ", 
+                "\t\t\tInvalid number, please enter a number in range 1 - 21"
             );
 
-            switch (static_cast<FilterType>(choiceNumber)) {
+            switch (static_cast<FiltersMenuOption>(choiceNumber)) {
 
-                case FilterType::Grayscale:
+                case FiltersMenuOption::Grayscale:{
+                    FilterScreen::simpleScreen(editor , "Grayscale" , FilterType::Grayscale);
+                    _goBackToFiltersMenu();
+                    break;
+                }
+
+                case FiltersMenuOption::BlackAndWhite:
+                    FilterScreen::simpleScreen(editor , "Black And White" , FilterType::BlackAndWhite);
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::InvertColors:
+                    FilterScreen::simpleScreen(editor , "Invert Colors" , FilterType::InvertImage);
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::AddFrame:
                     
                     _goBackToFiltersMenu();
                     break;
 
-                case FilterType::BlackAndWhite:
+                case FiltersMenuOption::Flip:
                     
                     _goBackToFiltersMenu();
                     break;
-
-                case FilterType::InvertImage:
-                   
+                case FiltersMenuOption::Rotate:
+                    FilterScreen::rotateScreen(editor);
                     _goBackToFiltersMenu();
                     break;
 
-                case FilterType::AddFrame:
+                case FiltersMenuOption::Darken:
+                    FilterScreen::simpleScreen(editor , "Darken" , FilterType::Darken);
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::Lighten:
+                    FilterScreen::simpleScreen(editor , "Lighten" , FilterType::Lighten);
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::Resize:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::Merge:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::DetectEdges:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::Crop:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::Blur:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::Sunlight:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::OldTV:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::PurpleEffect:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::Infrared:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::Skew:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::OilPainting:
+                    _goBackToFiltersMenu();
+                    break;
+
+                case FiltersMenuOption::ApplyChanges:{
+                    bool conf = InputValidation::confirm("\t\t\tApply all changes to the image ?");
+
+                    if(conf){
+                        std::cout << "\t\t\tChanges applied.\a\n";
+                    }
                     
-                    _goBackToFiltersMenu();
-                    break;
+                    std::cout << "\n\t\t\tpress any key to go back to the main menu ...";
+                    getch();
 
-                case FilterType::Flip:
-                    
-                    _goBackToFiltersMenu();
+                    running = false;
                     break;
-
-                case FilterType::Resize:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Merge:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::DetectEdges:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Crop:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Blur:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::SunLight:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::OldTV:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::PurpleEffect:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Infrared:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Skew:
-                    _goBackToFiltersMenu();
-                    break;
-
-                case FilterType::Oil:
-                    _goBackToFiltersMenu();
-                    break;
+                }
 
                 default:
                     running = false;

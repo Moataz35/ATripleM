@@ -3,7 +3,7 @@
 
 class Screen{
 
-protected:
+public:
 
     static void headerScreen(std::string title){
         std::cout <<"\t\t\t__________________________________\n";

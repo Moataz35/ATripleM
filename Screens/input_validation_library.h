@@ -72,7 +72,7 @@ namespace InputValidation{
         std::string errorMSg = "this is not a valid number , please enter a valid number : "){
         int num = readInt(msg , errorMSg);
         while(!isNumInRange(num , start , end)){
-            std::cout << "please enter a number between " << start << " and " << end << '\n';
+            std::cout << errorMSg << '\n';
             num = readInt(msg , errorMSg);
         }
         return num;
@@ -82,7 +82,7 @@ namespace InputValidation{
         std::string errorMSg = "this is not a valid number , please enter a valid number : "){
         double num = readDouble(msg , errorMSg);
         while(!isNumInRange(num , start , end)){
-            std::cout << "please enter a number between " << start << " and " << end << '\n';
+            std::cout << errorMSg << '\n';
             num = readDouble(msg , errorMSg);
         }
         return num;
@@ -111,6 +111,12 @@ namespace InputValidation{
         return num;
         
         
+    }
+
+    bool confirm(const std::string &msg = "Are You Sure ?"){
+        std::cout << msg << " (Y / N) : ";
+        char cont; std::cin >> cont;
+        return (cont == 'y' || cont == 'Y');
     }
 
 };
