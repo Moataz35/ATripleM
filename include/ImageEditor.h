@@ -12,7 +12,7 @@ private:
     Image currentImage;
     std::deque<Image> changes;
     std::stack<Image> changesUndone;
-    bool modified;
+    bool modified = false;
     std::string originalFilePath;
 public:
     ImageEditor() = default;
@@ -34,6 +34,8 @@ public:
     void redo();
 
     void applyFilter(FilterType filterType);
+
+    bool isModified();
 
 private:
     bool isImageLoaded();

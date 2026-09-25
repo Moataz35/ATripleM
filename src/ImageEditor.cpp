@@ -14,6 +14,7 @@ ImageEditor::ImageEditor(const std::string& imageFilePath) {
 bool ImageEditor::loadImageFromFile(const std::string& imageFilePath) {
     originalImage.loadNewImage(imageFilePath);
     originalFilePath = imageFilePath;
+    currentImage = originalImage;
     return true;
 }
 
@@ -90,6 +91,10 @@ void ImageEditor::redo() {
     changesUndone.pop();
 }
 
+bool ImageEditor::isModified(){
+    return modified;
+}
+
 void ImageEditor::applyFilter(FilterType filterType) {
     changes.push_back(currentImage);
 
@@ -128,5 +133,7 @@ void ImageEditor::applyFilter(FilterType filterType) {
 
         default:
             throw std::invalid_argument("Unsupported Filter");
-    }
+        
+        }
+        modified = true;
 }

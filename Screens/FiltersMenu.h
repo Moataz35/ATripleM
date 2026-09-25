@@ -182,9 +182,20 @@ public:
                     break;
                 }
 
-                default:
-                    running = false;
-                    break;
+                default:{
+                    if(editor.isModified()){
+                    bool conf = InputValidation::confirm("\t\t\tAre you sure you want to leave without saving?");
+
+                        if(conf){
+                            running = false;
+                            break;
+                        }
+                    }
+                    else{
+                        running = false;
+                        break;
+                    }
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 #include<iostream>
-#include "Start Screen.h";
-#include "ImageEditor.h";
+#include "Start Screen.h"
+#include "ImageEditor.h"
 
 
 int main() {

@@ -13,7 +13,7 @@ class MainMenuScreen : protected Screen{
 
     ImageEditor &editor;
 
-    enum enMenuOptions{Filters = 1, Adjust , Undo , Redo , Reset , Exit};
+    enum enMenuOptions{Filters = 1, Adjust , Undo , Redo , Reset , Save , SaveAs , Exit};
 
 
     
@@ -32,10 +32,12 @@ public:
             std::cout << "\t\t\t[3] Undo\n";
             std::cout << "\t\t\t[4] Redo\n";
             std::cout << "\t\t\t[5] Reset\n";
-            std::cout << "\t\t\t[6] Exit\n";
+            std::cout << "\t\t\t[6] save\n";
+            std::cout << "\t\t\t[7] Save As\n";
+            std::cout << "\t\t\t[8] Exit\n";
             std::cout <<"\t\t\t=======================================\n";
 
-            int choiceNumber = InputValidation::readIntInRange(1,6 , "\t\t\tchoose what do you want to do [1 - 6] : " , "\t\t\tinvalid number , please enter a number in range 1 - 6 : ");
+            int choiceNumber = InputValidation::readIntInRange(1,8 , "\t\t\tchoose what do you want to do [1 - 8] : " , "\t\t\tinvalid number , please enter a number in range 1 - 8 : ");
             
             switch (static_cast<enMenuOptions> (choiceNumber)){
             
@@ -66,6 +68,11 @@ public:
             case enMenuOptions::Reset:{
 
                 break;
+            }
+
+            case enMenuOptions::Save:{
+                editor.saveToSameImage();
+                std::cout << "Image Saved Successfuly\n";
             }
 
             case enMenuOptions::Exit:
