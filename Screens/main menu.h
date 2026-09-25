@@ -72,12 +72,25 @@ public:
 
             case enMenuOptions::Save:{
                 editor.saveToSameImage();
-                std::cout << "Image Saved Successfuly\n";
+                std::cout << "\t\t\tImage Saved Successfuly\n";
+                std::cout << "\n\t\t\tpress any key to continue ...";
+                getch();
+                break;
             }
 
             case enMenuOptions::Exit:
-                running = false;
-                break;
+                if(editor.isModified()){
+                    bool conf = InputValidation::confirm("\t\t\tAre you sure you want to leave without saving?");
+
+                    if(conf){
+                        running = false;
+                        break;
+                    }
+                }
+                else{
+                    running = false;
+                    break;
+                }
             }
         }
         

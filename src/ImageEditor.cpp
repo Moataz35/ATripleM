@@ -20,6 +20,7 @@ bool ImageEditor::loadImageFromFile(const std::string& imageFilePath) {
 
 bool ImageEditor::saveToSameImage() {
     currentImage.saveImage(originalFilePath);
+    modified = false;
     return true;
 }
 
