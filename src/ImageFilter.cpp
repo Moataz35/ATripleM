@@ -167,7 +167,7 @@ void ImageFilter::grayscale(Image& image){
 }
 
 
-void ImageFilter::AddFrame(Image& image, int Framewidth, bool Fancy) {
+void ImageFilter::AddFrame(Image& image, int Framewidth , bool Fancy) {
     for (int w = 0; w < image.width; w++) {
         for (int h = 0; h < image.height; h++) {
             

@@ -89,6 +89,7 @@ public:
                 break;
 
             case FiltersMenuOption::AddFrame:
+                FilterScreen::simpleScreen(editor , "Add Frame" , FilterType::AddFrame);
                 break;
 
             case FiltersMenuOption::Flip:
