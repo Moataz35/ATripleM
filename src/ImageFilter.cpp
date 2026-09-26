@@ -215,16 +215,3 @@ void ImageFilter::AddFrame(Image& image, int Framewidth, bool Fancy) {
         }
     }
 }
-void ImageFilter::Resize(Image& image, int newWidth , int newHight){
-    Image newImage(newWidth, newHight);
-    for (int w = 0; w < newWidth; w++) {
-        for (int h =0 ; h < newHight ; h++){
-            int 
-
-        }
-
-
-
-
-
-    }}
