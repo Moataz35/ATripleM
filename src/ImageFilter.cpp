@@ -165,3 +165,27 @@ void ImageFilter::grayscale(Image& image){
     }
     
 }
+
+void ImageFilter::FlipVertically(Image& image){
+    
+    for(int h = 0 ; h < image.height / 2 ; h++){
+        for(int w = 0 ; w < image.width ; w++){
+            int targetY = image.height - 1 - h;
+            for(int c = 0 ; c < image.channels ; c++){
+                std::swap(image.getPixel(w , h , c) , image.getPixel(w , targetY , c));
+            }
+        }
+    }
+}
+
+void ImageFilter::FlipHorizontally(Image& image){
+
+    for(int w = 0 ; w < image.width / 2 ; w++){
+        for(int h = 0 ; h < image.height ; h++){
+            int targetX = image.width - 1 - w;
+            for(int c = 0 ; c < image.channels ; c++){
+                std::swap(image.getPixel(w , h , c) , image.getPixel(targetX , h , c));
+            }
+        }
+    }
+}

@@ -50,7 +50,7 @@ public:
         std::cout << "\t\t\t[2]  Black & White Filter\n";
         std::cout << "\t\t\t[3]  Invert Image Colors\n";
         std::cout << "\t\t\t[4]  Add Frame\n";
-        std::cout << "\t\t\t[5]  Flip Image (Horizontal/Vertical)\n";
+        std::cout << "\t\t\t[5]  Flip Image\n";
         std::cout << "\t\t\t[6]  Rotate Image\n";
         std::cout << "\t\t\t[7]  Darken\n";
         std::cout << "\t\t\t[8]  Lighten\n";
@@ -92,6 +92,7 @@ public:
                 break;
 
             case FiltersMenuOption::Flip:
+                FilterScreen::FlipScreen(editor);
                 break;
 
             case FiltersMenuOption::Rotate:

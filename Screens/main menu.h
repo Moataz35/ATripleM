@@ -72,7 +72,7 @@ public:
 
             case enMenuOptions::Save:{
                 editor.saveToSameImage();
-                std::cout << "\t\t\tImage Saved Successfuly\n";
+                std::cout << "\t\t\tImage Saved Successfuly\n\a";
                 std::cout << "\n\t\t\tpress any key to continue ...";
                 getch();
                 break;

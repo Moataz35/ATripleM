@@ -38,4 +38,26 @@ namespace FilterScreen{
         }
     }
 
+    void FlipScreen(ImageEditor &editor){
+        Screen::clearScreen();
+        Screen::headerScreen("Flip");
+
+        std::cout << "\t\t\t[1] Flip Vertically\n";
+        std::cout << "\t\t\t[2] Flip Horizontally\n";
+        std::cout <<"\t\t\t=======================================\n";
+
+        int choiceNumber = InputValidation::readIntInRange(1,2 ,
+            "\t\t\tchoose what do you want to do [1 - 2] : ",
+            "\t\t\tinvalid number , please enter a number in range 1 - 2");
+
+        FilterType type = (choiceNumber == 1 ? FilterType::FlipVertically : FilterType::FlipHorizontally);
+
+        bool conf = InputValidation::confirm("\t\t\tApply flip ?");
+
+        if(conf){
+            editor.applyFilter(type);
+            std::cout << "\t\t\tFlip applied\a\n";
+        }
+    }
+
 }

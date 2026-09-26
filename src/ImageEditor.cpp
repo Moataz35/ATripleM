@@ -132,6 +132,14 @@ void ImageEditor::applyFilter(FilterType filterType) {
             ImageFilter::Rotate270(currentImage);
             break;
 
+        case FilterType::FlipVertically:
+            ImageFilter::FlipVertically(currentImage);
+            break;
+
+        case FilterType::FlipHorizontally:
+            ImageFilter::FlipHorizontally(currentImage);
+            break;
+
         default:
             throw std::invalid_argument("Unsupported Filter");
         
