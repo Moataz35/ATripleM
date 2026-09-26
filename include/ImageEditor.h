@@ -22,23 +22,25 @@ public:
     bool loadImageFromFile(const std::string& imageFilePath);
 
     bool saveToSameImage();
-
-    void saveState();
-
+    
     bool saveNewCopy(const std::string& newFilePath);
-
+    
     void reset();
-
+    
     void undo();
-
+    
     void redo();
-
+    
     void applyFilter(FilterType filterType);
-
+    
     void applyAdjust(AdjustmentType adjustType, int value);
-
+    
     bool isModified();
-
+    
+    void unloadImage();
+    
 private:
+    void saveState();
+    
     bool isImageLoaded();
 };
