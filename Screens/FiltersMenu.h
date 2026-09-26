@@ -78,88 +78,72 @@ public:
 
             case FiltersMenuOption::Grayscale:
                 FilterScreen::simpleScreen(editor, "Grayscale", FilterType::Grayscale);
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::BlackAndWhite:
                 FilterScreen::simpleScreen(editor, "Black And White", FilterType::BlackAndWhite);
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::InvertColors:
                 FilterScreen::simpleScreen(editor, "Invert Colors", FilterType::InvertImage);
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::AddFrame:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Flip:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Rotate:
                 FilterScreen::rotateScreen(editor);
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Darken:
                 FilterScreen::simpleScreen(editor, "Darken", FilterType::Darken);
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Lighten:
                 FilterScreen::simpleScreen(editor, "Lighten", FilterType::Lighten);
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Resize:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Merge:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::DetectEdges:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Crop:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Blur:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Sunlight:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::OldTV:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::PurpleEffect:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Infrared:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Skew:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::OilPainting:
-                _goBackToMainMenu();
                 break;
 
             case FiltersMenuOption::Cancel:
                 break;
+        }
+        if(static_cast<FiltersMenuOption>(choiceNumber) != FiltersMenuOption::Cancel){
+            _goBackToMainMenu();
         }
     }
 };

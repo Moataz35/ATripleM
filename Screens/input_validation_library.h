@@ -115,8 +115,8 @@ namespace InputValidation{
 
     bool confirm(const std::string &msg = "Are You Sure ?"){
         std::cout << msg << " (Y / N) : ";
-        char cont; std::cin >> cont;
-        return (cont == 'y' || cont == 'Y');
+        std::string cont; getline(std::cin , cont);
+        return (cont == "y" || cont == "Y");
     }
 
 };
