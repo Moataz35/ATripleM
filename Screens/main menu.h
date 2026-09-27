@@ -8,6 +8,7 @@
 #include"Screen.h"
 #include"FiltersMenu.h"
 #include"AdjustMenu.h"
+#include "OperationsScreen.h"
 
 class MainMenuScreen : protected Screen{
 
@@ -58,14 +59,24 @@ public:
             }
 
             case enMenuOptions::Undo:{
-
+                Operation::Undo(editor);
+                std::cout << "\n\t\t\tpress any key to continue ...";
+                getch();
+            
                 break;
             }
             case enMenuOptions::Redo:{
+                Operation::Redo(editor);
+                std::cout << "\n\t\t\tpress any key to continue ...";
+                getch();
 
                 break;
             }
             case enMenuOptions::Reset:{
+                editor.undo();
+                
+                std::cout << "\n\t\t\tpress any key to continue ...";
+                getch();
 
                 break;
             }
