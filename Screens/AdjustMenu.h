@@ -46,7 +46,7 @@ public:
                     _goBackToAdjustMenu();
                     break;
                 case enAdjustMenuOptions::Contrast:
-                    
+                    AdjustmentScreen::adjustmentScreen(editor, "Contrast", AdjustmentType::Contrast);
                     _goBackToAdjustMenu();
                     break;
                 case enAdjustMenuOptions::Saturation:

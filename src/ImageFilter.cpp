@@ -55,6 +55,27 @@ void Adjustments::Brightness(Image& image, int brightness) {
     }
 }
 
+void Adjustments::Contrast(Image &image, int contrast){
+    contrast = std::max(-100, std::min(100, contrast));
+    double factor = ((259.0*(contrast +255.0)))/(255.0*(259.0-contrast));
+    for (int w = 0; w < image.width; w++) {
+        for (int h = 0; h < image.height; h++) {
+            for (int c = 0; c < image.channels; c++) {
+
+                if((image.channels == 4 || image.channels == 2) && (c == image.channels - 1)) {
+                    continue; 
+                }
+
+                unsigned char currentPixel = image.getPixel(w, h, c);
+                int newPixelValue = (factor * (static_cast<int> (currentPixel) - 128) + 128);
+                newPixelValue = std::max(0, std::min(255, newPixelValue));
+                image.setPixel(w, h, c, static_cast<unsigned char>(newPixelValue));
+
+            }
+        }
+    }
+}
+
 void ImageFilter::Rotate90(Image& image) {
     Image newImage;
     newImage.width = image.height;
@@ -217,3 +238,50 @@ void ImageFilter::FlipHorizontally(Image& image){
     }
 }
 
+
+
+
+void ImageFilter::Resize(Image& image, int newWidth, int newHeight) {
+    Image newImage(newWidth, newHeight);
+
+    for (int w = 0; w < newWidth; w++) {
+        for (int h = 0; h < newHeight; h++) {
+            int OldWidth = (w * image.width) / newWidth;
+            int OldHeight = (h * image.height) / newHeight;
+
+            newImage.setPixel(w, h, 0, image.getPixel(OldWidth, OldHeight, 0));
+            newImage.setPixel(w, h, 1, image.getPixel(OldWidth, OldHeight, 1));
+            newImage.setPixel(w, h, 2, image.getPixel(OldWidth, OldHeight, 2));
+        }
+    }
+
+    image = newImage;
+}
+
+
+void ImageFilter::Blur(Image& image, int level) {
+    while (level--) {
+        Image newImage = image;
+
+        for (int w = 2; w < image.width - 2; w++) {
+            for (int h = 2; h < image.height - 2; h++) {
+                
+                int sumr = 0, sumg = 0, sumb = 0;
+
+                for (int Dw = -2; Dw <= 2; Dw++) {
+                    for (int Dh = -2; Dh <= 2; Dh++) {
+                        sumr += image.getPixel(w + Dw, h + Dh, 0);
+                        sumg += image.getPixel(w + Dw, h + Dh, 1);
+                        sumb += image.getPixel(w + Dw, h + Dh, 2);
+                    }
+                }
+
+                newImage.setPixel(w, h, 0, sumr / 25);
+                newImage.setPixel(w, h, 1, sumg / 25);
+                newImage.setPixel(w, h, 2, sumb / 25);
+            }
+        }
+
+        image = newImage;
+    }
+}
