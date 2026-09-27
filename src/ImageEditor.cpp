@@ -34,6 +34,7 @@ void ImageEditor::saveState() {
 
 bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
     currentImage.saveImage(newFilePath);
+    modified = false;
     return true;
 }
 
@@ -140,6 +141,10 @@ void ImageEditor::applyFilter(FilterType filterType) {
             ImageFilter::FlipHorizontally(currentImage);
             break;
 
+        case FilterType::AddFrame:
+            ImageFilter::AddFrame(currentImage , 30 , false);
+            break;
+
         default:
             throw std::invalid_argument("Unsupported Filter");
         
@@ -166,4 +171,19 @@ void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
             
     }
     modified = true;
+}
+
+void ImageEditor::unloadImage() {
+    if (!isImageLoaded()) {
+        return;
+    }
+
+    originalImage = Image();
+    currentImage = Image();
+    changes.clear();
+    while (!changesUndone.empty()) {
+        changesUndone.pop();
+    }
+    modified = false;
+    originalFilePath = "";
 }
