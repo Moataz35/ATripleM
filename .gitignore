@@ -7,3 +7,5 @@ build/
 *.exe
 test/
 *.bat
+src/anatest.cpp
+src/anatest.exe
