@@ -12,3 +12,4 @@ add_executable(
     ImageNightmare
     ${SOURCE_FILES}
 )
+include_directories(include)
