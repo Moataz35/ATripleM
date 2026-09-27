@@ -9,3 +9,7 @@ test/
 *.bat
 src/anatest.cpp
 src/anatest.exe
+*.bmp
+*.png
+*.jpeg
+*.jpg
