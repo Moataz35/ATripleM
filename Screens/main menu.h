@@ -8,6 +8,8 @@
 #include"Screen.h"
 #include"FiltersMenu.h"
 #include"AdjustMenu.h"
+#include<filesystem>
+
 
 class MainMenuScreen : protected Screen{
 
@@ -134,6 +136,39 @@ public:
                 pressToContinue();
 
                 break;
+            }
+
+            case enMenuOptions::SaveAs:{
+                std::string newImagePath = InputValidation::readString("\t\t\tEnter new image path : ");
+                if(std::filesystem::exists(newImagePath)){
+                    if(InputValidation::confirm("\t\t\tAre you sure you want to overwrite this file ?")){
+
+                        try
+                        {
+                            editor.saveNewCopy(newImagePath);
+                            editor.loadImageFromFile(newImagePath);
+                            std::cout << "\t\t\tImage Saved Successfuly\n\a";
+                        }
+                        catch(const std::exception& e){}
+                        
+                    }
+                }
+                else{
+
+                    try
+                    {
+                        editor.saveNewCopy(newImagePath);
+                        editor.loadImageFromFile(newImagePath);
+                        std::cout << "\t\t\tImage Saved Successfuly\n\a";
+                    }
+                    catch(const std::exception& e){}
+                   
+                }
+
+                pressToContinue();
+
+                break;
+
             }
 
             case enMenuOptions::Exit:

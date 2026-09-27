@@ -75,7 +75,7 @@ private:
             return JPG_TYPE;
         }
 
-        std::cerr << "Unsupported image format: " << extension << std::endl;
+        std::cerr << "\t\t\tUnsupported image format: " << extension << std::endl;
         return UNSUPPORTED_TYPE;
     }
 

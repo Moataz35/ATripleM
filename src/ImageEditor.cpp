@@ -12,6 +12,7 @@ ImageEditor::ImageEditor(const std::string& imageFilePath) {
 }
 
 bool ImageEditor::loadImageFromFile(const std::string& imageFilePath) {
+    unloadImage();
     originalImage.loadNewImage(imageFilePath);
     originalFilePath = imageFilePath;
     currentImage = originalImage;
