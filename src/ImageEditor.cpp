@@ -25,11 +25,11 @@ bool ImageEditor::saveToSameImage() {
 }
 
 void ImageEditor::saveState() {
-    changes.push_back(currentImage);
-
-    while(!changesUndone.empty()) {
-        changesUndone.pop();
+    if (changes.size() == 5) {
+        changes.pop_front();
     }
+
+    changes.push_back(currentImage);
 }
 
 bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
@@ -55,7 +55,6 @@ void ImageEditor::reset() {
         throw std::runtime_error("No changes to reset.");
     }
 
-    changes.push_back(currentImage);
     currentImage = originalImage;
     changes.clear();
     while(!changesUndone.empty()) { 
@@ -98,7 +97,7 @@ bool ImageEditor::isModified(){
 }
 
 void ImageEditor::applyFilter(FilterType filterType) {
-    changes.push_back(currentImage);
+    saveState();
 
     switch (filterType) {
         case FilterType::Grayscale:
@@ -152,7 +151,7 @@ void ImageEditor::applyFilter(FilterType filterType) {
         modified = true;
 }
 void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
-    changes.push_back(currentImage);
+    saveState();
 
     switch (adjustType)
     {
