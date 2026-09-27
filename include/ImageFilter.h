@@ -1,6 +1,16 @@
 #pragma once
 #include "Image.h"
 
+struct Color {
+	unsigned char red, green, blue;
+};
+
+const Color BLACK = {0, 0, 0};
+const Color WHITE = {255, 255, 255};
+const Color RED = {255, 0, 0};
+const Color GREEN = {0, 255, 0};
+const Color BLUE = {0, 0, 255};
+
 enum FilterType {
     Grayscale = 1, BlackAndWhite, InvertImage, AddFrame, FlipVertically , FlipHorizontally ,
     Rotate90, Rotate180, Rotate270, Darken, Lighten, Resize, Merge, DetectEdges, Crop, Blur, SunLight,
@@ -24,10 +34,9 @@ namespace ImageFilter {
 	void Rotate180(Image& image);
 	void Rotate270(Image& image);
 	void grayscale(Image& image);
-	void AddFrame(Image& image, int Framewidth, bool Fancy);
+	void AddFrame(Image& image, Color frameColor, int Framewidth, bool Fancy);
 	void FlipVertically(Image& image);
 	void FlipHorizontally(Image& image);
-	void AddFrame(Image& image, int Framewidth, bool Fancy);
 	void Resize(Image& image, int newWidth , int newHeight);
 	void Blur(Image& image, int level) ; 
 	
