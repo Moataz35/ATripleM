@@ -140,10 +140,6 @@ void ImageEditor::applyFilter(FilterType filterType) {
             ImageFilter::FlipHorizontally(currentImage);
             break;
 
-        case FilterType::AddFrame:
-            ImageFilter::AddFrame(currentImage , 30 , false);
-            break;
-
         default:
             throw std::invalid_argument("Unsupported Filter");
         
@@ -170,6 +166,11 @@ void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
             
     }
     modified = true;
+}
+
+void ImageEditor::addFrame(Color frameColor, int frameThickness, bool fancy) {
+    saveState();
+    ImageFilter::AddFrame(currentImage, frameColor, frameThickness, fancy);
 }
 
 void ImageEditor::unloadImage() {

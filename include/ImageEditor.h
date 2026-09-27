@@ -34,6 +34,8 @@ public:
     void applyFilter(FilterType filterType);
     
     void applyAdjust(AdjustmentType adjustType, int value);
+
+    void addFrame(Color frameColor, int frameThickness, bool fancy);
     
     bool isModified();
     
