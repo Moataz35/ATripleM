@@ -55,6 +55,27 @@ void Adjustments::Brightness(Image& image, int brightness) {
     }
 }
 
+void Adjustments::Contrast(Image &image, int contrast){
+    contrast = std::max(-100, std::min(100, contrast));
+    double factor = ((259.0*(contrast +255.0)))/(255.0*(259.0-contrast));
+    for (int w = 0; w < image.width; w++) {
+        for (int h = 0; h < image.height; h++) {
+            for (int c = 0; c < image.channels; c++) {
+
+                if((image.channels == 4 || image.channels == 2) && (c == image.channels - 1)) {
+                    continue; 
+                }
+
+                unsigned char currentPixel = image.getPixel(w, h, c);
+                int newPixelValue = (factor * (static_cast<int> (currentPixel) - 128) + 128);
+                newPixelValue = std::max(0, std::min(255, newPixelValue));
+                image.setPixel(w, h, c, static_cast<unsigned char>(newPixelValue));
+
+            }
+        }
+    }
+}
+
 void ImageFilter::Rotate90(Image& image) {
     Image newImage;
     newImage.width = image.height;
@@ -217,31 +238,6 @@ void ImageFilter::FlipHorizontally(Image& image){
     }
 }
 
-void ImageFilter::AddFrame(Image& image, int Framewidth, bool Fancy) {
-    for (int w = 0; w < image.width; w++) {
-        for (int h = 0; h < image.height; h++) {
-            
-            if (w < Framewidth || w >= image.width - Framewidth || 
-                h < Framewidth || h >= image.height - Framewidth) {
-                
-                image.setPixel(w, h, 0, 15);
-                image.setPixel(w, h, 1, 22);
-                image.setPixel(w, h, 2, 118);
-            }
-
-            if (Fancy) {
-                if (w == 0 || w == image.width - 1 || h == 0 || h == image.height - 1 ||
-                    w == Framewidth || w == image.width - Framewidth - 1 ||
-                    h == Framewidth || h == image.height - Framewidth - 1) {
-
-                    image.setPixel(w, h, 0, 255);
-                    image.setPixel(w, h, 1, 255);
-                    image.setPixel(w, h, 2, 255);
-                }
-            }
-        }
-    }
-}
 
 
 

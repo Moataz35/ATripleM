@@ -13,7 +13,7 @@ enum AdjustmentType{
 
 namespace Adjustments {
 	void Brightness(Image& image, int brightness);
-
+	void Contrast(Image& image, int contrast);
 }
 namespace ImageFilter {
 

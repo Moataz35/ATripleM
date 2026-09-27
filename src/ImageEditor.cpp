@@ -160,7 +160,7 @@ void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
             Adjustments::Brightness(currentImage, value);
             break;
         case AdjustmentType::Contrast:
-
+            Adjustments::Contrast(currentImage, value);
             break;
         case AdjustmentType::Saturation:
 
