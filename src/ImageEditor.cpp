@@ -55,7 +55,6 @@ void ImageEditor::reset() {
         throw std::runtime_error("No changes to reset.");
     }
 
-    changes.push_back(currentImage);
     currentImage = originalImage;
     changes.clear();
     while(!changesUndone.empty()) { 

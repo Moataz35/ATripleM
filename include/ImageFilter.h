@@ -27,5 +27,4 @@ namespace ImageFilter {
 	void AddFrame(Image& image, int Framewidth, bool Fancy);
 	void FlipVertically(Image& image);
 	void FlipHorizontally(Image& image);
-	void AddFrame(Image& image, int Framewidth, bool Fancy);
 }
