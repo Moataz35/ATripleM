@@ -114,7 +114,7 @@ namespace FilterScreen{
             "\t\t\tInvalid Number, Enter a number between 1 and 100\n"
         );
 
-        bool conf = InputValidation::confirm("\t\t\tApply flip ?");
+        bool conf = InputValidation::confirm("\t\t\tApply frame ?");
 
         if (conf) {
             editor.addFrame(frameColor, thickness, isFancyFrame);

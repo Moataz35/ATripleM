@@ -12,6 +12,7 @@ ImageEditor::ImageEditor(const std::string& imageFilePath) {
 }
 
 bool ImageEditor::loadImageFromFile(const std::string& imageFilePath) {
+    unloadImage();
     originalImage.loadNewImage(imageFilePath);
     originalFilePath = imageFilePath;
     currentImage = originalImage;
@@ -30,6 +31,8 @@ void ImageEditor::saveState() {
     }
 
     changes.push_back(currentImage);
+    
+    while(!changesUndone.empty()) changesUndone.pop();
 }
 
 bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
