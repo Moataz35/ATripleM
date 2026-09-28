@@ -7,8 +7,13 @@ build/
 *.exe
 test/
 *.bat
+==================
 src/anatest.cpp
 src/anatest.exe
+.vscode/
+anatest.exe
+src/luffy.jpg
+==================
 *.bmp
 *.png
 *.jpeg

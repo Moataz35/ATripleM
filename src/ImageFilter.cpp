@@ -188,31 +188,58 @@ void ImageFilter::grayscale(Image& image){
 }
 
 
+
+
 void ImageFilter::AddFrame(Image& image, Color frameColor, int Framewidth, bool Fancy) {
-    for (int w = 0; w < image.width; w++) {
-        for (int h = 0; h < image.height; h++) {
-            
-            if (w < Framewidth || w >= image.width - Framewidth || 
-                h < Framewidth || h >= image.height - Framewidth) {
-                
-                image.setPixel(w, h, 0, frameColor.red);
-                image.setPixel(w, h, 1, frameColor.green);
-                image.setPixel(w, h, 2, frameColor.blue);
-            }
+    int oldW = image.width;
+    int oldH = image.height;
+    int newW = oldW + (2 * Framewidth);
+    int newH = oldH + (2 * Framewidth);
 
-            if (Fancy) {
-                if (w == 0 || w == image.width - 1 || h == 0 || h == image.height - 1 ||
-                    w == Framewidth || w == image.width - Framewidth - 1 ||
-                    h == Framewidth || h == image.height - Framewidth - 1) {
+    Image newImage(newW, newH);
 
-                    image.setPixel(w, h, 0, 255);
-                    image.setPixel(w, h, 1, 255);
-                    image.setPixel(w, h, 2, 255);
+    for (int x = 0; x < oldW; x++) {
+        for (int y = 0; y < oldH; y++) {
+            newImage.setPixel(x + Framewidth, y + Framewidth, 0, image.getPixel(x, y, 0));
+            newImage.setPixel(x + Framewidth, y + Framewidth, 1, image.getPixel(x, y, 1));
+            newImage.setPixel(x + Framewidth, y + Framewidth, 2, image.getPixel(x, y, 2));
+        }
+    }
+
+    for (int w = 0; w < newW; w++) {
+        for (int h = 0; h < newH; h++) {
+            if (w < Framewidth || w >= newW - Framewidth || 
+                h < Framewidth || h >= newH - Framewidth) {
+
+                newImage.setPixel(w, h, 0, frameColor.red);
+                newImage.setPixel(w, h, 1, frameColor.green);
+                newImage.setPixel(w, h, 2, frameColor.blue);
+
+                if (Fancy) {
+                    int mid = Framewidth / 2;
+
+                    bool outerLine = (w < 2 || w >= newW - 2 || h < 2 || h >= newH - 2);
+
+                    bool innerLine = (w == Framewidth - 2 || w == newW - Framewidth + 2 ||
+                                        h == Framewidth - 2 || h == newH - Framewidth + 2);
+                    
+                    bool middleLine = (w == mid || w == newW - mid - 2 ||
+                                        h == mid || h == newH - mid - 2);
+
+                    if (outerLine || innerLine || middleLine) {
+                        newImage.setPixel(w, h, 0, 255);
+                        newImage.setPixel(w, h, 1, 255);
+                        newImage.setPixel(w, h, 2, 255);
+                    }
                 }
             }
         }
     }
+
+    image = newImage;
 }
+
+
 
 void ImageFilter::FlipVertically(Image& image){
     
