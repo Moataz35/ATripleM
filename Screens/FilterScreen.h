@@ -68,17 +68,57 @@ namespace FilterScreen{
         std::cout << "\t\t\t[2] Fancy Frame\n";
         std::cout <<"\t\t\t=======================================\n";
 
-        int choiceNumber = InputValidation::readIntInRange(1,2 ,
-            "\t\t\tchoose what do you want to do [1 - 2] : ",
-            "\t\t\tinvalid number , please enter a number in range 1 - 2");
+        int choiceNumber = InputValidation::readIntInRange(
+            1, 2,
+            "\t\t\tChoose Frame Style [1 - 2]: ",
+            "\t\t\tInvalid Number, please enter a number in range 1 - 2"
+        );
+        bool isFancyFrame = choiceNumber == 1 ? false : true;
 
-        FilterType type = (choiceNumber == 1 ? FilterType::FlipVertically : FilterType::FlipHorizontally);
+        std::cout << "\t\t\t[1] Black\n";
+        std::cout << "\t\t\t[2] White\n";
+        std::cout << "\t\t\t[3] Red\n";
+        std::cout << "\t\t\t[4] Green\n";
+        std::cout << "\t\t\t[5] Blue\n";
+
+        Color frameColor;
+        int ColorChoice = InputValidation::readIntInRange(
+            1, 5,
+            "\t\t\tChoose a color [1 - 5]: ",
+            "\t\t\tInvalid Choice, Enter a number between 1 and 5"
+        );
+
+        switch (ColorChoice) {
+            case 1:
+                frameColor = BLACK;
+                break;
+            case 2:
+                frameColor = WHITE;
+                break;
+            case 3:
+                frameColor = RED;
+                break;
+            case 4:
+                frameColor = GREEN;
+                break;
+            case 5:
+                frameColor = BLUE;
+                break;
+            default:
+                break;
+        }
+
+        int thickness = InputValidation::readIntInRange(
+            1, 100,
+            "\t\t\tEnter The Frame Thickness [1 - 100]: ",
+            "\t\t\tInvalid Number, Enter a number between 1 and 100\n"
+        );
 
         bool conf = InputValidation::confirm("\t\t\tApply flip ?");
 
-        if(conf){
-            editor.applyFilter(type);
-            std::cout << "\t\t\tFlip applied\a\n";
+        if (conf) {
+            editor.addFrame(frameColor, thickness, isFancyFrame);
+            std::cout << "\t\t\tFrame Added Successfully\a\n";
         }
     }
 
