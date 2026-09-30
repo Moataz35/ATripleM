@@ -161,7 +161,7 @@ void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
             Adjustments::Contrast(currentImage, value);
             break;
         case AdjustmentType::Saturation:
-
+            Adjustments::Saturation(currentImage, value);
             break;
         default:
             throw std::invalid_argument("Unsupported Feature");

@@ -76,6 +76,28 @@ void Adjustments::Contrast(Image &image, int contrast){
     }
 }
 
+void Adjustments::Saturation(Image &image, int saturation) {
+    saturation = std::max(-100, std::min(100, saturation));
+    float factor = 1.0f + saturation / 100.0f;
+    for (int y = 0; y < image.height; y++) {
+        for (int x = 0; x < image.width; x++) {
+            unsigned char& red = image.getPixel(x, y, 0);
+            unsigned char& green = image.getPixel(x, y, 1);
+            unsigned char& blue = image.getPixel(x, y, 2);
+
+            unsigned char grayValue = (red + green + blue) / 3;
+
+            int newRed = static_cast<int>(grayValue + factor * (red - grayValue));
+            int newGreen = static_cast<int>(grayValue + factor * (green - grayValue));
+            int newBlue = static_cast<int>(grayValue + factor * (blue - grayValue));
+
+            red = std::max(0, std::min(255, newRed));
+            green = std::max(0, std::min(255, newGreen));
+            blue = std::max(0, std::min(255, newBlue));
+        }
+    }
+}
+
 void ImageFilter::Rotate90(Image& image) {
     Image newImage;
     newImage.width = image.height;
