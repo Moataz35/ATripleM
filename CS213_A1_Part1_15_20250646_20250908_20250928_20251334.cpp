@@ -4,7 +4,7 @@
 -------------------------------------------------------------------------------------
 |Moustafa Mahmoud   |    20250646    |          15      |   Grayscale, Flip         |
 |Moataz Mohamed     |    20250908    |          15      |   Black&White, Rotate     |
-|Abdallah           |    20250928    |          15      |   Invert, Darken&Lighten  |
+|Abdallah Ibrahim   |    20250928    |          15      |   Invert, Darken&Lighten  |
 |Mohamed Sherif     |    20251334    |          15      |   Add Frame, Blur         |
 -------------------------------------------------------------------------------------
 */
@@ -19,6 +19,9 @@
 
 struct Color {
 	unsigned char red, green, blue;
+    bool operator==(const Color& other) {
+        return (red == other.red && green == other.green && blue == other.blue);
+    }
 };
 
 const Color BLACK = {0, 0, 0};
@@ -276,6 +279,8 @@ namespace ImageFilter {
         int newW = oldW + (2 * Framewidth);
         int newH = oldH + (2 * Framewidth);
 
+        Color fancyLines = (frameColor == WHITE ? BLACK : WHITE);
+
         Image newImage(newW, newH);
 
         for (int x = 0; x < oldW; x++) {
@@ -307,9 +312,9 @@ namespace ImageFilter {
                                             h == mid || h == newH - mid - 2);
 
                         if (outerLine || innerLine || middleLine) {
-                            newImage.setPixel(w, h, 0, 255);
-                            newImage.setPixel(w, h, 1, 255);
-                            newImage.setPixel(w, h, 2, 255);
+                            newImage.setPixel(w, h, 0, fancyLines.red);
+                            newImage.setPixel(w, h, 1, fancyLines.green);
+                            newImage.setPixel(w, h, 2, fancyLines.blue);
                         }
                     }
                 }
@@ -318,24 +323,6 @@ namespace ImageFilter {
 
         image = newImage;
     }
-
-    void Resize(Image& image, int newWidth, int newHeight) {
-        Image newImage(newWidth, newHeight);
-
-        for (int w = 0; w < newWidth; w++) {
-            for (int h = 0; h < newHeight; h++) {
-                int OldWidth = (w * image.width) / newWidth;
-                int OldHeight = (h * image.height) / newHeight;
-
-                newImage.setPixel(w, h, 0, image.getPixel(OldWidth, OldHeight, 0));
-                newImage.setPixel(w, h, 1, image.getPixel(OldWidth, OldHeight, 1));
-                newImage.setPixel(w, h, 2, image.getPixel(OldWidth, OldHeight, 2));
-            }
-        }
-
-        image = newImage;
-    }
-
 
     void Blur(Image& image, int level) {
         while (level--) {
@@ -877,7 +864,7 @@ public:
         std::cout << "\t\t\t[7]  Darken\n";
         std::cout << "\t\t\t[8]  Lighten\n";
         std::cout << "\t\t\t[9] Blur Image\n";
-        std::cout << "\t\t\t[20] Cancel\n";
+        std::cout << "\t\t\t[10] Cancel\n";
         std::cout << "\t\t\t=======================================\n";
 
         int choiceNumber = InputValidation::readIntInRange(
