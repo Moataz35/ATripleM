@@ -3,6 +3,9 @@
 
 struct Color {
 	unsigned char red, green, blue;
+	bool operator==(const Color& other) {
+        return (red == other.red && green == other.green && blue == other.blue);
+    }
 };
 
 const Color BLACK = {0, 0, 0};

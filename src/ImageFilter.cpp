@@ -218,6 +218,8 @@ void ImageFilter::AddFrame(Image& image, Color frameColor, int Framewidth, bool 
     int newW = oldW + (2 * Framewidth);
     int newH = oldH + (2 * Framewidth);
 
+    Color fancyLines = (frameColor == WHITE ? BLACK : WHITE);
+
     Image newImage(newW, newH);
 
     for (int x = 0; x < oldW; x++) {
@@ -249,9 +251,9 @@ void ImageFilter::AddFrame(Image& image, Color frameColor, int Framewidth, bool 
                                         h == mid || h == newH - mid - 2);
 
                     if (outerLine || innerLine || middleLine) {
-                        newImage.setPixel(w, h, 0, 255);
-                        newImage.setPixel(w, h, 1, 255);
-                        newImage.setPixel(w, h, 2, 255);
+                        newImage.setPixel(w, h, 0, fancyLines.red);
+                        newImage.setPixel(w, h, 1, fancyLines.green);
+                        newImage.setPixel(w, h, 2, fancyLines.blue);
                     }
                 }
             }
