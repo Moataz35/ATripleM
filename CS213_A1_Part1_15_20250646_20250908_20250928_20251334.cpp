@@ -365,6 +365,13 @@ private:
 public:
     ImageEditor() = default;
 
+    bool _changes_isempty(){
+        return changes.empty();
+    }
+    bool _changesUndo_isempty(){
+        return changesUndone.empty();
+    }
+
     ImageEditor(const std::string& imageFilePath) {
         loadImageFromFile(imageFilePath);
     }
@@ -967,6 +974,11 @@ public:
                     break;
                 }
                 case enMenuOptions::Undo: {
+                    if(editor._changes_isempty()){
+                        std::cout<<"\t\t\tNo changes to undo.\n";
+                        pressToContinue();
+                        break;
+                    }
                     
                     bool conf = InputValidation::confirm("\t\t\tAre you sure you want to undo changes?");
 
@@ -983,6 +995,12 @@ public:
                     break;
                 }
                 case enMenuOptions::Redo: {
+                    if(editor._changesUndo_isempty()){
+                        std::cout<<"\t\t\tNo changes to redo.\n";
+                        pressToContinue();
+                        break;
+                    }
+                    
                     bool conf = InputValidation::confirm("\t\t\tAre you sure you want to redo changes?");
 
                     if (conf) {
@@ -1000,6 +1018,11 @@ public:
                     break;
                 }
                 case enMenuOptions::Reset:{
+                    if(editor._changes_isempty()){
+                        std::cout<<"\t\t\tNo changes to reset.\n";
+                        pressToContinue();
+                        break;
+                    }
                     
                     bool conf = InputValidation::confirm("\t\t\tAre you sure you want to reset changes?");
 
