@@ -54,13 +54,12 @@ void ImageEditor::reset() {
         throw std::runtime_error("ERROR! No image loaded.");
     }
 
-    if(changes.empty()) {
-        throw std::runtime_error("No changes to reset.");
+    if(!changes.empty()){
+        currentImage = originalImage;
     }
 
-    currentImage = originalImage;
     changes.clear();
-    while(!changesUndone.empty()) { 
+    while (!changesUndone.empty()) { 
         changesUndone.pop();
     }
 }
