@@ -401,11 +401,10 @@ public:
             throw std::runtime_error("ERROR! No image loaded.");
         }
 
-        if (changes.empty()) {
-            throw std::runtime_error("No changes to reset.");
+        if(!changes.empty()){
+            currentImage = originalImage;
         }
 
-        currentImage = originalImage;
         changes.clear();
         while (!changesUndone.empty()) { 
             changesUndone.pop();
@@ -870,14 +869,14 @@ public:
         std::cout << "\t\t\t[6]  Rotate Image\n";
         std::cout << "\t\t\t[7]  Darken\n";
         std::cout << "\t\t\t[8]  Lighten\n";
-        std::cout << "\t\t\t[9] Blur Image\n";
+        std::cout << "\t\t\t[9]  Blur Image\n";
         std::cout << "\t\t\t[10] Cancel\n";
         std::cout << "\t\t\t=======================================\n";
 
         int choiceNumber = InputValidation::readIntInRange(
-            1, 20, 
-            "\t\t\tChoose what do you want to do [1 - 20] : ", 
-            "\t\t\tInvalid number, please enter a number in range 1 - 20"
+            1, 10, 
+            "\t\t\tChoose what do you want to do [1 - 10] : ", 
+            "\t\t\tInvalid number, please enter a number in range 1 - 10"
         );
 
         switch (static_cast<FiltersMenuOption>(choiceNumber)) {
@@ -1018,11 +1017,6 @@ public:
                     break;
                 }
                 case enMenuOptions::Reset:{
-                    if(editor._changes_isempty()){
-                        std::cout<<"\t\t\tNo changes to reset.\n";
-                        pressToContinue();
-                        break;
-                    }
                     
                     bool conf = InputValidation::confirm("\t\t\tAre you sure you want to reset changes?");
 
