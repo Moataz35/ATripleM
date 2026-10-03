@@ -18,6 +18,8 @@ public:
     ImageEditor() = default;
 
     ImageEditor(const std::string& imageFilePath);
+    int getWidth() const;
+    int getHeight() const;
 
     bool loadImageFromFile(const std::string& imageFilePath);
 
@@ -34,6 +36,8 @@ public:
     void applyFilter(FilterType filterType);
     
     void applyAdjust(AdjustmentType adjustType, int value);
+
+    void addFrame(Color frameColor, int frameThickness, bool fancy);
     
     bool isModified();
     

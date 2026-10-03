@@ -8,7 +8,8 @@
 #include"Screen.h"
 #include"FiltersMenu.h"
 #include"AdjustMenu.h"
-#include "OperationsScreen.h"
+#include<filesystem>
+
 
 class MainMenuScreen : protected Screen{
 
@@ -16,7 +17,10 @@ class MainMenuScreen : protected Screen{
 
     enum enMenuOptions{Filters = 1, Adjust , Undo , Redo , Reset , Save , SaveAs , Exit};
 
-
+    void pressToContinue(){
+        std::cout << "\n\t\t\tpress any key to continue ...";
+        getch();
+    }
     
 public:
 
@@ -59,34 +63,112 @@ public:
             }
 
             case enMenuOptions::Undo:{
-                Operation::Undo(editor);
-                std::cout << "\n\t\t\tpress any key to continue ...";
-                getch();
-            
+                
+                bool conf = InputValidation::confirm("\t\t\tAre you sure you want to undo changes?");
+
+                if(conf){
+                    try
+                    {
+                        editor.undo();
+
+                        std::cout << "\t\t\tChanges undone.\n";
+                        
+                    }
+                    catch(const std::exception& e)
+                    {
+                        std::cout << "\t\t\t" <<e.what() << '\n';
+                    }
+                }
+
+                pressToContinue();
+                
                 break;
             }
             case enMenuOptions::Redo:{
-                Operation::Redo(editor);
-                std::cout << "\n\t\t\tpress any key to continue ...";
-                getch();
 
+                bool conf = InputValidation::confirm("\t\t\tAre you sure you want to redo changes?");
+
+                if(conf){
+                    try
+                    {
+                        editor.redo();
+
+                        std::cout << "\t\t\tChanges redone.\n";
+                        
+                    }
+                    catch(const std::exception& e)
+                    {
+                        std::cout << "\t\t\t" <<e.what() << '\n';
+                    }
+                }
+
+                pressToContinue();
+                
                 break;
             }
             case enMenuOptions::Reset:{
-                editor.undo();
                 
-                std::cout << "\n\t\t\tpress any key to continue ...";
-                getch();
+                bool conf = InputValidation::confirm("\t\t\tAre you sure you want to reset changes?");
 
+                if(conf){
+                    try
+                    {
+                        editor.reset();
+
+                        std::cout << "\t\t\tImage reset to original state.\n";
+                        
+                    }
+                    catch(const std::exception& e)
+                    {
+                        std::cout << "\t\t\t" <<e.what() << '\n';
+                    }
+                }
+
+                pressToContinue();
+                
                 break;
             }
 
             case enMenuOptions::Save:{
                 editor.saveToSameImage();
                 std::cout << "\t\t\tImage Saved Successfuly\n\a";
-                std::cout << "\n\t\t\tpress any key to continue ...";
-                getch();
+                
+                pressToContinue();
+
                 break;
+            }
+
+            case enMenuOptions::SaveAs:{
+                std::string newImagePath = InputValidation::readString("\t\t\tEnter new image path : ");
+                if(std::filesystem::exists(newImagePath)){
+                    if(InputValidation::confirm("\t\t\tAre you sure you want to overwrite this file ?")){
+
+                        try
+                        {
+                            editor.saveNewCopy(newImagePath);
+                            editor.loadImageFromFile(newImagePath);
+                            std::cout << "\t\t\tImage Saved Successfuly\n\a";
+                        }
+                        catch(const std::exception& e){}
+                        
+                    }
+                }
+                else{
+
+                    try
+                    {
+                        editor.saveNewCopy(newImagePath);
+                        editor.loadImageFromFile(newImagePath);
+                        std::cout << "\t\t\tImage Saved Successfuly\n\a";
+                    }
+                    catch(const std::exception& e){}
+                
+                }
+
+                pressToContinue();
+
+                break;
+
             }
 
             case enMenuOptions::Exit:

@@ -12,10 +12,19 @@ ImageEditor::ImageEditor(const std::string& imageFilePath) {
 }
 
 bool ImageEditor::loadImageFromFile(const std::string& imageFilePath) {
+    unloadImage();
     originalImage.loadNewImage(imageFilePath);
     originalFilePath = imageFilePath;
     currentImage = originalImage;
     return true;
+}
+
+int ImageEditor::getWidth() const {
+    return currentImage.width;
+}
+
+int ImageEditor::getHeight() const {
+    return currentImage.height;
 }
 
 bool ImageEditor::saveToSameImage() {
@@ -25,11 +34,13 @@ bool ImageEditor::saveToSameImage() {
 }
 
 void ImageEditor::saveState() {
-    changes.push_back(currentImage);
-
-    while(!changesUndone.empty()) {
-        changesUndone.pop();
+    if (changes.size() == 5) {
+        changes.pop_front();
     }
+
+    changes.push_back(currentImage);
+    
+    while(!changesUndone.empty()) changesUndone.pop();
 }
 
 bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
@@ -55,7 +66,6 @@ void ImageEditor::reset() {
         throw std::runtime_error("No changes to reset.");
     }
 
-    changes.push_back(currentImage);
     currentImage = originalImage;
     changes.clear();
     while(!changesUndone.empty()) { 
@@ -98,7 +108,7 @@ bool ImageEditor::isModified(){
 }
 
 void ImageEditor::applyFilter(FilterType filterType) {
-    changes.push_back(currentImage);
+    saveState();
 
     switch (filterType) {
         case FilterType::Grayscale:
@@ -140,9 +150,9 @@ void ImageEditor::applyFilter(FilterType filterType) {
         case FilterType::FlipHorizontally:
             ImageFilter::FlipHorizontally(currentImage);
             break;
-
-        case FilterType::AddFrame:
-            ImageFilter::AddFrame(currentImage , 30 , false);
+        
+        case FilterType::Crop:
+            ImageFilter::Crop(currentImage, 0, 0, currentImage.width / 2, currentImage.height / 2);
             break;
 
         default:
@@ -152,7 +162,7 @@ void ImageEditor::applyFilter(FilterType filterType) {
         modified = true;
 }
 void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
-    changes.push_back(currentImage);
+    saveState();
 
     switch (adjustType)
     {
@@ -171,6 +181,11 @@ void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
             
     }
     modified = true;
+}
+
+void ImageEditor::addFrame(Color frameColor, int frameThickness, bool fancy) {
+    saveState();
+    ImageFilter::AddFrame(currentImage, frameColor, frameThickness, fancy);
 }
 
 void ImageEditor::unloadImage() {
