@@ -43,5 +43,5 @@ namespace ImageFilter {
 	void FlipHorizontally(Image& image);
 	void Resize(Image& image, int newWidth , int newHeight);
 	void Blur(Image& image, int level) ; 
-	
+	void EdgeDetection(Image& image, unsigned char threshold = 100);
 }

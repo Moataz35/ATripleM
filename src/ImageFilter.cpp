@@ -336,3 +336,56 @@ void ImageFilter::Blur(Image& image, int level) {
         image = newImage;
     }
 }
+
+void ImageFilter::EdgeDetection(Image& image, unsigned char threshold) {
+    grayscale(image);
+    Image newImage = image;
+
+    const int radius = 1;
+    const int gxKernel[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+    const int gyKernel[3][3] = {
+        {-1, -2, -1},
+        {0, 0, 0},
+        {1, 2, 1}
+    };
+
+    for (int y = 0; y < image.height; y++) {
+        for (int x = 0; x < image.width; x++) {
+
+            int gx = 0, gy = 0;
+            int kernelIndexY = 0;
+            for (int h = y - radius; h <= y + radius; h++) {
+                int kernelIndexX = 0;
+                for (int w = x - radius; w <= x + radius; w++) {
+
+                    if (h < 0 || h >= image.height || w < 0 || w >= image.width) {
+                        continue; // Out of bounds
+                    }
+
+                    gx += image.getPixel(w, h, 0) * gxKernel[kernelIndexY][kernelIndexX];
+                    gy += image.getPixel(w, h, 0) * gyKernel[kernelIndexY][kernelIndexX];
+
+                    kernelIndexX++;
+                }
+                kernelIndexY++;
+            }
+
+            int gradient = static_cast<int>(std::sqrt(gx * gx + gy * gy));
+
+            unsigned char newPixelValue = 0;
+            if (gradient < threshold) {
+                newPixelValue = 255;
+            }
+
+            for (int c = 0; c < image.channels; c++) {
+                newImage.setPixel(x, y, c, newPixelValue);
+            }
+        }
+    }
+
+    image = newImage;
+}
