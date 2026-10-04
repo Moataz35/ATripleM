@@ -48,4 +48,5 @@ namespace ImageFilter {
 	void MergeByScaling(Image& baseImage , Image& overlayImage , int alpha);
 	void MergeByCommonArea(Image& baseImage , Image& overlayImage , int alpha , int offsetX , int offsetY);
 	void Infrared(Image& image);
+	void sunLightEffect(Image& image);
 }
