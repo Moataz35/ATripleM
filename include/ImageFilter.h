@@ -47,4 +47,5 @@ namespace ImageFilter {
 	void EdgeDetection(Image& image, unsigned char threshold = 100);
 	void MergeByScaling(Image& baseImage , Image& overlayImage , int alpha);
 	void MergeByCommonArea(Image& baseImage , Image& overlayImage , int alpha , int offsetX , int offsetY);
+	void PurpleEffect(Image& image);
 }
