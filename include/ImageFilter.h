@@ -43,6 +43,7 @@ namespace ImageFilter {
 	void FlipHorizontally(Image& image);
 	void Resize(Image& image, int newWidth , int newHeight);
 	void Blur(Image& image, int level) ; 
+	void Crop(Image& image, int x, int y, int newWidth, int newHight);
 	void EdgeDetection(Image& image, unsigned char threshold = 100);
 	void MergeByScaling(Image& baseImage , Image& overlayImage , int alpha);
 	void MergeByCommonArea(Image& baseImage , Image& overlayImage , int alpha , int offsetX , int offsetY);
