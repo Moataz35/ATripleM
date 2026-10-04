@@ -125,6 +125,7 @@ public:
                 break;
 
             case FiltersMenuOption::Sunlight:
+                FilterScreen::simpleScreen(editor , "Sun light effect" , FilterType::SunLight);
                 break;
 
             case FiltersMenuOption::OldTV:

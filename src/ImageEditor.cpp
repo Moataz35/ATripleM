@@ -141,6 +141,10 @@ void ImageEditor::applyFilter(FilterType filterType) {
         case FilterType::FlipHorizontally:
             ImageFilter::FlipHorizontally(currentImage);
             break;
+            
+        case FilterType::SunLight:
+            ImageFilter::sunLightEffect(currentImage);
+            break;
 
         default:
             throw std::invalid_argument("Unsupported Filter");
