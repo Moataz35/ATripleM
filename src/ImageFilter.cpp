@@ -336,6 +336,35 @@ void ImageFilter::Blur(Image& image, int level) {
 
         image = newImage;
     }
+
+}
+void ImageFilter::Crop(Image& image, int x, int y, int newWidth, int newHight){
+    x =std::max(0, x);
+    y=std::max(0,y);
+
+    if(x + newWidth >image.width){
+        newWidth = image.width - x;
+    }
+    if(y + newHight > image.height){
+        newHight = image.height - y;
+    }
+
+    if(newWidth <= 0 || newHight <= 0) return;
+
+
+    Image croppedImage(newWidth, newHight);
+    croppedImage.channels = image.channels;
+    croppedImage.imageData = new unsigned char[newWidth * newHight * image.channels];
+
+    for(int w=0; w < croppedImage.width; w++){
+        for(int h=0; h< croppedImage.height; h++){
+            for(int c =0; c< croppedImage.channels; c++){
+                unsigned char Pixel = image.getPixel(x + w, y + h, c);
+                croppedImage.setPixel(w, h, c, Pixel);
+            }
+        }
+    }
+    image = croppedImage;
 }
 
 void ImageFilter::EdgeDetection(Image& image, unsigned char threshold) {

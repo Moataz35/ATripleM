@@ -119,6 +119,7 @@ public:
                 break;
 
             case FiltersMenuOption::Crop:
+                FilterScreen::CropScreen(editor);
                 break;
 
             case FiltersMenuOption::Blur:
