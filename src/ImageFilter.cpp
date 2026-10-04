@@ -2,6 +2,7 @@
 #include"ImageFilter.h"
 #include"ImageEditor.h"
 #include <algorithm>
+#include <cmath>
 
 
 void ImageFilter::BlackandWhite(Image& image) {
@@ -388,4 +389,54 @@ void ImageFilter::EdgeDetection(Image& image, unsigned char threshold) {
     }
 
     image = newImage;
+}
+
+void ImageFilter::MergeByScaling(Image& baseImage , Image& overlayImage , int alpha){
+    float a = alpha / 100.0;
+    
+    int maxH = std::max(baseImage.height , overlayImage.height);
+    int maxW = std::max(baseImage.width , overlayImage.width);
+
+    Image newImage = Image(maxW , maxH);
+
+    Resize(baseImage , maxW , maxH); 
+    Resize(overlayImage , maxW , maxH); 
+
+    for(int w = 0 ; w < maxW ; w++){
+        for(int h = 0 ; h < maxH ; h++){
+            for(int c = 0 ; c < 3 ; c++){
+                int baseValue = baseImage.getPixel(w , h , c);
+                int overlayValue = overlayImage.getPixel(w , h , c);
+
+                int newValue = a * overlayValue + (1 - a) * baseValue;
+
+                newImage.setPixel(w , h , c , newValue);
+            }
+        }
+    }
+
+    baseImage = newImage;
+
+}
+
+void ImageFilter::MergeByCommonArea(Image& baseImage , Image& overlayImage , int alpha , int offsetX , int offsetY){
+    float a = alpha / 100.0;
+
+    for(int w = 0 ; w < overlayImage.width ; w++){
+        for(int h = 0 ; h < overlayImage.height ; h++){
+            int baseX = w + offsetX;
+            int baseY = h + offsetY;
+
+            if((baseX < 0 || baseX >= baseImage.width) || (baseY < 0 || baseY >= baseImage.height)) continue;
+
+            for(int c = 0 ; c < 3 ; c++){
+                int baseValue = baseImage.getPixel(baseX , baseY , c);
+                int overlayValue = overlayImage.getPixel(w , h , c);
+
+                int newValue = a * overlayValue + (1 - a) * baseValue;
+
+                baseImage.setPixel(baseX , baseY , c , newValue);
+            }
+        }
+    }
 }

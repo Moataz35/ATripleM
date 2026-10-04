@@ -189,3 +189,13 @@ void ImageEditor::unloadImage() {
     modified = false;
     originalFilePath = "";
 }
+
+void ImageEditor::applyMergeByScaling(Image& overlayImage , int alpha){
+    saveState();
+    ImageFilter::MergeByScaling(currentImage , overlayImage , alpha);
+}
+
+void ImageEditor::applyMergeByCommonArea(Image& overlayImage , int alpha , int offsetX , int offsetY){
+    saveState();
+    ImageFilter::MergeByCommonArea(currentImage , overlayImage , alpha , offsetX , offsetY);
+}

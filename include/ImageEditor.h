@@ -36,6 +36,10 @@ public:
     void applyAdjust(AdjustmentType adjustType, int value);
 
     void addFrame(Color frameColor, int frameThickness, bool fancy);
+
+    void applyMergeByScaling(Image& overlayImage , int alpha);
+
+    void applyMergeByCommonArea(Image& overlayImage , int alpha , int offsetX , int offsetY);
     
     bool isModified();
     

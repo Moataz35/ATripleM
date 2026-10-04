@@ -121,5 +121,63 @@ namespace FilterScreen{
             std::cout << "\t\t\tFrame Added Successfully\a\n";
         }
     }
+    
+    void MergeScreen(ImageEditor &editor){
+        Screen::clearScreen();
+        Screen::headerScreen("Merge");
 
+        Image overlayImage;
+
+        while(true){
+            std::string imagePath = InputValidation::readString("\t\t\tEnter overlay image path : ");
+            
+            try
+            {
+                overlayImage.loadNewImage(imagePath);
+
+                Screen::clearScreen();
+                Screen::headerScreen("Merge");
+
+                std::cout << "\t\t\t[1] Merge with scaling\n";
+                std::cout << "\t\t\t[2] Merge Common area\n";
+                std::cout <<"\t\t\t=======================================\n";
+
+                int choiceNumber = InputValidation::readIntInRange(1,2 ,
+                    "\t\t\tchoose what do you want to do [1 - 2] : ",
+                    "\t\t\tinvalid number , please enter a number in range 1 - 2");
+
+                std::cout << "\n\t\t\tHow much of the overlay image would you like to blend in? (0-100)\n";
+                std::cout << "\t\t\t0 = Base image only\n";
+                std::cout << "\t\t\t100 = Overlay image only\n";
+                std::cout << "\t\t\t50 = Equal blend\n";
+                
+                int alphaValue = InputValidation::readIntInRange(0 , 100 ,
+                    "\t\t\tEnter a value : " , 
+                    "\t\t\tinvalid number , please enter a number in range 0 - 100");
+                    
+                bool conf = InputValidation::confirm("\t\t\tApply merge ?");
+
+                if(conf){
+                    if(choiceNumber == 1){
+                        editor.applyMergeByScaling(overlayImage , alphaValue);
+                    }
+                    else{
+                        editor.applyMergeByCommonArea(overlayImage , alphaValue , 0 , 0);
+                    }
+                    std::cout << "\t\t\tMerge applied\a\n";
+                }
+                break;
+                
+            }
+            catch(const std::invalid_argument & e){
+                bool conf = InputValidation::confirm("\t\t\tDo you want to try again ?");
+
+                if(!conf){
+                    break;
+                }
+            }
+        }
+
+        
+    }
 }
