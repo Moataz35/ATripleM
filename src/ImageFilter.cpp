@@ -469,3 +469,18 @@ void ImageFilter::MergeByCommonArea(Image& baseImage , Image& overlayImage , int
         }
     }
 }
+
+
+
+void ImageFilter::Infrared(Image& image) {
+    for (int w = 0; w < image.width; w++) {
+        for (int h = 0; h < image.height; h++) {
+            image.setPixel(w, h, 0, 255);
+            unsigned char green = image.getPixel(w, h, 1);
+            unsigned char blue  = image.getPixel(w, h, 2);
+
+            image.setPixel(w, h, 1, 255 - green);
+            image.setPixel(w, h, 2, 255 - blue);
+        }
+    }
+}
