@@ -20,10 +20,10 @@ class AdjustMenuScreen : Screen{
 public:
     AdjustMenuScreen(ImageEditor &ed) : editor(ed){}
 
-    void show(){
+    void show() {
         bool running = true;
 
-        while(running){
+        while (running) {
             clearScreen();
             headerScreen("Adjust Menu");
 
@@ -50,7 +50,7 @@ public:
                     _goBackToAdjustMenu();
                     break;
                 case enAdjustMenuOptions::Saturation:
-                    
+                    AdjustmentScreen::adjustmentScreen(editor, "Saturation", AdjustmentType::Saturation);
                     _goBackToAdjustMenu();
                     break;
 
@@ -59,8 +59,7 @@ public:
                     break;
             }
         }
-        }
+    }
         
         
 };
-

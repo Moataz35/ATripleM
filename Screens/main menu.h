@@ -162,7 +162,7 @@ public:
                         std::cout << "\t\t\tImage Saved Successfuly\n\a";
                     }
                     catch(const std::exception& e){}
-                
+                   
                 }
 
                 pressToContinue();

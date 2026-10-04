@@ -2,6 +2,7 @@
 #include"ImageFilter.h"
 #include"ImageEditor.h"
 #include <algorithm>
+#include <cmath>
 
 
 void ImageFilter::BlackandWhite(Image& image) {
@@ -72,6 +73,28 @@ void Adjustments::Contrast(Image &image, int contrast){
                 image.setPixel(w, h, c, static_cast<unsigned char>(newPixelValue));
 
             }
+        }
+    }
+}
+
+void Adjustments::Saturation(Image &image, int saturation) {
+    saturation = std::max(-100, std::min(100, saturation));
+    float factor = 1.0f + saturation / 100.0f;
+    for (int y = 0; y < image.height; y++) {
+        for (int x = 0; x < image.width; x++) {
+            unsigned char& red = image.getPixel(x, y, 0);
+            unsigned char& green = image.getPixel(x, y, 1);
+            unsigned char& blue = image.getPixel(x, y, 2);
+
+            unsigned char grayValue = (red + green + blue) / 3;
+
+            int newRed = static_cast<int>(grayValue + factor * (red - grayValue));
+            int newGreen = static_cast<int>(grayValue + factor * (green - grayValue));
+            int newBlue = static_cast<int>(grayValue + factor * (blue - grayValue));
+
+            red = std::max(0, std::min(255, newRed));
+            green = std::max(0, std::min(255, newGreen));
+            blue = std::max(0, std::min(255, newBlue));
         }
     }
 }
@@ -196,6 +219,8 @@ void ImageFilter::AddFrame(Image& image, Color frameColor, int Framewidth, bool 
     int newW = oldW + (2 * Framewidth);
     int newH = oldH + (2 * Framewidth);
 
+    Color fancyLines = (frameColor == WHITE ? BLACK : WHITE);
+
     Image newImage(newW, newH);
 
     for (int x = 0; x < oldW; x++) {
@@ -227,9 +252,9 @@ void ImageFilter::AddFrame(Image& image, Color frameColor, int Framewidth, bool 
                                         h == mid || h == newH - mid - 2);
 
                     if (outerLine || innerLine || middleLine) {
-                        newImage.setPixel(w, h, 0, 255);
-                        newImage.setPixel(w, h, 1, 255);
-                        newImage.setPixel(w, h, 2, 255);
+                        newImage.setPixel(w, h, 0, fancyLines.red);
+                        newImage.setPixel(w, h, 1, fancyLines.green);
+                        newImage.setPixel(w, h, 2, fancyLines.blue);
                     }
                 }
             }
@@ -340,4 +365,107 @@ void ImageFilter::Crop(Image& image, int x, int y, int newWidth, int newHight){
         }
     }
     image = croppedImage;
+}
+
+void ImageFilter::EdgeDetection(Image& image, unsigned char threshold) {
+    grayscale(image);
+    Image newImage = image;
+
+    const int radius = 1;
+    const int gxKernel[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+    const int gyKernel[3][3] = {
+        {-1, -2, -1},
+        {0, 0, 0},
+        {1, 2, 1}
+    };
+
+    for (int y = 0; y < image.height; y++) {
+        for (int x = 0; x < image.width; x++) {
+
+            int gx = 0, gy = 0;
+            int kernelIndexY = 0;
+            for (int h = y - radius; h <= y + radius; h++) {
+                int kernelIndexX = 0;
+                for (int w = x - radius; w <= x + radius; w++) {
+
+                    if (h < 0 || h >= image.height || w < 0 || w >= image.width) {
+                        continue; // Out of bounds
+                    }
+
+                    gx += image.getPixel(w, h, 0) * gxKernel[kernelIndexY][kernelIndexX];
+                    gy += image.getPixel(w, h, 0) * gyKernel[kernelIndexY][kernelIndexX];
+
+                    kernelIndexX++;
+                }
+                kernelIndexY++;
+            }
+
+            int gradient = static_cast<int>(std::sqrt(gx * gx + gy * gy));
+
+            unsigned char newPixelValue = 0;
+            if (gradient < threshold) {
+                newPixelValue = 255;
+            }
+
+            for (int c = 0; c < image.channels; c++) {
+                newImage.setPixel(x, y, c, newPixelValue);
+            }
+        }
+    }
+
+    image = newImage;
+}
+
+void ImageFilter::MergeByScaling(Image& baseImage , Image& overlayImage , int alpha){
+    float a = alpha / 100.0;
+    
+    int maxH = std::max(baseImage.height , overlayImage.height);
+    int maxW = std::max(baseImage.width , overlayImage.width);
+
+    Image newImage = Image(maxW , maxH);
+
+    Resize(baseImage , maxW , maxH); 
+    Resize(overlayImage , maxW , maxH); 
+
+    for(int w = 0 ; w < maxW ; w++){
+        for(int h = 0 ; h < maxH ; h++){
+            for(int c = 0 ; c < 3 ; c++){
+                int baseValue = baseImage.getPixel(w , h , c);
+                int overlayValue = overlayImage.getPixel(w , h , c);
+
+                int newValue = a * overlayValue + (1 - a) * baseValue;
+
+                newImage.setPixel(w , h , c , newValue);
+            }
+        }
+    }
+
+    baseImage = newImage;
+
+}
+
+void ImageFilter::MergeByCommonArea(Image& baseImage , Image& overlayImage , int alpha , int offsetX , int offsetY){
+    float a = alpha / 100.0;
+
+    for(int w = 0 ; w < overlayImage.width ; w++){
+        for(int h = 0 ; h < overlayImage.height ; h++){
+            int baseX = w + offsetX;
+            int baseY = h + offsetY;
+
+            if((baseX < 0 || baseX >= baseImage.width) || (baseY < 0 || baseY >= baseImage.height)) continue;
+
+            for(int c = 0 ; c < 3 ; c++){
+                int baseValue = baseImage.getPixel(baseX , baseY , c);
+                int overlayValue = overlayImage.getPixel(w , h , c);
+
+                int newValue = a * overlayValue + (1 - a) * baseValue;
+
+                baseImage.setPixel(baseX , baseY , c , newValue);
+            }
+        }
+    }
 }

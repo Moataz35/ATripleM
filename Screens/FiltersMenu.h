@@ -112,6 +112,7 @@ public:
                 break;
 
             case FiltersMenuOption::Merge:
+                FilterScreen::MergeScreen(editor);
                 break;
 
             case FiltersMenuOption::DetectEdges:

@@ -3,6 +3,9 @@
 
 struct Color {
 	unsigned char red, green, blue;
+	bool operator==(const Color& other) {
+        return (red == other.red && green == other.green && blue == other.blue);
+    }
 };
 
 const Color BLACK = {0, 0, 0};
@@ -13,7 +16,7 @@ const Color BLUE = {0, 0, 255};
 
 enum FilterType {
     Grayscale = 1, BlackAndWhite, InvertImage, AddFrame, FlipVertically , FlipHorizontally ,
-    Rotate90, Rotate180, Rotate270, Darken, Lighten, Resize, Merge, DetectEdges, Crop, Blur, SunLight,
+    Rotate90, Rotate180, Rotate270, Darken, Lighten, Resize, MergeByScaling , MergeByCommonArea, DetectEdges, Crop, Blur, SunLight,
     OldTV, PurpleEffect, Infrared, Skew, Oil
 };
 
@@ -24,6 +27,7 @@ enum AdjustmentType{
 namespace Adjustments {
 	void Brightness(Image& image, int brightness);
 	void Contrast(Image& image, int contrast);
+	void Saturation(Image& image, int saturation);
 }
 namespace ImageFilter {
 
@@ -39,5 +43,7 @@ namespace ImageFilter {
 	void FlipHorizontally(Image& image);
 	void Resize(Image& image, int newWidth , int newHeight);
 	void Blur(Image& image, int level) ; 
-	void Crop(Image& image, int x, int y, int newWidth, int newHight);
+	void EdgeDetection(Image& image, unsigned char threshold = 100);
+	void MergeByScaling(Image& baseImage , Image& overlayImage , int alpha);
+	void MergeByCommonArea(Image& baseImage , Image& overlayImage , int alpha , int offsetX , int offsetY);
 }

@@ -62,13 +62,12 @@ void ImageEditor::reset() {
         throw std::runtime_error("ERROR! No image loaded.");
     }
 
-    if(changes.empty()) {
-        throw std::runtime_error("No changes to reset.");
+    if(!changes.empty()){
+        currentImage = originalImage;
     }
 
-    currentImage = originalImage;
     changes.clear();
-    while(!changesUndone.empty()) { 
+    while (!changesUndone.empty()) { 
         changesUndone.pop();
     }
 }
@@ -150,10 +149,6 @@ void ImageEditor::applyFilter(FilterType filterType) {
         case FilterType::FlipHorizontally:
             ImageFilter::FlipHorizontally(currentImage);
             break;
-        
-        case FilterType::Crop:
-            ImageFilter::Crop(currentImage, 0, 0, currentImage.width / 2, currentImage.height / 2);
-            break;
 
         default:
             throw std::invalid_argument("Unsupported Filter");
@@ -173,7 +168,7 @@ void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
             Adjustments::Contrast(currentImage, value);
             break;
         case AdjustmentType::Saturation:
-
+            Adjustments::Saturation(currentImage, value);
             break;
         default:
             throw std::invalid_argument("Unsupported Feature");
@@ -201,4 +196,14 @@ void ImageEditor::unloadImage() {
     }
     modified = false;
     originalFilePath = "";
+}
+
+void ImageEditor::applyMergeByScaling(Image& overlayImage , int alpha){
+    saveState();
+    ImageFilter::MergeByScaling(currentImage , overlayImage , alpha);
+}
+
+void ImageEditor::applyMergeByCommonArea(Image& overlayImage , int alpha , int offsetX , int offsetY){
+    saveState();
+    ImageFilter::MergeByCommonArea(currentImage , overlayImage , alpha , offsetX , offsetY);
 }
