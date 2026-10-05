@@ -50,4 +50,5 @@ namespace ImageFilter {
 	void Infrared(Image& image);
 	void sunLightEffect(Image& image);
 	void PurpleEffect(Image& image);
+	void OldTV(Image& image);
 }

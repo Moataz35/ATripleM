@@ -154,6 +154,10 @@ void ImageEditor::applyFilter(FilterType filterType) {
             ImageFilter::sunLightEffect(currentImage);
             break;
 
+        case FilterType::OldTV:
+            ImageFilter::OldTV(currentImage);
+            break;
+
         default:
             throw std::invalid_argument("Unsupported Filter");
         
@@ -210,4 +214,9 @@ void ImageEditor::applyMergeByScaling(Image& overlayImage , int alpha){
 void ImageEditor::applyMergeByCommonArea(Image& overlayImage , int alpha , int offsetX , int offsetY){
     saveState();
     ImageFilter::MergeByCommonArea(currentImage , overlayImage , alpha , offsetX , offsetY);
+}
+
+void ImageEditor::applyEdgeDetection(unsigned char threshold) {
+    saveState();
+    ImageFilter::EdgeDetection(currentImage, threshold);
 }

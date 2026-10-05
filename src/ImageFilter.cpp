@@ -498,6 +498,8 @@ void ImageFilter::Infrared(Image& image) {
             image.setPixel(w, h, 2, 255 - blue);
         }
     }
+}
+
 void ImageFilter::PurpleEffect(Image& image){
     if(image.channels <3) return;
 
@@ -528,4 +530,20 @@ void ImageFilter::PurpleEffect(Image& image){
 
 
 
+}
+
+void ImageFilter::OldTV(Image& image) {
+
+    for (int y = 0; y < image.height; y++) {
+        for (int x = 0; x < image.width; x++) {
+            // Color each 6th row with gray
+            if (y % 6 == 5) {
+                unsigned char& red = image.getPixel(x, y, 0);
+                unsigned char& green = image.getPixel(x, y, 1);
+                unsigned char& blue = image.getPixel(x, y, 2);
+                unsigned char grayValue = (red + green + blue) / 3;
+                red = green = blue = grayValue;
+            }
+        }
+    }
 }

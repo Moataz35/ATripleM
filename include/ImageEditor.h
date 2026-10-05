@@ -42,6 +42,8 @@ public:
     void applyMergeByScaling(Image& overlayImage , int alpha);
 
     void applyMergeByCommonArea(Image& overlayImage , int alpha , int offsetX , int offsetY);
+
+    void applyEdgeDetection(unsigned char threshold = 100);
     
     bool isModified();
     
