@@ -498,4 +498,34 @@ void ImageFilter::Infrared(Image& image) {
             image.setPixel(w, h, 2, 255 - blue);
         }
     }
+void ImageFilter::PurpleEffect(Image& image){
+    if(image.channels <3) return;
+
+    if(image.width <=0 || image.height <=0) return;
+
+    for(int w=0; w<image.width; w++){
+        for(int h=0; h< image.height; h++){
+
+
+            unsigned char& r = image.getPixel(w, h, 0);
+            unsigned char& g = image.getPixel(w, h, 1);
+            unsigned char& b = image.getPixel(w, h, 2);
+
+            if(r ==0 && g == 0 && b ==0) continue;
+
+            int rFactor = static_cast <int>(r) * 15/100 , bFactor = static_cast<int>(b) * 25/100, gFactor = static_cast<int>(g) * 15/100;
+            int newR = static_cast<int>(r) + rFactor;
+            int newB = static_cast<int>(b) + bFactor;
+            int newG = static_cast<int>(g) - gFactor;
+
+            r = static_cast<unsigned char>(std::clamp(newR, 0, 255));
+            b = static_cast<unsigned char>(std::clamp(newB, 0, 255));
+            g = static_cast<unsigned char>(std::clamp(newG, 0, 255));
+
+            
+        }
+    }
+
+
+
 }
