@@ -470,6 +470,34 @@ void ImageFilter::MergeByCommonArea(Image& baseImage , Image& overlayImage , int
     }
 }
 
+void ImageFilter::sunLightEffect(Image& image){
+    
+    for(int w = 0 ; w < image.width ; w++){
+        for(int h = 0 ; h < image.height ; h++){
+            int newR = std::min(image.getPixel(w , h , 0) * 1.2 , 255.0);
+            int newG = std::min(image.getPixel(w , h , 1) * 1.1 , 255.0);
+            int newB = std::min(image.getPixel(w , h , 2) * 0.8 , 255.0);
+
+            image.setPixel(w , h , 0 , newR);
+            image.setPixel(w , h , 1 , newG);
+            image.setPixel(w , h , 2 , newB);
+        }
+    }
+}
+
+
+
+void ImageFilter::Infrared(Image& image) {
+    for (int w = 0; w < image.width; w++) {
+        for (int h = 0; h < image.height; h++) {
+            image.setPixel(w, h, 0, 255);
+            unsigned char green = image.getPixel(w, h, 1);
+            unsigned char blue  = image.getPixel(w, h, 2);
+
+            image.setPixel(w, h, 1, 255 - green);
+            image.setPixel(w, h, 2, 255 - blue);
+        }
+    }
 void ImageFilter::PurpleEffect(Image& image){
     if(image.channels <3) return;
 
