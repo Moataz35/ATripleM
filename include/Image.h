@@ -15,7 +15,11 @@
 #define _IMAGE_CLASS_H
 
 
+// These generic macros collide with Qt identifiers (e.g. QImage::pixel), so they are
+// only defined for non-Qt builds (Qt targets define QT_CORE_LIB).
+#ifndef QT_CORE_LIB
 #define ll long long
+#endif
 #define PNG_TYPE 1
 #define BMP_TYPE 2
 #define TGA_TYPE 3
@@ -23,13 +27,17 @@
 #define UNSUPPORTED_TYPE -1
 
 // stb_image header definitions
-#include "..\lib\include\stb_image_write.h"
-#include "..\lib\include\stb_image.h"
+#include "../lib/include/stb_image_write.h"
+#include "../lib/include/stb_image.h"
+#ifndef QT_CORE_LIB
 #define pixel unsigned int
+#endif
 
 #include <iostream>
 #include <exception>
 #include<cstring>
+#include <cctype>
+#include <string>
 
 
 /**
@@ -61,7 +69,12 @@ private:
      * @return The type of image format.
      */
 
-    short getExtensionType(const char* extension) {
+    short getExtensionType(const char* rawExtension) {
+        std::string lowered(rawExtension);
+        for (char& ch : lowered) {
+            ch = static_cast<char>(tolower(static_cast<unsigned char>(ch)));
+        }
+        const char* extension = lowered.c_str();
         if (strcmp(extension, ".png") == 0) {
             return PNG_TYPE;
         }

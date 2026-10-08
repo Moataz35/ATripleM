@@ -3,3 +3,8 @@ Image_Editor_GUI/.qtcreator/
 Image_Editor_GUI/build/
 *.jpg
 *.png
+
+build/
+build_check/
+*.exe
+.qtcreator/

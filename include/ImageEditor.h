@@ -21,6 +21,13 @@ public:
     int getWidth() const;
     int getHeight() const;
 
+    // Read-only access to the working image (used by the GUI for display/export).
+    const Image& getImage() const;
+    // Replaces the working image (used by the GUI history manager) and marks it modified.
+    void setImage(const Image& image);
+    // Path the image was originally loaded from.
+    const std::string& getFilePath() const;
+
     bool loadImageFromFile(const std::string& imageFilePath);
 
     bool saveToSameImage();

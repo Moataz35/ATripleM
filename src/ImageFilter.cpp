@@ -3,6 +3,9 @@
 #include"ImageEditor.h"
 #include <algorithm>
 #include <cmath>
+#include <vector>
+#include <cstring>
+#include <cstdlib>
 
 
 void ImageFilter::BlackandWhite(Image& image) {
@@ -104,7 +107,7 @@ void ImageFilter::Rotate90(Image& image) {
     newImage.width = image.height;
     newImage.height = image.width;
     newImage.channels = image.channels;
-    newImage.imageData = new unsigned char[newImage.width * newImage.height * image.channels];
+    newImage.imageData = static_cast<unsigned char*>(malloc(newImage.width * newImage.height * image.channels));
 
     int originaly = 0;
     for (int x = newImage.width - 1; x >= 0; x--) {
@@ -152,7 +155,7 @@ void ImageFilter::Rotate270(Image& image) {
     newImage.width = image.height;
     newImage.height = image.width;
     newImage.channels = image.channels;
-    newImage.imageData = new unsigned char[newImage.width * newImage.height * newImage.channels];
+    newImage.imageData = static_cast<unsigned char*>(malloc(newImage.width * newImage.height * newImage.channels));
 
     int originaly = 0;
     for (int x = 0; x < newImage.width; x++) {
@@ -312,29 +315,46 @@ void ImageFilter::Resize(Image& image, int newWidth, int newHeight) {
 
 
 void ImageFilter::Blur(Image& image, int level) {
+    if (level <= 0 || image.imageData == nullptr || image.channels < 3 ||
+        image.width < 5 || image.height < 5) {
+        return;
+    }
+
+    const int W = image.width;
+    const int H = image.height;
+    const int C = image.channels;
+    std::vector<int> horizontal(static_cast<size_t>(W) * H * 3);
+    std::vector<unsigned char> output(static_cast<size_t>(W) * H * C);
+
     while (level--) {
-        Image newImage = image;
+        const unsigned char* src = image.imageData;
+        std::memcpy(output.data(), src, output.size());
 
-        for (int w = 2; w < image.width - 2; w++) {
-            for (int h = 2; h < image.height - 2; h++) {
-                
-                int sumr = 0, sumg = 0, sumb = 0;
-
-                for (int Dw = -2; Dw <= 2; Dw++) {
-                    for (int Dh = -2; Dh <= 2; Dh++) {
-                        sumr += image.getPixel(w + Dw, h + Dh, 0);
-                        sumg += image.getPixel(w + Dw, h + Dh, 1);
-                        sumb += image.getPixel(w + Dw, h + Dh, 2);
+        for (int y = 0; y < H; y++) {
+            for (int x = 2; x < W - 2; x++) {
+                for (int c = 0; c < 3; c++) {
+                    int sum = 0;
+                    for (int dx = -2; dx <= 2; dx++) {
+                        sum += src[(static_cast<size_t>(y) * W + (x + dx)) * C + c];
                     }
+                    horizontal[(static_cast<size_t>(y) * W + x) * 3 + c] = sum;
                 }
-
-                newImage.setPixel(w, h, 0, sumr / 25);
-                newImage.setPixel(w, h, 1, sumg / 25);
-                newImage.setPixel(w, h, 2, sumb / 25);
             }
         }
 
-        image = newImage;
+        for (int y = 2; y < H - 2; y++) {
+            for (int x = 2; x < W - 2; x++) {
+                for (int c = 0; c < 3; c++) {
+                    int sum = 0;
+                    for (int dy = -2; dy <= 2; dy++) {
+                        sum += horizontal[(static_cast<size_t>(y + dy) * W + x) * 3 + c];
+                    }
+                    output[(static_cast<size_t>(y) * W + x) * C + c] = static_cast<unsigned char>(sum / 25);
+                }
+            }
+        }
+
+        std::memcpy(image.imageData, output.data(), output.size());
     }
 
 }
@@ -352,9 +372,11 @@ void ImageFilter::Crop(Image& image, int x, int y, int newWidth, int newHight){
     if(newWidth <= 0 || newHight <= 0) return;
 
 
-    Image croppedImage(newWidth, newHight);
+    Image croppedImage;
+    croppedImage.width = newWidth;
+    croppedImage.height = newHight;
     croppedImage.channels = image.channels;
-    croppedImage.imageData = new unsigned char[newWidth * newHight * image.channels];
+    croppedImage.imageData = static_cast<unsigned char*>(malloc(newWidth * newHight * image.channels));
 
     for(int w=0; w < croppedImage.width; w++){
         for(int h=0; h< croppedImage.height; h++){

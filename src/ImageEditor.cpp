@@ -27,6 +27,19 @@ int ImageEditor::getHeight() const {
     return currentImage.height;
 }
 
+const Image& ImageEditor::getImage() const {
+    return currentImage;
+}
+
+void ImageEditor::setImage(const Image& image) {
+    currentImage = image;
+    modified = true;
+}
+
+const std::string& ImageEditor::getFilePath() const {
+    return originalFilePath;
+}
+
 bool ImageEditor::saveToSameImage() {
     currentImage.saveImage(originalFilePath);
     modified = false;
@@ -62,9 +75,7 @@ void ImageEditor::reset() {
         throw std::runtime_error("ERROR! No image loaded.");
     }
 
-    if(!changes.empty()){
-        currentImage = originalImage;
-    }
+    currentImage = originalImage;
 
     changes.clear();
     while (!changesUndone.empty()) { 
