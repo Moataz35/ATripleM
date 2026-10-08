@@ -154,6 +154,23 @@ void ImageEditor::applyFilter(FilterType filterType) {
             ImageFilter::sunLightEffect(currentImage);
             break;
 
+        case FilterType::Infrared:
+            ImageFilter::Infrared(currentImage);
+            break;
+
+        case FilterType::PurpleEffect:
+            ImageFilter::PurpleEffect(currentImage);
+            break;
+
+        case FilterType::DetectEdges:
+            ImageFilter::EdgeDetection(currentImage);   
+            break;
+
+        case FilterType::Blur:
+            ImageFilter::Blur(currentImage, 3);
+            break;
+
+        
         case FilterType::OldTV:
             ImageFilter::OldTV(currentImage);
             break;
