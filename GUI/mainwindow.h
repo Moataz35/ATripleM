@@ -2,9 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QDebug>
-#include <QFileDialog>
 #include "ImageEditor.h"
+#include "EditorDropArea.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -15,18 +15,25 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    public:
-        explicit MainWindow(QWidget *parent = nullptr);
-        ~MainWindow() override;
+public:
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() override;
 
-    private slots:
-        void applySpecificFilter(FilterType type);
-        void onLoadImageClicked();
+private slots:
+    void on_pushButton_clicked();
 
-    private:
-        Ui::MainWindow *ui;
-        ImageEditor *editor;
-        QString currentFilePath;
+private:
+    Ui::MainWindow *ui;
+    ImageEditor editor;
+    EditorDropArea *editorDropArea;
+
+    QImage imageToQImage(Image& image);
+    void loadFile(const QString filePath);
+    void openFile();
+    void removeImage();
+    void exit();
+
+    QImage preview;
 
 };
 #endif // MAINWINDOW_H
