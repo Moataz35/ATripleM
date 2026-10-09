@@ -82,7 +82,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/icons/export.png</normaloff>:/icons/export.png</iconset>
          </property>
          <property name="iconSize">
@@ -111,7 +111,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/icons/filter.png</normaloff>:/icons/filter.png</iconset>
          </property>
          <property name="iconSize">
@@ -156,7 +156,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/icons/Exposure.png</normaloff>:/icons/Exposure.png</iconset>
          </property>
          <property name="iconSize">
@@ -185,7 +185,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/icons/rotate.png</normaloff>:/icons/rotate.png</iconset>
          </property>
          <property name="iconSize">
@@ -214,7 +214,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/icons/flip.png</normaloff>:/icons/flip.png</iconset>
          </property>
          <property name="iconSize">
@@ -243,7 +243,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/icons/frame.png</normaloff>:/icons/frame.png</iconset>
          </property>
          <property name="iconSize">
@@ -272,7 +272,7 @@ QPushButton:pressed {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset>
            <normaloff>:/icons/Resize.png</normaloff>:/icons/Resize.png</iconset>
          </property>
          <property name="iconSize">
@@ -777,8 +777,6 @@ QPushButton:pressed {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
