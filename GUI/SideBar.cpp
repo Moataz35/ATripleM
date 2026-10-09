@@ -67,6 +67,9 @@ void SideBar::on_confirmAdjust_clicked(QAbstractButton *button) {
         int c = ui->ContrastSlider->value();
         int s = ui->SaturationSlider->value();
         emit adjustRequested(b, c, s);
+        ui->stackedWidget->setVisible(false);
+    }else{
+        ui->stackedWidget->setVisible(false);
     }
 }
 
@@ -75,6 +78,9 @@ void SideBar::on_ApplyFrame_clicked(QAbstractButton *button) {
         int width = ui->FrameWidth->value();
         bool isFancy = ui->checkFancy->isChecked();
         emit frameRequested(width, isFancy, currentFrameColor);
+        ui->stackedWidget->setVisible(false);
+    }else{
+        ui->stackedWidget->setVisible(false);
     }
 }
 
@@ -84,7 +90,12 @@ void SideBar::on_confirmResize_clicked(QAbstractButton *button) {
         int w = ui->inputWidth->value();
         int h = ui->inputHight->value();
         emit resizeRequested(w, h);
+        ui->stackedWidget->setVisible(false);
     }
+    else{
+        ui->stackedWidget->setVisible(false);
+    }
+
 }
 
 
