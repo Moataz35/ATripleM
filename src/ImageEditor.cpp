@@ -19,16 +19,16 @@ bool ImageEditor::loadImageFromFile(const std::string& imageFilePath) {
     return true;
 }
 
-Image& ImageEditor::getCurrentImage(){
-    return currentImage;
-}
-
 int ImageEditor::getWidth() const {
     return currentImage.width;
 }
 
 int ImageEditor::getHeight() const {
     return currentImage.height;
+}
+
+Image& ImageEditor::getCurrentImage(){
+    return currentImage;
 }
 
 bool ImageEditor::saveToSameImage() {

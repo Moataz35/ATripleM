@@ -1,11 +1,11 @@
-#include "SideBar.h"
+#include "MainWindow.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    SideBar SB;
-    SB.show();
+    MainWindow w;
+    w.show();
     return QApplication::exec();
 }
