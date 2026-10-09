@@ -171,7 +171,7 @@ void ImageEditor::applyFilter(FilterType filterType) {
             ImageFilter::Blur(currentImage, 1);
             break;
         case FilterType::Oil:
-
+            ImageFilter::Oil(currentImage, 3, 255);
             break;
         
         default:

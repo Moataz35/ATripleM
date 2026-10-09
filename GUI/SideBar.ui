@@ -314,7 +314,7 @@ QPushButton:pressed {
        <enum>QFrame::Shadow::Plain</enum>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="FiltersMenu">
        <layout class="QVBoxLayout" name="verticalLayout_3">

@@ -51,4 +51,6 @@ namespace ImageFilter {
 	void sunLightEffect(Image& image);
 	void PurpleEffect(Image& image);
 	void OldTV(Image& image);
+
+	void Oil(Image& image, int radius, int levels);
 }

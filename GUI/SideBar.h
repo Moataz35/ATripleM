@@ -1,14 +1,17 @@
 #ifndef SIDEBAR_H
 #define SIDEBAR_H
+
 #include <exception>
 #include <QMainWindow>
 #include <QDebug>
 #include <QFileDialog>
-#include "ImageEditor.h"
 #include <QColorDialog>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QToolTip>
+
+#include "ImageEditor.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class SideBar;
@@ -36,8 +39,8 @@ class SideBar : public QMainWindow
         Ui::SideBar *ui;
         ImageEditor *editor;
         QString currentFilePath;
-        Color frameColor; //intial color is blach
-        ///////////////////////////
+        Color frameColor;
+
         void openMenu(int pageIndex);
         void updatePreview();
         bool hasImage();
@@ -47,6 +50,6 @@ class SideBar : public QMainWindow
         void setupRotateConnections();
         void setupFrameConnections();
         void setupResizeConnections();
-
 };
+
 #endif // SIDEBAR_H
