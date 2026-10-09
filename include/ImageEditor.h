@@ -18,8 +18,11 @@ public:
     ImageEditor() = default;
 
     ImageEditor(const std::string& imageFilePath);
+
     int getWidth() const;
     int getHeight() const;
+
+    Image& getCurrentImage();
 
     bool loadImageFromFile(const std::string& imageFilePath);
 
