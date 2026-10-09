@@ -158,6 +158,22 @@ void ImageEditor::applyFilter(FilterType filterType) {
             ImageFilter::OldTV(currentImage);
             break;
 
+        case FilterType::DetectEdges:
+            ImageFilter::EdgeDetection(currentImage, 30);
+            break;
+        case FilterType::PurpleEffect:
+            ImageFilter::PurpleEffect(currentImage);
+            break;
+        case FilterType::Infrared:
+            ImageFilter::Infrared(currentImage);
+            break;
+        case FilterType::Blur:
+            ImageFilter::Blur(currentImage, 1);
+            break;
+        case FilterType::Oil:
+
+            break;
+        
         default:
             throw std::invalid_argument("Unsupported Filter");
         

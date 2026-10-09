@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/Exposure.png</file>
+        <file>icons/filter.png</file>
+        <file>icons/frame.png</file>
+        <file>icons/Resize.png</file>
+        <file>icons/rotate.png</file>
+        <file>icons/flip.png</file>
+        <file>icons/brightness.png</file>
+        <file>icons/contrast.png</file>
+        <file>icons/saturation.png</file>
+        <file>icons/export.png</file>
+    </qresource>
+</RCC>

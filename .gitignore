@@ -13,3 +13,5 @@ anatest.cpp
 *.png
 *.jpeg
 *.jpg
+.qtcreator/
+build/
