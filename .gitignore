@@ -10,7 +10,6 @@ test/
 anatest.cpp
 .vscode/
 *.bmp
-*.png
 *.jpeg
 *.jpg
 .qtcreator/
