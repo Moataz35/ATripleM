@@ -3,7 +3,7 @@
 
 
 SideBar::SideBar(QWidget *parent)
-    : QMainWindow(parent)
+    : QWidget(parent)
     , ui(new Ui::SideBar)
 {
     ui->setupUi(this);
