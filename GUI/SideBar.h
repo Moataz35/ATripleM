@@ -2,7 +2,7 @@
 #define SIDEBAR_H
 
 #include <exception>
-#include <QMainWindow>
+#include <QWidget>
 #include <QDebug>
 #include <QFileDialog>
 #include <QColorDialog>
@@ -15,23 +15,19 @@
 
 QT_BEGIN_NAMESPACE
 
-// enum chosenFiltertype{
-//     GrayScale=1, EdgeDetect, BW, Invert, Infrared,
-//     Darken, Sunlight, Lighten, Blur, OldTV, Oil, Purple
-// };
 
 namespace Ui {
 class SideBar;
 }
 QT_END_NAMESPACE
 
-class SideBar : public QMainWindow
+class SideBar : public QWidget
 {
     Q_OBJECT
 
     public:
         explicit SideBar(QWidget *parent = nullptr);
-        ~SideBar() override;
+        ~SideBar() ;
 
 
     signals:
