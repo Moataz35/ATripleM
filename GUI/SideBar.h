@@ -6,13 +6,20 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QColorDialog>
+#include <QColor>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QToolTip>
 
-#include "ImageEditor.h"
+#include "ImageFilter.h"
 
 QT_BEGIN_NAMESPACE
+
+// enum chosenFiltertype{
+//     GrayScale=1, EdgeDetect, BW, Invert, Infrared,
+//     Darken, Sunlight, Lighten, Blur, OldTV, Oil, Purple
+// };
+
 namespace Ui {
 class SideBar;
 }
@@ -26,30 +33,53 @@ class SideBar : public QMainWindow
         explicit SideBar(QWidget *parent = nullptr);
         ~SideBar() override;
 
+
+    signals:
+        void filterRequested(FilterType type);
+        void adjustRequested(int brightness, int contrast, int saturation);
+        void frameRequested(int width, bool isFancy, QColor color);
+        void resizeRequested(int width, int height);
+
+
     private slots:
-        void applySpecificFilter(FilterType type);
-        void previewAdjustments();
-        void onLoadImageClicked();
-        void onColorCLicked();
-        void onApplyFrameClicked();
-        void onResizeClicked();
+        void on_btnFilters_clicked();
+        void on_btnAdjust_clicked();
+        void on_btnRotate_clicked();
+        void on_btnFlip_clicked();
+        void on_AddFrame_clicked();
+        void on_Resize_clicked();
+        void on_btnPickColor_clicked();
+        void on_GrayScale_clicked();
+        void on_DetectEdge_clicked();
+        void on_BW_clicked();
+        void on_Invert_clicked();
+        void on_Infrared_clicked();
+        void on_Darken_clicked();
+        void on_Sunlight_clicked();
+        void on_Lighten_clicked();
+        void on_Blur_clicked();
+        void on_OldTV_clicked();
+        void on_Oil_clicked();
+        void on_PurpleEffect_clicked();
+        void on_FlipV_clicked();
+        void on_FlipH_clicked();
+        void on_Rotate90_clicked();
+        void on_Rotate180_clicked();
+        void on_Rotate270_clicked();
+
+        void on_BrightnessSlider_valueChanged(int value);
+        void on_ContrastSlider_valueChanged(int value);
+        void on_SaturationSlider_valueChanged(int value);
+
+        void on_confirmAdjust_clicked(QAbstractButton *button);
+        void on_ApplyFrame_clicked(QAbstractButton *button);
+        void on_confirmResize_clicked(QAbstractButton *button);
+
+
 
     private:
-        Image baseAdjustImage;
         Ui::SideBar *ui;
-        ImageEditor *editor;
-        QString currentFilePath;
-        Color frameColor;
-
-        void openMenu(int pageIndex);
-        void updatePreview();
-        bool hasImage();
-        void setupFilterConnections();
-        void setupAdjustConnections();
-        void setupFlipConnections();
-        void setupRotateConnections();
-        void setupFrameConnections();
-        void setupResizeConnections();
+        QColor currentFrameColor = Qt::white;
 };
 
 #endif // SIDEBAR_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1122</width>
-    <height>786</height>
+    <width>184</width>
+    <height>419</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,7 +23,7 @@
    <set>Qt::InputMethodHint::ImhNone</set>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
     <item>
      <widget class="QFrame" name="SideBarFrame">
       <property name="enabled">
@@ -54,45 +54,6 @@
        <number>2</number>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QPushButton" name="btnLoad">
-         <property name="minimumSize">
-          <size>
-           <width>48</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-    border: none;
-    border-radius: 6px;
-    background-color: transparent;
-    padding: 6px;
-}
-
-QPushButton:hover {
-    background-color: rgba(0, 0, 0, 0.08); /* لون خفيف لما يقف بالماوس */
-}
-
-QPushButton:pressed {
-    background-color: rgba(0, 0, 0, 0.15); /* لون عند الضغط */
-}</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resources.qrc">
-           <normaloff>:/icons/export.png</normaloff>:/icons/export.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>36</width>
-           <height>36</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item>
         <widget class="QPushButton" name="btnFilters">
          <property name="minimumSize">
@@ -333,16 +294,16 @@ QPushButton:pressed {
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="BW">
+         <widget class="QPushButton" name="Invert">
           <property name="text">
-           <string>B&amp;W</string>
+           <string>Invert</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="Invert">
+         <widget class="QPushButton" name="BW">
           <property name="text">
-           <string>Invert</string>
+           <string>B&amp;W</string>
           </property>
          </widget>
         </item>
@@ -726,43 +687,6 @@ QPushButton:pressed {
       </widget>
      </widget>
     </item>
-    <item>
-     <widget class="QLabel" name="imageLable">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="cursor">
-       <cursorShape>OpenHandCursor</cursorShape>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Shape::Box</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Shadow::Plain</enum>
-      </property>
-      <property name="lineWidth">
-       <number>2</number>
-      </property>
-      <property name="midLineWidth">
-       <number>2</number>
-      </property>
-      <property name="text">
-       <string>Image</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::TextFormat::AutoText</enum>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-      <property name="openExternalLinks">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -770,8 +694,8 @@ QPushButton:pressed {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1122</width>
-     <height>21</height>
+     <width>184</width>
+     <height>17</height>
     </rect>
    </property>
   </widget>
