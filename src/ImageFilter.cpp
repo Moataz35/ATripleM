@@ -547,3 +547,54 @@ void ImageFilter::OldTV(Image& image) {
         }
     }
 }
+
+void ImageFilter::Skew(Image& image, double skewDegree) {
+    // x-axis shear
+    skewDegree = std::max(-45.0, std::min(45.0, skewDegree));
+    const double PI = 3.14159265;
+    const double skewFactor = std::tan(skewDegree * PI / 180);
+
+    int firstPixelX = 0, firstPixelY = 0;
+    int lastPixelX = image.width - 1, lastPixelY = image.height - 1;
+
+    if (skewDegree < 0) {
+        /*
+            *
+
+        *
+        */
+        firstPixelX = firstPixelX + (lastPixelY * skewFactor);
+        lastPixelX = lastPixelX + (firstPixelY * skewFactor);
+    }
+    else {
+        /*
+        *
+
+            *
+        */
+        firstPixelX = firstPixelX + (firstPixelY * skewFactor);
+        lastPixelX = lastPixelX + (lastPixelY * skewFactor);
+    }
+
+    int newWidth = lastPixelX - firstPixelX;
+    int offsetX = std::abs(firstPixelX);
+
+    Image newImage(newWidth, image.height);
+
+    for (int y = 0; y < image.height; y++) {
+        for (int x = 0; x < image.width; x++) {
+            int newX = x + (y * skewFactor) + offsetX;
+            
+            if (newX >= newWidth || newX < 0) {
+                 continue;
+            }
+
+            for (int c = 0; c < image.channels; c++) {
+                unsigned char pixelValue = image.getPixel(x, y, c);
+                newImage.setPixel(newX, y, c, pixelValue);
+            }
+        }
+    }
+
+    image = newImage;
+}
