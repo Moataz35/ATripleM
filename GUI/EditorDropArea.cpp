@@ -321,6 +321,8 @@ void EditorDropArea::setImage(const Image& image)
 
     scene->clear();
 
+    cropBox = nullptr;
+
     QPixmap pixmap = QPixmap::fromImage(currentQImage);
 
     pixmapItem = scene->addPixmap(pixmap);
@@ -342,6 +344,8 @@ void EditorDropArea::removeImage(){
 
     scene->clear();
 
+    cropBox = nullptr;
+
     showEmptyState();
 
     emit imageRemoved();
@@ -352,7 +356,10 @@ void EditorDropArea::showCropBox() {
         cropBox = new CropBox(pixmapItem->boundingRect());
         scene->addItem(cropBox);
     } else if (cropBox) {
-        cropBox->show();
+        if (cropBox->scene() != scene) {
+            scene->addItem(cropBox);
+        }
+        cropBox->changeBound(pixmapItem->boundingRect());
     }
 }
 
@@ -374,15 +381,19 @@ void EditorDropArea::cropConfirmed() {
         }
     }
 
+    // scene->removeItem(cropBox);
+    if (cropBox) {
+        delete cropBox;
+        cropBox = nullptr;
+    }
 
-    // delete cropBox;
-    cropBox->hide();
 }
 
 void EditorDropArea::cropCancelled() {
+    // scene->removeItem(cropBox);
     if (cropBox) {
-        // delete cropBox;
-        cropBox->hide();
+        delete cropBox;
+        cropBox = nullptr;
     }
 }
 

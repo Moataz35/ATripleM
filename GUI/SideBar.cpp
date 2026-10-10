@@ -142,15 +142,7 @@ void SideBar::on_Rotate90_clicked()     {emit filterRequested(FilterType::Rotate
 void SideBar::on_Rotate180_clicked()    {emit filterRequested(FilterType::Rotate180);}
 void SideBar::on_Rotate270_clicked()    {emit filterRequested(FilterType::Rotate270);}
 
-void SideBar::on_confirmAdjust_clicked(QAbstractButton *button) {
-    if (ui->confirmAdjust->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        emit adjustApplied();
-    }else{
-        emit adjustCancelled();
-    }
-    resetAdjustSliders();
-    ui->stackedWidget->setVisible(false);
-}
+
 
 //===============================================================================================
 // Sliders
@@ -169,6 +161,13 @@ void SideBar::resetAdjustSliders() {
     ui->Contrast->setText("Contrast: 0");
     ui->Saturation->setText("Saturation: 0");
 }
+
+void SideBar::resetSkewSlider(){
+    const QSignalBlocker b1(ui->skewSlider);
+    ui->skewSlider->setValue(0);
+    ui->SkewDegree->setText("Skew Degree: 0");
+}
+
 void SideBar::on_BrightnessSlider_valueChanged(int value) {
     ui->Brightness->setText(QString("Brightness: %1").arg(value));
 
@@ -189,7 +188,6 @@ void SideBar::on_SaturationSlider_valueChanged(int value) {
 
 void SideBar::on_skewSlider_valueChanged(int degree){
     ui->SkewDegree->setText(QString("Skew: %1").arg(degree));
-
 }
 
 //=======================================================================================
@@ -214,8 +212,10 @@ void SideBar::on_confirmSkew_clicked(QAbstractButton *button) {
         emit skewRequested(degree);
         ui->stackedWidget->setVisible(false);
     } else {
+        emit skewCancelled();
         ui->stackedWidget->setVisible(false);
     }
+    resetSkewSlider();
 }
 
 void SideBar::on_ConfirmCrop_clicked(QAbstractButton *button) {
@@ -231,9 +231,15 @@ void SideBar::on_ConfirmCrop_clicked(QAbstractButton *button) {
     }
 }
 
-//===========================================================================
-
-
+void SideBar::on_confirmAdjust_clicked(QAbstractButton *button) {
+    if (ui->confirmAdjust->buttonRole(button) == QDialogButtonBox::ApplyRole) {
+        emit adjustApplied();
+    }else{
+        emit adjustCancelled();
+    }
+    resetAdjustSliders();
+    ui->stackedWidget->setVisible(false);
+}
 
 void SideBar::on_ApplyFrame_clicked(QAbstractButton *button) {
     if (ui->ApplyFrame->buttonRole(button) == QDialogButtonBox::ApplyRole) {
@@ -245,6 +251,11 @@ void SideBar::on_ApplyFrame_clicked(QAbstractButton *button) {
         ui->stackedWidget->setVisible(false);
     }
 }
+//===========================================================================
+
+
+
+
 
 
 

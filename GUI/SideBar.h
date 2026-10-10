@@ -43,6 +43,8 @@ class SideBar : public QWidget
         void cropConfirmed();
         void cropCancelled();
         void skewRequested(int degree);
+        void skewApplied();
+        void skewCancelled();
 
 
     private slots:
@@ -91,6 +93,7 @@ class SideBar : public QWidget
         Ui::SideBar *ui;
         void resetAdjustSliders();
         QColor currentFrameColor = Qt::white;
+        void resetSkewSlider();
 };
 
 #endif // SIDEBAR_H

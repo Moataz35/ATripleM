@@ -95,6 +95,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sideBar, &SideBar::cropCancelled, editorDropArea, &EditorDropArea::cropCancelled);
     connect(sideBar, &SideBar::skewRequested, this, &MainWindow::applySkew);
 
+
     updateNavBarButtons();
 }
 
@@ -189,6 +190,14 @@ void MainWindow::applyFilter(FilterType type){
     editorDropArea->setImage(editor->getCurrentImage());
     updateNavBarButtons();
 }
+
+void MainWindow::applySkew(double degree){
+    editor->applySkew(degree);
+    editorDropArea->setImage(editor->getCurrentImage());
+    updateNavBarButtons();
+}
+
+
 
 void MainWindow::applyAdjust(int brightness, int contrast, int saturation){
     // Live preview only: computed from the image before the first slider move.

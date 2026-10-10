@@ -10,6 +10,7 @@ class ImageEditor {
 private:
     Image originalImage;
     Image currentImage;
+    Image tempImage;
     std::deque<Image> changes;
     std::stack<Image> changesUndone;
     bool modified = false;
@@ -59,6 +60,11 @@ public:
     void applyEdgeDetection(unsigned char threshold = 100);
 
     void crop(int startX, int startY, int newWidth, int newHeight);
+
+    void applySkew(double skewDegree = 45.0);
+    void previewSkew(double skewDegree);
+    void commitSkew();
+    void cancelSkew();
     
     bool isModified();
     

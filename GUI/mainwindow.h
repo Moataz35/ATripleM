@@ -28,7 +28,7 @@ private slots:
     void commitAdjust();
     void cancelAdjust();
     void applyFrame(int width, bool isFancy, QColor color);
-    void applySkew(int degree);
+    void applySkew(double degree);
     void crop(QRect toCrop);
     void undo();
     void redo();
