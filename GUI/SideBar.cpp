@@ -7,7 +7,7 @@ SideBar::SideBar(QWidget *parent)
     , ui(new Ui::SideBar)
 {
     ui->setupUi(this);
-    ui->stackedWidget->setVisible(true);
+    ui->stackedWidget->setVisible(false);
 }
 
 SideBar::~SideBar()
@@ -132,9 +132,38 @@ void SideBar::on_SaturationSlider_valueChanged(int value) {
 
 
 void SideBar::on_Crop_clicked() {
+    ui->stackedWidget->setCurrentIndex(6);
+    ui->stackedWidget->setVisible(true);
+
+    setSidebarLocked(true);
+
     emit cropRequested();
 }
 
+void SideBar::on_ConfirmCrop_clicked(QAbstractButton *button) {
+
+    setSidebarLocked(false);
+
+    if (ui->ConfirmCrop->buttonRole(button) == QDialogButtonBox::ApplyRole) {
+        emit cropConfirmed();
+        ui->stackedWidget->setVisible(false);
+    } else {
+        emit cropCancelled();
+        ui->stackedWidget->setVisible(false);
+    }
+}
+
+
+void SideBar::setSidebarLocked(bool locked) {
+
+    ui->btnFilters->setEnabled(!locked);
+    ui->btnAdjust->setEnabled(!locked);
+    ui->btnRotate->setEnabled(!locked);
+    ui->btnFlip->setEnabled(!locked);
+    ui->AddFrame->setEnabled(!locked);
+    ui->Resize->setEnabled(!locked);
+    ui->Crop->setEnabled(!locked);
+}
 
 
 

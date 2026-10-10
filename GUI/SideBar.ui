@@ -341,7 +341,7 @@ QPushButton:pressed {
     <enum>QFrame::Shadow::Plain</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="FiltersMenu">
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -750,6 +750,21 @@ QPushButton:pressed {
       </spacer>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="page">
+    <widget class="QDialogButtonBox" name="ConfirmCrop">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>74</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

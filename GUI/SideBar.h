@@ -36,6 +36,8 @@ class SideBar : public QWidget
         void frameRequested(int width, bool isFancy, QColor color);
         void resizeRequested(int width, int height);
         void cropRequested();
+        void cropConfirmed();
+        void cropCancelled();
 
 
     private slots:
@@ -73,10 +75,11 @@ class SideBar : public QWidget
         void on_confirmResize_clicked(QAbstractButton *button);
 
         void on_Crop_clicked();
-
+        void on_ConfirmCrop_clicked(QAbstractButton *button);
 
 
     private:
+        void setSidebarLocked(bool locked);
         Ui::SideBar *ui;
         QColor currentFrameColor = Qt::white;
 };
