@@ -190,6 +190,10 @@ public:
         setBrush(QBrush(QColor(255, 255, 255, 76))); // rgba(255, 255, 255, 0.3)
     }
 
+    void changeBound(const QRectF& newBounds) {
+        imageBounds = newBounds;
+    }
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override
     {
