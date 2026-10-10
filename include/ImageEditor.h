@@ -57,6 +57,8 @@ public:
     void applyEdgeDetection(unsigned char threshold = 100);
 
     void crop(int startX, int startY, int newWidth, int newHeight);
+
+    void applySkew(double skewDegree = 45.0);
     
     bool isModified();
     
