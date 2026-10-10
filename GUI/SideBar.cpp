@@ -8,11 +8,29 @@ SideBar::SideBar(QWidget *parent)
 {
     ui->setupUi(this);
     ui->stackedWidget->setVisible(true);
+
+    setButtonsEnabled(false);
 }
 
 SideBar::~SideBar()
 {
     delete ui;
+}
+
+void SideBar::setButtonsEnabled(bool hasImage)
+{
+    ui->btnFilters->setEnabled(hasImage);
+    ui->btnAdjust->setEnabled(hasImage);
+    ui->btnRotate->setEnabled(hasImage);
+    ui->btnFlip->setEnabled(hasImage);
+    ui->AddFrame->setEnabled(hasImage);
+    ui->Resize->setEnabled(hasImage);
+    ui->Crop->setEnabled(hasImage);
+
+    if (!hasImage) {
+        resetAdjustSliders();
+        ui->stackedWidget->setVisible(false);
+    }
 }
 
 
@@ -64,15 +82,29 @@ void SideBar::on_Rotate270_clicked()     {emit filterRequested(FilterType::Rotat
 
 void SideBar::on_confirmAdjust_clicked(QAbstractButton *button) {
     if (ui->confirmAdjust->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        int b = ui->BrightnessSlider->value();
-        int c = ui->ContrastSlider->value();
-        int s = ui->SaturationSlider->value();
-        emit adjustRequested(b, c, s);
-        ui->stackedWidget->setVisible(false);
+        emit adjustApplied();
     }else{
-        ui->stackedWidget->setVisible(false);
+        emit adjustCancelled();
     }
+    resetAdjustSliders();
+    ui->stackedWidget->setVisible(false);
 }
+
+void SideBar::resetAdjustSliders() {
+    // Block signals so resetting does not trigger a new preview.
+    const QSignalBlocker b1(ui->BrightnessSlider);
+    const QSignalBlocker b2(ui->ContrastSlider);
+    const QSignalBlocker b3(ui->SaturationSlider);
+
+    ui->BrightnessSlider->setValue(0);
+    ui->ContrastSlider->setValue(0);
+    ui->SaturationSlider->setValue(0);
+
+    ui->Brightness->setText("Brightness: 0");
+    ui->Contrast->setText("Contrast: 0");
+    ui->Saturation->setText("Saturation: 0");
+}
+
 
 void SideBar::on_ApplyFrame_clicked(QAbstractButton *button) {
     if (ui->ApplyFrame->buttonRole(button) == QDialogButtonBox::ApplyRole) {

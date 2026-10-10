@@ -29,10 +29,14 @@ class SideBar : public QWidget
         explicit SideBar(QWidget *parent = nullptr);
         ~SideBar() ;
 
+        void setButtonsEnabled(bool hasImage);
+
 
     signals:
         void filterRequested(FilterType type);
         void adjustRequested(int brightness, int contrast, int saturation);
+        void adjustApplied();
+        void adjustCancelled();
         void frameRequested(int width, bool isFancy, QColor color);
         void resizeRequested(int width, int height);
         void cropRequested();
@@ -78,6 +82,7 @@ class SideBar : public QWidget
 
     private:
         Ui::SideBar *ui;
+        void resetAdjustSliders();
         QColor currentFrameColor = Qt::white;
 };
 

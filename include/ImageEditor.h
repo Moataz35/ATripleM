@@ -14,6 +14,8 @@ private:
     std::stack<Image> changesUndone;
     bool modified = false;
     std::string originalFilePath;
+    Image adjustBase;          // image before the current adjust session started
+    bool adjusting = false;    // true while sliders are being previewed
 public:
     ImageEditor() = default;
 
@@ -39,6 +41,12 @@ public:
     void applyFilter(FilterType filterType);
     
     void applyAdjust(AdjustmentType adjustType, int value);
+
+    // Non-destructive adjust: always computed from the image as it was
+    // before the first slider move, never from the previous preview.
+    void previewAdjust(int brightness, int contrast, int saturation);
+    void commitAdjust();
+    void cancelAdjust();
 
     void addFrame(Color frameColor, int frameThickness, bool fancy);
 

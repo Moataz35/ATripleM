@@ -69,6 +69,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sideBar , &SideBar::filterRequested , this , &MainWindow::applyFilter);
 
+    connect(sideBar , &SideBar::adjustRequested , this , &MainWindow::applyAdjust);
+
+    connect(sideBar , &SideBar::adjustApplied , this , &MainWindow::commitAdjust);
+
+    connect(sideBar , &SideBar::adjustCancelled , this , &MainWindow::cancelAdjust);
+
     connect(sideBar, &SideBar::cropRequested, editorDropArea, &EditorDropArea::showCropBox);
 
     connect(sideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
@@ -103,7 +109,7 @@ void MainWindow::loadFile(const QString filePath){
 
         editorDropArea->setImage(editor->getCurrentImage());
 
-
+        sideBar->setButtonsEnabled(true);
     }
     catch(...){
         QMessageBox::warning(this , "error" , "Wrong path");
@@ -128,13 +134,22 @@ void MainWindow::applyFilter(FilterType type){
 }
 
 void MainWindow::applyAdjust(int brightness, int contrast, int saturation){
-    editor->applyAdjust(AdjustmentType::Brightness , brightness);
-    editor->applyAdjust(AdjustmentType::Contrast , contrast);
-    editor->applyAdjust(AdjustmentType::Saturation , saturation);
+    // Live preview only: computed from the image before the first slider move.
+    editor->previewAdjust(brightness, contrast, saturation);
 
     editorDropArea->setImage(editor->getCurrentImage());
 
 }
+
+void MainWindow::commitAdjust(){
+    editor->commitAdjust();
+}
+
+void MainWindow::cancelAdjust(){
+    editor->cancelAdjust();
+    editorDropArea->setImage(editor->getCurrentImage());
+}
+
 
 void MainWindow::on_pushButton_clicked() {
 
@@ -170,5 +185,7 @@ void MainWindow::exit(){
 
 void MainWindow::removeImage(){
     editor->unloadImage();
+
+    sideBar->setButtonsEnabled(false);
 
 }
