@@ -27,7 +27,7 @@ public:
     Image& getCurrentImage();
 
     bool loadImageFromFile(const std::string& imageFilePath);
-
+    bool isImageLoaded();
     bool saveToSameImage();
     
     bool saveNewCopy(const std::string& newFilePath);
@@ -35,9 +35,11 @@ public:
     void reset();
     
     void undo();
+    bool canUndo() const{ return !changes.empty();};
     
     void redo();
-    
+    bool canRedo() const { return !changesUndone.empty();};
+
     void applyFilter(FilterType filterType);
     
     void applyAdjust(AdjustmentType adjustType, int value);
@@ -65,5 +67,5 @@ public:
 private:
     void saveState();
     
-    bool isImageLoaded();
+
 };

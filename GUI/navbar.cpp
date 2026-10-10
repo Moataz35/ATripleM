@@ -38,11 +38,44 @@ Navbar::Navbar(QWidget *parent)
     layout->addWidget(fileButton);
 
 
+    layout->addStretch();
+
     // =========================================================
     // TOOLS BUTTON
     // =========================================================
+    undoButton = createNavButton("");
+    undoButton->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
+    undoButton->setToolTip("Undo (Ctrl + Z)");
+    undoButton->setShortcut(QKeySequence("Ctrl+Z"));
+    // undoButton->setEnabled(false);
+    connect(undoButton, &QToolButton::clicked, this, &Navbar::undoRequested);
+    layout->addWidget(undoButton);
 
 
+    redoButton = createNavButton("");
+    redoButton->setIcon(style()->standardIcon(QStyle::SP_ArrowForward));
+    redoButton->setToolTip("Redo (Ctrl+Y)");
+    redoButton->setShortcut(QKeySequence("Ctrl+Y"));
+    // redoButton,setEnabled(false);
+    connect(redoButton, &QToolButton::clicked, this, &Navbar::redoRequested);
+    layout->addWidget(redoButton);
+
+    //=======================================
+    //seperate Buttons
+     QFrame *seperator = new QFrame(this);
+     seperator->setFrameShape(QFrame::VLine);
+     seperator->setFrameShadow(QFrame::Sunken);
+     layout->addWidget(seperator);
+
+
+    //=======================================
+    resetButton = createNavButton("");
+    resetButton->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
+    resetButton->setToolTip("Reset (Ctrl+R)");
+    resetButton->setShortcut(QKeySequence("Ctrl+R"));
+    // redoButton->setEnabled(false);
+    connect(resetButton, &QToolButton::clicked, this, &Navbar::resetRequested);
+    layout->addWidget(resetButton);
     // =========================================================
     // Stretch
     // =========================================================
@@ -190,6 +223,13 @@ QMenu *Navbar::createFileMenu()
     menu->addAction(exitAction);
 
     return menu;
+}
+
+
+void Navbar::setButtonEnabled(bool canUndo, bool canRedo, bool hasImage){
+    undoButton->setEnabled(canUndo);
+    redoButton->setEnabled(canRedo);
+    resetButton->setEnabled(hasImage);
 }
 
 QToolButton *Navbar::createNavButton(const QString &text)

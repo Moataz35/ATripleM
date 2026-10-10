@@ -12,18 +12,27 @@ class Navbar : public QWidget
 
 public:
     explicit Navbar(QWidget *parent = nullptr);
+    void setButtonEnabled(bool canUndo, bool canRedo,bool hasImage);
 
 signals:
     void openFileRequested();
     void saveFileRequested();
     void closeFileRequested();
     void exitRequested();
-
+    void undoRequested();
+    void redoRequested();
+    void resetRequested();
 
 private:
     QToolButton *createNavButton(const QString &text);
 
     QMenu *createFileMenu();
+
+    QToolButton *undoButton;
+    QToolButton *redoButton;
+    QToolButton *resetButton;
+
+
 };
 
 #endif // NAVBAR_H

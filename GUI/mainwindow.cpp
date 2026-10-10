@@ -5,6 +5,7 @@
 #include "QMessageBox"
 #include "navbar.h"
 #include "EditorDropArea.h"
+// #include <QDebug>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -30,11 +31,12 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *mainLayout =
         new QVBoxLayout(ui->centralwidget);
 
-    mainLayout->setContentsMargins(20, 20, 20, 20);
-    mainLayout->setSpacing(15);
+    mainLayout->setContentsMargins(20, 20, 20, 20); //20,20,20,20
+    mainLayout->setSpacing(15);//15
 
     // 4. Content layout: sidebar + editor
     QHBoxLayout *contentLayout = new QHBoxLayout();
+    contentLayout->setContentsMargins(0, 0, 0, 0); // 0,0,0,0
     contentLayout->setSpacing(50);
 
     contentLayout->addWidget(sideBar);
@@ -60,6 +62,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(navBar, &Navbar::exitRequested,
             this, &MainWindow::exit);
 
+    connect(navBar, &Navbar::undoRequested,
+            this, &MainWindow::undo);
+    connect(navBar, &Navbar::redoRequested,
+            this, &MainWindow::redo);
+    connect(navBar, &Navbar::resetRequested,
+            this, &MainWindow::reset);
+
     // 7. Connect editor signals
     connect(editorDropArea, &EditorDropArea::imageSelected,
             this, &MainWindow::loadFile);
@@ -78,6 +87,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sideBar, &SideBar::cropRequested, editorDropArea, &EditorDropArea::showCropBox);
 
     connect(sideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
+
+    updateNavBarButtons();
 }
 
 
@@ -110,6 +121,8 @@ void MainWindow::loadFile(const QString filePath){
         editorDropArea->setImage(editor->getCurrentImage());
 
         sideBar->setButtonsEnabled(true);
+        updateNavBarButtons();
+
     }
     catch(...){
         QMessageBox::warning(this , "error" , "Wrong path");
@@ -128,9 +141,46 @@ void MainWindow::saveFile(){
 
 }
 
+void MainWindow::undo(){
+    try{
+        editor->undo();
+        editorDropArea->setImage(editor->getCurrentImage());
+        updateNavBarButtons();
+    }catch(const std::runtime_error &e){
+        QMessageBox::warning(this, "Error! ", e.what());
+    }catch(const std::exception &e){
+        QMessageBox::critical(this, "Error! ", e.what());
+    }
+}
+
+void MainWindow::redo(){
+    try{
+        editor->redo();
+        editorDropArea->setImage(editor->getCurrentImage());
+        updateNavBarButtons();
+    }catch(const std::runtime_error &e){
+        QMessageBox::warning(this, "Error! ", e.what());
+    }catch(const std::exception &e){
+        QMessageBox::critical(this, "Error! ", e.what());
+    }
+}
+
+void MainWindow::reset(){
+    try{
+        editor->reset();
+        editorDropArea->setImage(editor->getCurrentImage());
+        updateNavBarButtons();
+    }catch(const std::runtime_error &e){
+        QMessageBox::warning(this, "Error! ", e.what());
+    }catch(const std::exception &e){
+        QMessageBox::critical(this, "Error! ", e.what());
+    }
+}
+
 void MainWindow::applyFilter(FilterType type){
     editor->applyFilter(type);
     editorDropArea->setImage(editor->getCurrentImage());
+    updateNavBarButtons();
 }
 
 void MainWindow::applyAdjust(int brightness, int contrast, int saturation){
@@ -143,6 +193,7 @@ void MainWindow::applyAdjust(int brightness, int contrast, int saturation){
 
 void MainWindow::commitAdjust(){
     editor->commitAdjust();
+    updateNavBarButtons();
 }
 
 void MainWindow::cancelAdjust(){
@@ -151,9 +202,6 @@ void MainWindow::cancelAdjust(){
 }
 
 
-void MainWindow::on_pushButton_clicked() {
-
-}
 
 void MainWindow::applyFrame(int width, bool isFancy, QColor color){
     unsigned char r = static_cast<unsigned char>(color.red());
@@ -162,11 +210,13 @@ void MainWindow::applyFrame(int width, bool isFancy, QColor color){
     Color frameColor = {r, g, b};
     editor->addFrame(frameColor, width, isFancy);
     editorDropArea->setImage(editor->getCurrentImage());
+    updateNavBarButtons();
 }
 
 void MainWindow::crop(QRect toCrop) {
     editor->crop(toCrop.x(), toCrop.y(), toCrop.width(), toCrop.height());
     editorDropArea->setImage(editor->getCurrentImage());
+    updateNavBarButtons();
 }
 
 void MainWindow::exit(){
@@ -187,5 +237,19 @@ void MainWindow::removeImage(){
     editor->unloadImage();
 
     sideBar->setButtonsEnabled(false);
+    updateNavBarButtons();
+
+}
+
+void MainWindow::updateNavBarButtons(){
+    if(!editor || !navBar){
+        return;
+    }
+    bool hasImage = editor->isImageLoaded();
+    bool canUndo = hasImage && editor->canUndo();
+    bool canRedo = hasImage && editor->canRedo();
+
+    //qDebug() << "hasImage:" << hasImage << " | canUndo:" << canUndo << " | canRedo:" << canRedo;
+    navBar->setButtonEnabled(canUndo, canRedo, hasImage);
 
 }

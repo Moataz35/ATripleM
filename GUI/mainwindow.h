@@ -5,7 +5,7 @@
 #include "ImageEditor.h"
 #include "EditorDropArea.h"
 #include "SideBar.h"
-#include "NavBar.h"
+#include "navbar.h"
 #include "ImageFilter.h"
 
 QT_BEGIN_NAMESPACE
@@ -23,14 +23,15 @@ public:
     ~MainWindow() override;
 
 private slots:
-    void on_pushButton_clicked();
     void applyFilter(FilterType type);
     void applyAdjust(int brightness, int contrast, int saturation);
     void commitAdjust();
     void cancelAdjust();
     void applyFrame(int width, bool isFancy, QColor color);
     void crop(QRect toCrop);
-
+    void undo();
+    void redo();
+    void reset();
 private:
     Ui::MainWindow *ui;
     ImageEditor *editor;
@@ -45,6 +46,7 @@ private:
     void saveFile();
     void removeImage();
     void exit();
+    void updateNavBarButtons();
 
     QImage preview;
 
