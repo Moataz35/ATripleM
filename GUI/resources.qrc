@@ -11,5 +11,6 @@
         <file>icons/saturation.png</file>
         <file>icons/export.png</file>
         <file>icons/crop.png</file>
+        <file>icons/skew.png</file>
     </qresource>
 </RCC>

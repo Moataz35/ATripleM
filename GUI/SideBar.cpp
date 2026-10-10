@@ -25,13 +25,16 @@ void SideBar::setButtonsEnabled(bool hasImage)
     ui->AddFrame->setEnabled(hasImage);
     ui->Resize->setEnabled(hasImage);
     ui->Crop->setEnabled(hasImage);
-
+    ui->btnSkew->setEnabled(hasImage);
     if (!hasImage) {
         resetAdjustSliders();
         ui->stackedWidget->setVisible(false);
     }
 }
 
+//=================================================
+//   Sidebar main Buttons actions
+//=================================================
 
 void SideBar::on_btnFilters_clicked(){
     if(ui->stackedWidget->currentIndex() == 0 && ui->stackedWidget->isVisible()){
@@ -93,6 +96,34 @@ void SideBar::on_Resize_clicked()     {
     }
 }
 
+
+void SideBar::on_Crop_clicked() {
+    if(ui->stackedWidget->currentIndex() == 6 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(6);
+    }
+
+
+    setSidebarLocked(true);
+
+    emit cropRequested();
+}
+
+
+void SideBar::on_btnSkew_clicked(){
+    if(ui->stackedWidget->currentIndex() == 7 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(7);
+    }
+}
+//============================================================================================
+// Send Signals
+//==========================================================================================
 void SideBar::on_GrayScale_clicked()    { emit filterRequested(FilterType::Grayscale); }
 void SideBar::on_DetectEdge_clicked()   { emit filterRequested(FilterType::DetectEdges); }
 void SideBar::on_BW_clicked()           { emit filterRequested(FilterType::BlackAndWhite); }
@@ -108,10 +139,8 @@ void SideBar::on_PurpleEffect_clicked() { emit filterRequested(FilterType::Purpl
 void SideBar::on_FlipH_clicked()        { emit filterRequested(FilterType::FlipHorizontally);}
 void SideBar::on_FlipV_clicked()        { emit filterRequested(FilterType::FlipVertically);}
 void SideBar::on_Rotate90_clicked()     {emit filterRequested(FilterType::Rotate90);}
-void SideBar::on_Rotate180_clicked()     {emit filterRequested(FilterType::Rotate180);}
-void SideBar::on_Rotate270_clicked()     {emit filterRequested(FilterType::Rotate270);}
-
-
+void SideBar::on_Rotate180_clicked()    {emit filterRequested(FilterType::Rotate180);}
+void SideBar::on_Rotate270_clicked()    {emit filterRequested(FilterType::Rotate270);}
 
 void SideBar::on_confirmAdjust_clicked(QAbstractButton *button) {
     if (ui->confirmAdjust->buttonRole(button) == QDialogButtonBox::ApplyRole) {
@@ -123,6 +152,9 @@ void SideBar::on_confirmAdjust_clicked(QAbstractButton *button) {
     ui->stackedWidget->setVisible(false);
 }
 
+//===============================================================================================
+// Sliders
+//============================================================================================
 void SideBar::resetAdjustSliders() {
     // Block signals so resetting does not trigger a new preview.
     const QSignalBlocker b1(ui->BrightnessSlider);
@@ -137,46 +169,6 @@ void SideBar::resetAdjustSliders() {
     ui->Contrast->setText("Contrast: 0");
     ui->Saturation->setText("Saturation: 0");
 }
-
-
-void SideBar::on_ApplyFrame_clicked(QAbstractButton *button) {
-    if (ui->ApplyFrame->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        int width = ui->FrameWidth->value();
-        bool isFancy = ui->checkFancy->isChecked();
-        emit frameRequested(width, isFancy, currentFrameColor);
-        ui->stackedWidget->setVisible(false);
-    }else{
-        ui->stackedWidget->setVisible(false);
-    }
-}
-
-
-void SideBar::on_confirmResize_clicked(QAbstractButton *button) {
-    if (ui->confirmResize->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        int w = ui->inputWidth->value();
-        int h = ui->inputHight->value();
-        emit resizeRequested(w, h);
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(false);
-    }
-
-}
-
-
-
-
-void SideBar::on_btnPickColor_clicked() {
-    QColor color = QColorDialog::getColor(currentFrameColor, this, "Choose Frame Color");
-
-    if(color.isValid()){
-        currentFrameColor = color;
-        QString style = QString("background-color: %1; color: white;").arg(color.name());
-        ui->btnPickColor->setStyleSheet(style);
-    }
-}
-
 void SideBar::on_BrightnessSlider_valueChanged(int value) {
     ui->Brightness->setText(QString("Brightness: %1").arg(value));
 
@@ -195,14 +187,35 @@ void SideBar::on_SaturationSlider_valueChanged(int value) {
     emit adjustRequested(ui->BrightnessSlider->value(), ui->ContrastSlider->value(), value);
 }
 
+void SideBar::on_skewSlider_valueChanged(int degree){
+    ui->SkewDegree->setText(QString("Skew: %1").arg(degree));
 
-void SideBar::on_Crop_clicked() {
-    ui->stackedWidget->setCurrentIndex(6);
-    ui->stackedWidget->setVisible(true);
+}
 
-    setSidebarLocked(true);
+//=======================================================================================
+// Confirm Buttons
+//======================================================================================
+void SideBar::on_confirmResize_clicked(QAbstractButton *button) {
+    if (ui->confirmResize->buttonRole(button) == QDialogButtonBox::ApplyRole) {
+        int w = ui->inputWidth->value();
+        int h = ui->inputHight->value();
+        emit resizeRequested(w, h);
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(false);
+    }
 
-    emit cropRequested();
+}
+
+void SideBar::on_confirmSkew_clicked(QAbstractButton *button) {
+    if (ui->confirmSkew->buttonRole(button) == QDialogButtonBox::ApplyRole) {
+        int degree = ui->skewSlider->value();
+        emit skewRequested(degree);
+        ui->stackedWidget->setVisible(false);
+    } else {
+        ui->stackedWidget->setVisible(false);
+    }
 }
 
 void SideBar::on_ConfirmCrop_clicked(QAbstractButton *button) {
@@ -218,6 +231,43 @@ void SideBar::on_ConfirmCrop_clicked(QAbstractButton *button) {
     }
 }
 
+//===========================================================================
+
+
+
+void SideBar::on_ApplyFrame_clicked(QAbstractButton *button) {
+    if (ui->ApplyFrame->buttonRole(button) == QDialogButtonBox::ApplyRole) {
+        int width = ui->FrameWidth->value();
+        bool isFancy = ui->checkFancy->isChecked();
+        emit frameRequested(width, isFancy, currentFrameColor);
+        ui->stackedWidget->setVisible(false);
+    }else{
+        ui->stackedWidget->setVisible(false);
+    }
+}
+
+
+
+
+
+void SideBar::on_btnPickColor_clicked() {
+    QColor color = QColorDialog::getColor(currentFrameColor, this, "Choose Frame Color");
+
+    if(color.isValid()){
+        currentFrameColor = color;
+        QString style = QString("background-color: %1; color: white;").arg(color.name());
+        ui->btnPickColor->setStyleSheet(style);
+    }
+}
+
+
+
+
+
+
+
+
+
 
 void SideBar::setSidebarLocked(bool locked) {
 
@@ -228,4 +278,5 @@ void SideBar::setSidebarLocked(bool locked) {
     ui->AddFrame->setEnabled(!locked);
     ui->Resize->setEnabled(!locked);
     ui->Crop->setEnabled(!locked);
+    ui->Skew->setEnabled(!locked);
 }

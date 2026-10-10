@@ -93,6 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sideBar, &SideBar::cropConfirmed, editorDropArea, &EditorDropArea::cropConfirmed);
 
     connect(sideBar, &SideBar::cropCancelled, editorDropArea, &EditorDropArea::cropCancelled);
+    connect(sideBar, &SideBar::skewRequested, this, &MainWindow::applySkew);
 
     updateNavBarButtons();
 }

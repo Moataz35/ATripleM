@@ -42,6 +42,7 @@ class SideBar : public QWidget
         void cropRequested();
         void cropConfirmed();
         void cropCancelled();
+        void skewRequested(int degree);
 
 
     private slots:
@@ -69,6 +70,9 @@ class SideBar : public QWidget
         void on_Rotate90_clicked();
         void on_Rotate180_clicked();
         void on_Rotate270_clicked();
+        void on_btnSkew_clicked();
+        void on_skewSlider_valueChanged(int degree);
+        void on_confirmSkew_clicked(QAbstractButton *button);
 
         void on_BrightnessSlider_valueChanged(int value);
         void on_ContrastSlider_valueChanged(int value);
