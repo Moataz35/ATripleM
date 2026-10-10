@@ -38,6 +38,10 @@ bool ImageEditor::saveToSameImage() {
 }
 
 void ImageEditor::saveState() {
+    if (adjusting) {
+        commitAdjust();
+    }
+
     if (changes.size() == 5) {
         changes.pop_front();
     }
@@ -206,6 +210,53 @@ void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
     modified = true;
 }
 
+void ImageEditor::previewAdjust(int brightness, int contrast, int saturation) {
+    if (!isImageLoaded()) {
+        throw std::runtime_error("ERROR! No image loaded.");
+    }
+
+    // First slider move of this session: remember the untouched image.
+    if (!adjusting) {
+        adjustBase = currentImage;
+        adjusting = true;
+    }
+
+    // Always start from the base, so the result depends only on the
+    // current slider values and not on previous slider positions.
+    currentImage = adjustBase;
+
+    if (brightness != 0) Adjustments::Brightness(currentImage, brightness);
+    if (contrast   != 0) Adjustments::Contrast(currentImage, contrast);
+    if (saturation != 0) Adjustments::Saturation(currentImage, saturation);
+}
+
+void ImageEditor::commitAdjust() {
+    if (!adjusting) {
+        return;
+    }
+
+    // Undo returns to the image from before the adjust session.
+    if (changes.size() == 5) {
+        changes.pop_front();
+    }
+    changes.push_back(adjustBase);
+    while (!changesUndone.empty()) changesUndone.pop();
+
+    adjustBase = Image();
+    adjusting = false;
+    modified = true;
+}
+
+void ImageEditor::cancelAdjust() {
+    if (!adjusting) {
+        return;
+    }
+
+    currentImage = adjustBase;
+    adjustBase = Image();
+    adjusting = false;
+}
+
 void ImageEditor::addFrame(Color frameColor, int frameThickness, bool fancy) {
     saveState();
     ImageFilter::AddFrame(currentImage, frameColor, frameThickness, fancy);
@@ -218,6 +269,8 @@ void ImageEditor::unloadImage() {
 
     originalImage = Image();
     currentImage = Image();
+    adjustBase = Image();
+    adjusting = false;
     changes.clear();
     while (!changesUndone.empty()) {
         changesUndone.pop();

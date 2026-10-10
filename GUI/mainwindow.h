@@ -26,6 +26,8 @@ private slots:
     void on_pushButton_clicked();
     void applyFilter(FilterType type);
     void applyAdjust(int brightness, int contrast, int saturation);
+    void commitAdjust();
+    void cancelAdjust();
     void applyFrame(int width, bool isFancy, QColor color);
     void crop(QRect toCrop);
 
