@@ -8,6 +8,10 @@
 // #include <QDebug>
 
 
+//======================================================
+//Cnstructor & Destructor
+//======================================================
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -48,8 +52,9 @@ MainWindow::MainWindow(QWidget *parent)
     mainLayout->addLayout(contentLayout, 1);
 
 
-
-
+    //===========================================================
+    //Buttons Connections
+    //=========================================================
     connect(navBar, &Navbar::openFileRequested,
             this, &MainWindow::openFile);
 
@@ -104,7 +109,9 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+//=============================================================================================
+//Main Operations
+//======================================================================================
 void MainWindow::openFile()
 {
     QString filePath = QFileDialog::getOpenFileName(
@@ -118,9 +125,6 @@ void MainWindow::openFile()
 
 
 }
-
-
-
 
 void MainWindow::loadFile(const QString filePath){
     try{
@@ -185,8 +189,44 @@ void MainWindow::reset(){
     }
 }
 
+void MainWindow::removeImage(){
+    editor->unloadImage();
+
+    sideBar->setButtonsEnabled(false);
+    updateNavBarButtons();
+
+}
+
+
+void MainWindow::exit(){
+    QMessageBox msgBox;
+    msgBox.setText("exit");
+    msgBox.setText("Are you sure do you want to exit?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+
+    int res = msgBox.exec();
+
+    if(res == QMessageBox::Yes){
+        this->close();
+    }
+}
+
+//===================================================================================
+// Apply Filters
+//=====================================================================================
 void MainWindow::applyFilter(FilterType type){
     editor->applyFilter(type);
+    editorDropArea->setImage(editor->getCurrentImage());
+    updateNavBarButtons();
+}
+
+void MainWindow::applyFrame(int width, bool isFancy, QColor color){
+    unsigned char r = static_cast<unsigned char>(color.red());
+    unsigned char g = static_cast<unsigned char>(color.green());
+    unsigned char b = static_cast<unsigned char>(color.blue());
+    Color frameColor = {r, g, b};
+    editor->addFrame(frameColor, width, isFancy);
     editorDropArea->setImage(editor->getCurrentImage());
     updateNavBarButtons();
 }
@@ -197,6 +237,15 @@ void MainWindow::applySkew(double degree){
     updateNavBarButtons();
 }
 
+
+void MainWindow::crop(QRect toCrop) {
+    editor->crop(toCrop.x(), toCrop.y(), toCrop.width(), toCrop.height());
+    editorDropArea->setImage(editor->getCurrentImage());
+    updateNavBarButtons();
+}
+//=======================================================================
+//Adjustments Functions
+//======================================================================
 
 
 void MainWindow::applyAdjust(int brightness, int contrast, int saturation){
@@ -217,45 +266,8 @@ void MainWindow::cancelAdjust(){
     editorDropArea->setImage(editor->getCurrentImage());
 }
 
+//=======================================================================
 
-
-void MainWindow::applyFrame(int width, bool isFancy, QColor color){
-    unsigned char r = static_cast<unsigned char>(color.red());
-    unsigned char g = static_cast<unsigned char>(color.green());
-    unsigned char b = static_cast<unsigned char>(color.blue());
-    Color frameColor = {r, g, b};
-    editor->addFrame(frameColor, width, isFancy);
-    editorDropArea->setImage(editor->getCurrentImage());
-    updateNavBarButtons();
-}
-
-void MainWindow::crop(QRect toCrop) {
-    editor->crop(toCrop.x(), toCrop.y(), toCrop.width(), toCrop.height());
-    editorDropArea->setImage(editor->getCurrentImage());
-    updateNavBarButtons();
-}
-
-void MainWindow::exit(){
-    QMessageBox msgBox;
-    msgBox.setText("exit");
-    msgBox.setText("Are you sure do you want to exit?");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Yes);
-
-    int res = msgBox.exec();
-
-    if(res == QMessageBox::Yes){
-        this->close();
-    }
-}
-
-void MainWindow::removeImage(){
-    editor->unloadImage();
-
-    sideBar->setButtonsEnabled(false);
-    updateNavBarButtons();
-
-}
 
 void MainWindow::updateNavBarButtons(){
     if(!editor || !navBar){
