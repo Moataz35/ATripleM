@@ -18,8 +18,11 @@ public:
     ImageEditor() = default;
 
     ImageEditor(const std::string& imageFilePath);
+
     int getWidth() const;
     int getHeight() const;
+
+    Image& getCurrentImage();
 
     bool loadImageFromFile(const std::string& imageFilePath);
 
@@ -44,6 +47,8 @@ public:
     void applyMergeByCommonArea(Image& overlayImage , int alpha , int offsetX , int offsetY);
 
     void applyEdgeDetection(unsigned char threshold = 100);
+
+    void crop(int startX, int startY, int newWidth, int newHeight);
     
     bool isModified();
     

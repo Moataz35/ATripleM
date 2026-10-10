@@ -27,6 +27,10 @@ int ImageEditor::getHeight() const {
     return currentImage.height;
 }
 
+Image& ImageEditor::getCurrentImage(){
+    return currentImage;
+}
+
 bool ImageEditor::saveToSameImage() {
     currentImage.saveImage(originalFilePath);
     modified = false;
@@ -158,6 +162,22 @@ void ImageEditor::applyFilter(FilterType filterType) {
             ImageFilter::OldTV(currentImage);
             break;
 
+        case FilterType::DetectEdges:
+            ImageFilter::EdgeDetection(currentImage, 30);
+            break;
+        case FilterType::PurpleEffect:
+            ImageFilter::PurpleEffect(currentImage);
+            break;
+        case FilterType::Infrared:
+            ImageFilter::Infrared(currentImage);
+            break;
+        case FilterType::Blur:
+            ImageFilter::Blur(currentImage, 1);
+            break;
+        case FilterType::Oil:
+            ImageFilter::Oil(currentImage, 3, 255);
+            break;
+        
         default:
             throw std::invalid_argument("Unsupported Filter");
         
@@ -219,4 +239,9 @@ void ImageEditor::applyMergeByCommonArea(Image& overlayImage , int alpha , int o
 void ImageEditor::applyEdgeDetection(unsigned char threshold) {
     saveState();
     ImageFilter::EdgeDetection(currentImage, threshold);
+}
+
+void ImageEditor::crop(int startX, int startY, int newWidth, int newHeight) {
+    saveState();
+    ImageFilter::Crop(currentImage, startX, startY, newWidth, newHeight);
 }
