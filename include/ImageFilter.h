@@ -53,4 +53,5 @@ namespace ImageFilter {
 	void OldTV(Image& image);
 
 	void Oil(Image& image, int radius, int levels);
+	void Skew(Image& image, double skewDegree = 45.0);
 }

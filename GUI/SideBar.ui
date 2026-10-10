@@ -754,6 +754,21 @@ QPushButton:pressed {
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="page">
+    <widget class="QDialogButtonBox" name="ConfirmCrop">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>74</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <resources>

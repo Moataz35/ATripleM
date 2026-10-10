@@ -25,10 +25,13 @@ public:
     void removeImage();
 
     void showCropBox();
+    void cropConfirmed();
+    void cropCancelled();
 
 signals:
     void imageSelected(const QString& filePath);
     void imageRemoved();
+    void cropRequested(QRect cropRect);
 
 private slots:
     void browseImage();

@@ -12,6 +12,7 @@
 #include <QStyle>
 #include <QPainter>
 #include <QImageReader>
+#include <QDebug>
 
 EditorDropArea::EditorDropArea(QWidget *parent)
     : QFrame(parent)
@@ -354,6 +355,37 @@ void EditorDropArea::showCropBox() {
         cropBox->show();
     }
 }
+
+void EditorDropArea::cropConfirmed() {
+    if (!cropBox)
+        return;
+
+    QRect cropRect = cropBox->rect().toRect();
+
+    if (!currentQImage.isNull()) {
+
+        cropRect = cropRect.intersected(QRect(0, 0, currentQImage.width(), currentQImage.height()));
+
+
+        qDebug() << cropRect.x() << " " << cropRect.y() << " " << cropRect.width() << " " << cropRect.height() << "\n";
+
+        if (cropRect.width() > 0 && cropRect.height() > 0) {
+            emit cropRequested(cropRect);
+        }
+    }
+
+
+    // delete cropBox;
+    cropBox->hide();
+}
+
+void EditorDropArea::cropCancelled() {
+    if (cropBox) {
+        // delete cropBox;
+        cropBox->hide();
+    }
+}
+
 
 void EditorDropArea::resizeEvent(QResizeEvent *event)
 {

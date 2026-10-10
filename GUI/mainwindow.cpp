@@ -84,9 +84,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sideBar , &SideBar::adjustCancelled , this , &MainWindow::cancelAdjust);
 
+    connect(sideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
+
+    connect(editorDropArea, &EditorDropArea::cropRequested, this, &MainWindow::crop);
+
     connect(sideBar, &SideBar::cropRequested, editorDropArea, &EditorDropArea::showCropBox);
 
-    connect(sideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
+    connect(sideBar, &SideBar::cropConfirmed, editorDropArea, &EditorDropArea::cropConfirmed);
+
+    connect(sideBar, &SideBar::cropCancelled, editorDropArea, &EditorDropArea::cropCancelled);
 
     updateNavBarButtons();
 }
