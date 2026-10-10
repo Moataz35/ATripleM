@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include "ImageEditor.h"
 #include "EditorDropArea.h"
+#include "SideBar.h"
+#include "NavBar.h"
+#include "ImageFilter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,15 +24,22 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void applyFilter(FilterType type);
+    void applyAdjust(int brightness, int contrast, int saturation);
+    void applyFrame(int width, bool isFancy, QColor color);
 
 private:
     Ui::MainWindow *ui;
-    ImageEditor editor;
+    ImageEditor *editor;
     EditorDropArea *editorDropArea;
+    Navbar *navBar;
+    SideBar *sideBar;
+
 
     QImage imageToQImage(Image& image);
     void loadFile(const QString filePath);
     void openFile();
+    void saveFile();
     void removeImage();
     void exit();
 

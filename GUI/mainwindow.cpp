@@ -9,31 +9,69 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow) , editorDropArea(new EditorDropArea)
+    , ui(new Ui::MainWindow)
+    , editor(new ImageEditor)
+    , editorDropArea(new EditorDropArea)
+    , navBar(nullptr)
+    , sideBar(nullptr)
+
 {
-    // 1. Always setup Qt Designer UI first
+    // 1. Initialize the MainWindow UI
     ui->setupUi(this);
 
-    // 2. Create a fresh vertical container layout for centralwidget
-    QVBoxLayout *mainLayout = new QVBoxLayout(ui->centralwidget);
+
+    // 2. Create the components
+    navBar = new Navbar(ui->centralwidget);
+    sideBar = new SideBar(ui->centralwidget);
+    sideBar->setMinimumWidth(180);
+
+
+    // 3. Main vertical layout
+    QVBoxLayout *mainLayout =
+        new QVBoxLayout(ui->centralwidget);
+
     mainLayout->setContentsMargins(20, 20, 20, 20);
     mainLayout->setSpacing(15);
 
-    // 3. Create Navbar and insert it AT THE TOP (index 0)
-    Navbar *nav = new Navbar(this);
-    mainLayout->addWidget(nav);
+    // 4. Content layout: sidebar + editor
+    QHBoxLayout *contentLayout = new QHBoxLayout();
+    contentLayout->setSpacing(50);
 
-    mainLayout->addWidget(editorDropArea , 1);
+    contentLayout->addWidget(sideBar);
+    contentLayout->addWidget(editorDropArea, 1);
 
 
-    connect(nav , &Navbar::openFileRequested , this , &MainWindow::openFile);
-    connect(nav , &Navbar::closeFileRequested , editorDropArea , &EditorDropArea::removeImage);
+    // 5. Assemble the main layout
+    mainLayout->addWidget(navBar);
+    mainLayout->addLayout(contentLayout, 1);
 
-    connect(editorDropArea , &EditorDropArea::imageSelected , this , &MainWindow::loadFile);
-    connect(editorDropArea , &EditorDropArea::imageRemoved , this , &MainWindow::removeImage);
 
-    connect(nav , &Navbar::exitRequested , this , &MainWindow::exit);
+
+
+    connect(navBar, &Navbar::openFileRequested,
+            this, &MainWindow::openFile);
+
+    connect(navBar , &Navbar::saveFileRequested,
+            this , &MainWindow::saveFile);
+
+    connect(navBar, &Navbar::closeFileRequested,
+            editorDropArea, &EditorDropArea::removeImage);
+
+    connect(navBar, &Navbar::exitRequested,
+            this, &MainWindow::exit);
+
+    // 7. Connect editor signals
+    connect(editorDropArea, &EditorDropArea::imageSelected,
+            this, &MainWindow::loadFile);
+
+    connect(editorDropArea, &EditorDropArea::imageRemoved,
+            this, &MainWindow::removeImage);
+
+    connect(sideBar , &SideBar::filterRequested , this , &MainWindow::applyFilter);
+
+    // connect(SideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -59,9 +97,9 @@ void MainWindow::openFile()
 
 void MainWindow::loadFile(const QString filePath){
     try{
-        editor.loadImageFromFile(filePath.toStdString());
+        editor->loadImageFromFile(filePath.toStdString());
 
-        editorDropArea->setImage(editor.getCurrentImage());
+        editorDropArea->setImage(editor->getCurrentImage());
 
 
     }
@@ -69,6 +107,36 @@ void MainWindow::loadFile(const QString filePath){
         QMessageBox::warning(this , "error" , "Wrong path");
     }
 }
+
+void MainWindow::saveFile(){
+    try{
+        editor->saveToSameImage();
+
+        QMessageBox::information(this , "error" , "Wrong path");
+    }
+    catch(...){
+        QMessageBox::warning(this , "error" , "No image to save");
+    }
+
+}
+
+void MainWindow::applyFilter(FilterType type){
+    editor->applyFilter(type);
+    editorDropArea->setImage(editor->getCurrentImage());
+}
+
+void MainWindow::applyAdjust(int brightness, int contrast, int saturation){
+    editor->applyAdjust(AdjustmentType::Brightness , brightness);
+    editor->applyAdjust(AdjustmentType::Contrast , contrast);
+    editor->applyAdjust(AdjustmentType::Saturation , saturation);
+
+    editorDropArea->setImage(editor->getCurrentImage());
+
+}
+
+// void MainWindow::applyFrame(int width, bool isFancy, QColor color){
+//
+// }
 
 void MainWindow::exit(){
     QMessageBox msgBox;
@@ -85,6 +153,6 @@ void MainWindow::exit(){
 }
 
 void MainWindow::removeImage(){
-    editor.unloadImage();
+    editor->unloadImage();
 
 }

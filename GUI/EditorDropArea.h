@@ -10,7 +10,6 @@
 #include <QStackedLayout>
 #include "CropBox.h"
 
-
 class QLabel;
 class QPushButton;
 class QResizeEvent;

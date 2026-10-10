@@ -7,7 +7,7 @@ SideBar::SideBar(QWidget *parent)
     , ui(new Ui::SideBar)
 {
     ui->setupUi(this);
-    ui->stackedWidget->setVisible(false);
+    ui->stackedWidget->setVisible(true);
 }
 
 SideBar::~SideBar()
@@ -19,6 +19,7 @@ SideBar::~SideBar()
 void SideBar::on_btnFilters_clicked(){
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget->setVisible(true);
+
 }
 void SideBar::on_btnAdjust_clicked(){
     ui->stackedWidget->setCurrentIndex(1);

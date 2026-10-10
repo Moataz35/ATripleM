@@ -17,6 +17,13 @@ set(PROJECT_SOURCES
     main.cpp
     SideBar.cpp
     SideBar.h
+    MainWindow.h
+    MainWindow.cpp
+    navbar.h
+    navbar.cpp
+    EditorDropArea.h
+    EditorDropArea.cpp
+    CropBox.h
     SideBar.ui
     resources.qrc
     ${SOURCE_FILES}
