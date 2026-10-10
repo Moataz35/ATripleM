@@ -35,29 +35,63 @@ void SideBar::setButtonsEnabled(bool hasImage)
 
 
 void SideBar::on_btnFilters_clicked(){
-    ui->stackedWidget->setCurrentIndex(0);
-    ui->stackedWidget->setVisible(true);
+    if(ui->stackedWidget->currentIndex() == 0 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(0);
+
+    }
+
 
 }
 void SideBar::on_btnAdjust_clicked(){
-    ui->stackedWidget->setCurrentIndex(1);
-    ui->stackedWidget->setVisible(true);
+    if(ui->stackedWidget->currentIndex()==1 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(1);
+    }
 }
 void SideBar::on_btnRotate_clicked()  {
-    ui->stackedWidget->setCurrentIndex(2);
-    ui->stackedWidget->setVisible(true);
+    if(ui->stackedWidget->currentIndex()==2 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(2);
+    }
 }
-void SideBar::on_btnFlip_clicked()    {
-    ui->stackedWidget->setCurrentIndex(3);
-    ui->stackedWidget->setVisible(true);
+void SideBar::on_btnFlip_clicked(){
+    if(ui->stackedWidget->currentIndex()==3 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(3);
+    }
+
 }
 void SideBar::on_AddFrame_clicked()   {
-    ui->stackedWidget->setCurrentIndex(4);
-    ui->stackedWidget->setVisible(true);
+    if(ui->stackedWidget->currentIndex()==4 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(4);
+    }
 }
+
 void SideBar::on_Resize_clicked()     {
-    ui->stackedWidget->setCurrentIndex(5);
-    ui->stackedWidget->setVisible(true);
+    if(ui->stackedWidget->currentIndex()==5 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(5);
+    }
 }
 
 void SideBar::on_GrayScale_clicked()    { emit filterRequested(FilterType::Grayscale); }
