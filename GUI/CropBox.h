@@ -182,7 +182,7 @@ public:
     explicit CropBox(const QRectF &bounds, QGraphicsItem *parent = nullptr)
         : QGraphicsRectItem(bounds, parent), imageBounds(bounds)
     {
-        setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+        setFlags(QGraphicsItem::ItemIsSelectable);
         setAcceptHoverEvents(true);
 
         // Styling the crop box
@@ -191,6 +191,32 @@ public:
     }
 
 protected:
+    void hoverMoveEvent(QGraphicsSceneHoverEvent *event){
+        QRectF br = rect();
+        QPointF pos = event->pos();
+
+        QRectF handle(br.right() - grabArea , br.bottom() - grabArea, grabArea, grabArea);
+
+        if (handle.contains(pos)) {
+            setCursor(Qt::SizeFDiagCursor);
+        }
+
+        else if (br.contains(pos)) {
+            setCursor(Qt::OpenHandCursor);
+        }
+
+        else {
+            setCursor(Qt::ArrowCursor);
+        }
+
+        QGraphicsRectItem::hoverMoveEvent(event);
+    }
+
+
+
+
+
+
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override
     {
         if (event->button() == Qt::LeftButton) {
@@ -201,6 +227,14 @@ protected:
             QRectF handle(br.right() - grabArea, br.bottom() - grabArea, grabArea, grabArea);
             isResizing = handle.contains(event->pos());
             isMoving = !isResizing && br.contains(event->pos());
+
+            if(isResizing){
+                setCursor(Qt::SizeFDiagCursor);
+            }
+
+            if(isMoving){
+                setCursor(Qt::ClosedHandCursor);
+            }
 
             event->accept();
         } else {
@@ -257,10 +291,29 @@ protected:
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override
     {
-        isResizing = false;
-        isMoving = false;
+        if(event->button() == Qt::LeftButton){
+            isResizing = false;
+            isMoving = false;
+
+            QRectF br = rect();
+            QRectF handle(br.right() - grabArea, br.bottom() - grabArea, grabArea, grabArea);
+
+            if(handle.contains(event->pos())){
+                setCursor(Qt::SizeFDiagCursor);
+
+            }
+            else if(br.contains(event->pos())){
+                setCursor(Qt::OpenHandCursor);
+            }
+            else{
+                setCursor(Qt::ArrowCursor);
+            }
+            event->accept();
+        }
         QGraphicsRectItem::mouseReleaseEvent(event);
     }
+
+
 
 private:
     QRectF imageBounds;
@@ -268,7 +321,7 @@ private:
     bool isMoving = false;
     QPointF startPos;
     QRectF startRect;
-    const qreal grabArea = 20.0;
+    const qreal grabArea = 35.0;
 };
 
 #endif // CROPBOX_H
