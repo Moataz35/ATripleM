@@ -19,13 +19,11 @@ signals:
     void closeFileRequested();
     void exitRequested();
 
-    void toolSelected(const QString &tool);
 
 private:
     QToolButton *createNavButton(const QString &text);
 
     QMenu *createFileMenu();
-    QMenu *createToolsMenu();
 };
 
 #endif // NAVBAR_H

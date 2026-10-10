@@ -42,15 +42,6 @@ Navbar::Navbar(QWidget *parent)
     // TOOLS BUTTON
     // =========================================================
 
-    QToolButton *toolsButton = createNavButton("Tools");
-
-    QMenu *toolsMenu = createToolsMenu();
-
-    toolsButton->setMenu(toolsMenu);
-    toolsButton->setPopupMode(QToolButton::InstantPopup);
-
-    layout->addWidget(toolsButton);
-
 
     // =========================================================
     // Stretch
@@ -213,62 +204,5 @@ QToolButton *Navbar::createNavButton(const QString &text)
 }
 
 
-QMenu *Navbar::createToolsMenu()
-{
-    QMenu *menu = new QMenu(this);
 
-    QAction *adjustAction =
-        new QAction("Adjust", this);
-
-    QAction *cropAction =
-        new QAction("Crop", this);
-
-    QAction *eraserAction =
-        new QAction("Pixel Eraser", this);
-
-    QAction *blurAction =
-        new QAction("Blur", this);
-
-    QAction *filtersAction =
-        new QAction("Filters", this);
-
-
-    menu->addAction(adjustAction);
-    menu->addAction(cropAction);
-    menu->addAction(eraserAction);
-
-    menu->addSeparator();
-
-    menu->addAction(blurAction);
-    menu->addAction(filtersAction);
-
-
-    connect(adjustAction, &QAction::triggered,
-            this, [this]() {
-                emit toolSelected("adjust");
-            });
-
-    connect(cropAction, &QAction::triggered,
-            this, [this]() {
-                emit toolSelected("crop");
-            });
-
-    connect(eraserAction, &QAction::triggered,
-            this, [this]() {
-                emit toolSelected("eraser");
-            });
-
-    connect(blurAction, &QAction::triggered,
-            this, [this]() {
-                emit toolSelected("blur");
-            });
-
-    connect(filtersAction, &QAction::triggered,
-            this, [this]() {
-                emit toolSelected("filters");
-            });
-
-
-    return menu;
-}
 
