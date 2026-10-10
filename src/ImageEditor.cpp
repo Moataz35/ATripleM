@@ -240,3 +240,8 @@ void ImageEditor::applyEdgeDetection(unsigned char threshold) {
     saveState();
     ImageFilter::EdgeDetection(currentImage, threshold);
 }
+
+void ImageEditor::crop(int startX, int startY, int newWidth, int newHeight) {
+    saveState();
+    ImageFilter::Crop(currentImage, startX, startY, newWidth, newHeight);
+}

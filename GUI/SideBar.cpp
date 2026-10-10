@@ -131,7 +131,9 @@ void SideBar::on_SaturationSlider_valueChanged(int value) {
 }
 
 
-
+void SideBar::on_Crop_clicked() {
+    emit cropRequested();
+}
 
 
 

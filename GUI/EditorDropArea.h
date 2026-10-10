@@ -24,6 +24,8 @@ public:
     void setImage(const Image& image);
     void removeImage();
 
+    void showCropBox();
+
 signals:
     void imageSelected(const QString& filePath);
     void imageRemoved();

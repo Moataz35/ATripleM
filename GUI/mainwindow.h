@@ -27,6 +27,7 @@ private slots:
     void applyFilter(FilterType type);
     void applyAdjust(int brightness, int contrast, int saturation);
     void applyFrame(int width, bool isFancy, QColor color);
+    void crop(QRect toCrop);
 
 private:
     Ui::MainWindow *ui;

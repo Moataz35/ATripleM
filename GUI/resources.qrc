@@ -10,5 +10,6 @@
         <file>icons/contrast.png</file>
         <file>icons/saturation.png</file>
         <file>icons/export.png</file>
+        <file>icons/crop.png</file>
     </qresource>
 </RCC>

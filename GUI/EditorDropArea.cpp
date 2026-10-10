@@ -155,21 +155,6 @@ EditorDropArea::EditorDropArea(QWidget *parent)
 
     imageLayout->addWidget(graphicsView);
 
-    cropBox = new CropBox(imageWidget);
-
-    cropBox->setGeometry(
-        imageWidget->rect().adjusted(
-            imageWidget->width() / 10,
-            imageWidget->height() / 10,
-            -imageWidget->width() / 10,
-            -imageWidget->height() / 10
-            )
-        );
-
-    cropBox->show();
-    cropBox->raise();
-
-
 
 
     QVBoxLayout *emptyLayout = new QVBoxLayout(emptyWidget);
@@ -361,7 +346,14 @@ void EditorDropArea::removeImage(){
     emit imageRemoved();
 }
 
-
+void EditorDropArea::showCropBox() {
+    if (pixmapItem && !cropBox) {
+        cropBox = new CropBox(pixmapItem->boundingRect());
+        scene->addItem(cropBox);
+    } else if (cropBox) {
+        cropBox->show();
+    }
+}
 
 void EditorDropArea::resizeEvent(QResizeEvent *event)
 {

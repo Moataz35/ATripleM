@@ -35,6 +35,7 @@ class SideBar : public QWidget
         void adjustRequested(int brightness, int contrast, int saturation);
         void frameRequested(int width, bool isFancy, QColor color);
         void resizeRequested(int width, int height);
+        void cropRequested();
 
 
     private slots:
@@ -70,6 +71,8 @@ class SideBar : public QWidget
         void on_confirmAdjust_clicked(QAbstractButton *button);
         void on_ApplyFrame_clicked(QAbstractButton *button);
         void on_confirmResize_clicked(QAbstractButton *button);
+
+        void on_Crop_clicked();
 
 
 

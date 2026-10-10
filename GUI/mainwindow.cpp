@@ -69,6 +69,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sideBar , &SideBar::filterRequested , this , &MainWindow::applyFilter);
 
+    connect(sideBar, &SideBar::cropRequested, editorDropArea, &EditorDropArea::showCropBox);
+
     // connect(SideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
 }
 
@@ -134,9 +136,23 @@ void MainWindow::applyAdjust(int brightness, int contrast, int saturation){
 
 }
 
-// void MainWindow::applyFrame(int width, bool isFancy, QColor color){
-//
-// }
+void MainWindow::on_pushButton_clicked() {
+
+}
+
+void MainWindow::applyFrame(int width, bool isFancy, QColor color){
+    unsigned char r = static_cast<unsigned char>(color.red());
+    unsigned char g = static_cast<unsigned char>(color.green());
+    unsigned char b = static_cast<unsigned char>(color.blue());
+    Color frameColor = {r, g, b};
+    editor->addFrame(frameColor, width, isFancy);
+    editorDropArea->setImage(editor->getCurrentImage());
+}
+
+void MainWindow::crop(QRect toCrop) {
+    editor->crop(toCrop.x(), toCrop.y(), toCrop.width(), toCrop.height());
+    editorDropArea->setImage(editor->getCurrentImage());
+}
 
 void MainWindow::exit(){
     QMessageBox msgBox;
