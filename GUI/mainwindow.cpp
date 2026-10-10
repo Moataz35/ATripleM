@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sideBar, &SideBar::cropRequested, editorDropArea, &EditorDropArea::showCropBox);
 
-    // connect(SideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
+    connect(sideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
 }
 
 
