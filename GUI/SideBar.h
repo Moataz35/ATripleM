@@ -73,6 +73,10 @@ class SideBar : public QWidget
         void on_Rotate180_clicked();
         void on_Rotate270_clicked();
         void on_btnSkew_clicked();
+        // Merge ===
+        void on_btnMerge_clicked();
+        void on_btnMergeCommanArea_clicked();
+        //==================================
         void on_skewSlider_valueChanged(int degree);
         void on_confirmSkew_clicked(QAbstractButton *button);
 

@@ -303,5 +303,3 @@ void ImageEditor::applySkew(double skewDegree) {
     saveState();
     ImageFilter::Skew(currentImage, skewDegree);
 }
-
-

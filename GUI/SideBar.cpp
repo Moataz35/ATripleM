@@ -30,6 +30,8 @@ void SideBar::setButtonsEnabled(bool hasImage)
         resetAdjustSliders();
         ui->stackedWidget->setVisible(false);
     }
+    ui->btnMerge->setEnabled(hasImage);
+    ui->btnMergeCommanArea->setEnabled(hasImage);
 }
 
 //=================================================
@@ -119,6 +121,26 @@ void SideBar::on_btnSkew_clicked(){
     else{
         ui->stackedWidget->setVisible(true);
         ui->stackedWidget->setCurrentIndex(7);
+    }
+}
+
+void SideBar::on_btnMerge_clicked(){
+    if(ui->stackedWidget->currentIndex()==8 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(8);
+    }
+}
+
+void SideBar::on_btnMergeCommanArea_clicked(){
+    if(ui->stackedWidget->currentIndex()==9 && ui->stackedWidget->isVisible()){
+        ui->stackedWidget->setVisible(false);
+    }
+    else{
+        ui->stackedWidget->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(9);
     }
 }
 //============================================================================================
@@ -290,4 +312,6 @@ void SideBar::setSidebarLocked(bool locked) {
     ui->Resize->setEnabled(!locked);
     ui->Crop->setEnabled(!locked);
     ui->Skew->setEnabled(!locked);
+    ui->btnMerge->setEnabled(!locked);
+    ui->btnMergeCommanArea->setEnabled(!locked);
 }
