@@ -1,12 +1,15 @@
 #include "SideBar.h"
 #include "ui_SideBar.h"
+#include <QHBoxLayout>
 
 
 SideBar::SideBar(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SideBar)
+    , sideBarScrollArea(nullptr)
 {
     ui->setupUi(this);
+    setupScrollableSidebar();
     ui->stackedWidget->setVisible(false);
     setButtonsEnabled(false);
 
@@ -25,6 +28,81 @@ SideBar::SideBar(QWidget *parent)
 SideBar::~SideBar()
 {
     delete ui;
+}
+
+void SideBar::setupScrollableSidebar()
+{
+    sideBarScrollArea = new QScrollArea(this);
+    sideBarScrollArea->setObjectName("sidebarScrollArea");
+    sideBarScrollArea->setFrameShape(QFrame::NoFrame);
+    sideBarScrollArea->setWidgetResizable(true);
+    sideBarScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    sideBarScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    sideBarScrollArea->setAlignment(Qt::AlignHCenter);
+    sideBarScrollArea->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    sideBarScrollArea->setMinimumWidth(72);
+    sideBarScrollArea->setMaximumWidth(90);
+    sideBarScrollArea->setStyleSheet(R"(
+        QScrollArea {
+            background: transparent;
+            border: none;
+        }
+        QScrollBar:vertical {
+            border: none;
+            background: transparent;
+            width: 10px;
+            margin: 0px;
+        }
+        QScrollBar::handle:vertical {
+            background: rgba(110, 110, 110, 180);
+            min-height: 28px;
+            border-radius: 5px;
+        }
+        QScrollBar::handle:vertical:hover {
+            background: rgba(80, 80, 80, 220);
+        }
+        QScrollBar::add-line:vertical,
+        QScrollBar::sub-line:vertical,
+        QScrollBar::up-arrow:vertical,
+        QScrollBar::down-arrow:vertical,
+        QScrollBar::add-page:vertical,
+        QScrollBar::sub-page:vertical {
+            background: none;
+            border: none;
+            height: 0px;
+        }
+    )");
+
+    sideBarScrollArea->setWidget(ui->SideBarFrame);
+    ui->SideBarFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    ui->SideBarFrame->setMinimumWidth(50);
+    ui->SideBarFrame->setMaximumWidth(70);
+
+    if (ui->centralwidget) {
+        ui->centralwidget->hide();
+    }
+
+    const int leftWidth = qMin(90, qMax(70, this->width() / 5));
+    sideBarScrollArea->setGeometry(0, 0, leftWidth, this->height());
+    if (ui->stackedWidget) {
+        ui->stackedWidget->setGeometry(leftWidth + 8, 0, qMax(0, this->width() - leftWidth - 8), this->height());
+    }
+}
+
+void SideBar::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+
+    if (!sideBarScrollArea) {
+        return;
+    }
+
+    const int leftWidth = qMin(90, qMax(70, width() / 5));
+    sideBarScrollArea->setGeometry(0, 0, leftWidth, height());
+
+    if (ui->stackedWidget) {
+        ui->stackedWidget->setGeometry(leftWidth + 8, 0, qMax(0, width() - leftWidth - 8), height());
+    }
 }
 
 void SideBar::setButtonsEnabled(bool hasImage)
@@ -403,7 +481,7 @@ void SideBar::setSidebarLocked(bool locked) {
     ui->AddFrame->setEnabled(!locked);
     ui->Resize->setEnabled(!locked);
     ui->Crop->setEnabled(!locked);
-    ui->Skew->setEnabled(!locked);
+    ui->btnSkew->setEnabled(!locked);
     ui->btnMerge->setEnabled(!locked);
     ui->btnMergeCommanArea->setEnabled(!locked);
 }

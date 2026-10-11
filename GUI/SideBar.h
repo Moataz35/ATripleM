@@ -10,6 +10,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QToolTip>
+#include <QScrollArea>
 
 #include "ImageFilter.h"
 
@@ -100,9 +101,14 @@ class SideBar : public QWidget
         void on_ConfirmCrop_clicked(QAbstractButton *button);
 
 
+    protected:
+        void resizeEvent(QResizeEvent *event) override;
+
     private:
         void setSidebarLocked(bool locked);
+        void setupScrollableSidebar();
         Ui::SideBar *ui;
+        QScrollArea *sideBarScrollArea;
         void resetAdjustSliders();
         void resetMergeInputs();
         QColor currentFrameColor = Qt::white;
