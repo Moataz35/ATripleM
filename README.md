@@ -146,30 +146,6 @@ flowchart TD
 
 ---
 
-## 📐 Mathematical & Algorithmic Highlights
-
-### 1. Contrast Adjustment
-Contrast is adjusted using the factor formula:
-$$F = \frac{259 \times (C + 255)}{255 \times (259 - C)}$$
-$$\text{Pixel}_{\text{new}} = \operatorname{clamp}\left(F \times (\text{Pixel}_{\text{old}} - 128) + 128, 0, 255\right)$$
-where $C \in [-100, 100]$ represents the contrast adjustment level.
-
-### 2. Saturation Scaling
-Saturation is manipulated by shifting channel intensity relative to the perceived grayscale luminance:
-$$\text{Gray} = \frac{R + G + B}{3}$$
-$$C_{\text{new}} = \operatorname{clamp}\left(\text{Gray} + \left(1 + \frac{S}{100}\right) \times (C - \text{Gray}), 0, 255\right)$$
-
-### 3. Sobel Edge Detection
-Calculated using discrete $3 \times 3$ convolution kernels:
-$$G_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix} \quad G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix}$$
-$$\text{Gradient Magnitude} = \sqrt{G_x^2 + G_y^2}$$
-
-### 4. Shear / Skew Transformation
-Horizontal coordinate displacement is governed by the shear angle $\theta$:
-$$x' = x + y \cdot \tan\left(\frac{\theta \cdot \pi}{180}\right) + \text{offset}_x$$
-
----
-
 ## 📁 Project Directory Structure
 
 ```plaintext
