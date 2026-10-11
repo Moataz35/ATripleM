@@ -7,12 +7,16 @@
 #include "SideBar.h"
 #include "navbar.h"
 #include "ImageFilter.h"
+#include <functional>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+class QThread;
+class StatusMenu;
 
 class MainWindow : public QMainWindow
 {
@@ -45,6 +49,7 @@ private:
     EditorDropArea *editorDropArea;
     Navbar *navBar;
     SideBar *sideBar;
+    StatusMenu *statusMenu;
 
 
     QImage imageToQImage(Image& image);
@@ -54,8 +59,14 @@ private:
     void saveNewFile();
     void removeImage();
     void updateNavBarButtons();
+    void updateImageInfo();
+    void runImageOperation(const QString &statusText,
+                           const QString &finishedText,
+                           std::function<void()> operation);
+    void setImageOperationRunning(bool running);
 
     QImage preview;
+    QThread *imageOperationThread;
 
 };
 #endif // MAINWINDOW_H

@@ -17,6 +17,8 @@ set(PROJECT_SOURCES
     main.cpp
     SideBar.cpp
     SideBar.h
+    StatusMenu.cpp
+    StatusMenu.h
     MainWindow.h
     MainWindow.cpp
     navbar.h

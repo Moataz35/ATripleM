@@ -5,6 +5,7 @@
 
 class QToolButton;
 class QMenu;
+class QAction;
 
 class Navbar : public QWidget
 {
@@ -28,11 +29,11 @@ private:
     QToolButton *createNavButton(const QString &text);
 
     QMenu *createFileMenu();
+    QMenu *createEditMenu();
 
-    QToolButton *undoButton;
-    QToolButton *redoButton;
-    QToolButton *resetButton;
-
+    QAction *undoAction;
+    QAction *redoAction;
+    QAction *resetAction;
 
 };
 

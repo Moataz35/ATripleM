@@ -1,7 +1,12 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "StatusMenu.h"
 #include <QFileDialog>
 #include <QHBoxLayout>
+#include <QThread>
+#include <QVBoxLayout>
+#include <QMetaObject>
+#include <exception>
 #include "QMessageBox"
 #include "navbar.h"
 #include "EditorDropArea.h"
@@ -10,6 +15,33 @@
 #include <filesystem>
 #include <QFileInfo>
 
+namespace {
+
+QString filterName(FilterType type)
+{
+    switch (type) {
+    case FilterType::Grayscale: return "Grayscale";
+    case FilterType::BlackAndWhite: return "Black and White";
+    case FilterType::InvertImage: return "Invert";
+    case FilterType::FlipVertically: return "Vertical Flip";
+    case FilterType::FlipHorizontally: return "Horizontal Flip";
+    case FilterType::Rotate90: return "Rotate 90°";
+    case FilterType::Rotate180: return "Rotate 180°";
+    case FilterType::Rotate270: return "Rotate 270°";
+    case FilterType::Darken: return "Darken";
+    case FilterType::Lighten: return "Lighten";
+    case FilterType::DetectEdges: return "Edge Detection";
+    case FilterType::Blur: return "Blur";
+    case FilterType::SunLight: return "Sunlight";
+    case FilterType::OldTV: return "Old TV";
+    case FilterType::PurpleEffect: return "Purple Effect";
+    case FilterType::Infrared: return "Infrared";
+    case FilterType::Oil: return "Oil Effect";
+    default: return "Image Filter";
+    }
+}
+
+}
 
 //======================================================
 //Cnstructor & Destructor
@@ -22,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
     , editorDropArea(new EditorDropArea)
     , navBar(nullptr)
     , sideBar(nullptr)
+    , statusMenu(nullptr)
+    , imageOperationThread(nullptr)
 
 {
     // 1. Initialize the MainWindow UI
@@ -31,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
     // 2. Create the components
     navBar = new Navbar(ui->centralwidget);
     sideBar = new SideBar(ui->centralwidget);
-    sideBar->setMinimumWidth(180);
+    sideBar->setMinimumWidth(90);
 
 
     // 3. Main vertical layout
@@ -53,6 +87,10 @@ MainWindow::MainWindow(QWidget *parent)
     // 5. Assemble the main layout
     mainLayout->addWidget(navBar);
     mainLayout->addLayout(contentLayout, 1);
+
+    // 6. Add the status panel below the editor content.
+    statusMenu = new StatusMenu(ui->centralwidget);
+    mainLayout->addWidget(statusMenu);
 
 
     //===========================================================
@@ -80,6 +118,11 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::redo);
     connect(navBar, &Navbar::resetRequested,
             this, &MainWindow::reset);
+
+    connect(sideBar, &SideBar::stackedMenuVisibilityChanged,
+            sideBar, [this](bool visible) {
+        sideBar->setMinimumWidth(visible ? 180 : 90);
+    });
 
     // 7. Connect editor signals
     connect(editorDropArea, &EditorDropArea::imageSelected,
@@ -111,11 +154,17 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     updateNavBarButtons();
+    updateImageInfo();
 }
 
 
 MainWindow::~MainWindow()
 {
+    if (imageOperationThread) {
+        imageOperationThread->wait();
+        delete imageOperationThread;
+        imageOperationThread = nullptr;
+    }
     delete ui;
 }
 //=============================================================================================
@@ -136,28 +185,24 @@ void MainWindow::openFile()
 }
 
 void MainWindow::loadFile(const QString filePath){
-    try{
+    if (filePath.isEmpty()) {
+        return;
+    }
+
+    runImageOperation("Loading image...", "Image loaded", [this, filePath]() {
         editor->loadImageFromFile(filePath.toStdString());
-
-        editorDropArea->setImage(editor->getCurrentImage());
-
-        sideBar->setButtonsEnabled(true);
-        updateNavBarButtons();
-
-    }
-    catch(...){
-        QMessageBox::warning(this , "error" , "Wrong path");
-    }
+    });
 }
 
 void MainWindow::saveFile(){
-    try{
-        editor->saveToSameImage();
-    }
-    catch(...){
-        QMessageBox::warning(this , "error" , "No image to save");
+    if (!editor->isImageLoaded()) {
+        QMessageBox::warning(this, "Save Image", "No image to save.");
+        return;
     }
 
+    runImageOperation("Saving image...", "Image saved", [this]() {
+        editor->saveToSameImage();
+    });
 }
 
 void MainWindow::saveNewFile() {
@@ -203,39 +248,21 @@ void MainWindow::saveNewFile() {
 
 
 void MainWindow::undo(){
-    try{
+    runImageOperation("Undoing...", "Undo complete", [this]() {
         editor->undo();
-        editorDropArea->setImage(editor->getCurrentImage());
-        updateNavBarButtons();
-    }catch(const std::runtime_error &e){
-        QMessageBox::warning(this, "Error! ", e.what());
-    }catch(const std::exception &e){
-        QMessageBox::critical(this, "Error! ", e.what());
-    }
+    });
 }
 
 void MainWindow::redo(){
-    try{
+    runImageOperation("Redoing...", "Redo complete", [this]() {
         editor->redo();
-        editorDropArea->setImage(editor->getCurrentImage());
-        updateNavBarButtons();
-    }catch(const std::runtime_error &e){
-        QMessageBox::warning(this, "Error! ", e.what());
-    }catch(const std::exception &e){
-        QMessageBox::critical(this, "Error! ", e.what());
-    }
+    });
 }
 
 void MainWindow::reset(){
-    try{
+    runImageOperation("Resetting image...", "Image reset", [this]() {
         editor->reset();
-        editorDropArea->setImage(editor->getCurrentImage());
-        updateNavBarButtons();
-    }catch(const std::runtime_error &e){
-        QMessageBox::warning(this, "Error! ", e.what());
-    }catch(const std::exception &e){
-        QMessageBox::critical(this, "Error! ", e.what());
-    }
+    });
 }
 
 void MainWindow::removeImage(){
@@ -251,9 +278,10 @@ void MainWindow::removeImage(){
 // Apply Filters
 //=====================================================================================
 void MainWindow::applyFilter(FilterType type){
-    editor->applyFilter(type);
-    editorDropArea->setImage(editor->getCurrentImage());
-    updateNavBarButtons();
+    const QString name = filterName(type);
+    runImageOperation(QString("Applying %1...").arg(name),
+                      QString("%1 applied").arg(name),
+                      [this, type]() { editor->applyFilter(type); });
 }
 
 void MainWindow::applyFrame(int width, bool isFancy, QColor color){
@@ -261,46 +289,37 @@ void MainWindow::applyFrame(int width, bool isFancy, QColor color){
     unsigned char g = static_cast<unsigned char>(color.green());
     unsigned char b = static_cast<unsigned char>(color.blue());
     Color frameColor = {r, g, b};
-    editor->addFrame(frameColor, width, isFancy);
-    editorDropArea->setImage(editor->getCurrentImage());
-    updateNavBarButtons();
+    runImageOperation("Adding frame...", "Frame applied",
+                      [this, frameColor, width, isFancy]() {
+        editor->addFrame(frameColor, width, isFancy);
+    });
 }
 
 void MainWindow::applySkew(double degree){
-    editor->applySkew(degree);
-    editorDropArea->setImage(editor->getCurrentImage());
-    updateNavBarButtons();
+    runImageOperation("Applying skew...", "Skew applied",
+                      [this, degree]() { editor->applySkew(degree); });
 }
 
 
 void MainWindow::crop(QRect toCrop) {
-    editor->crop(toCrop.x(), toCrop.y(), toCrop.width(), toCrop.height());
-    editorDropArea->setImage(editor->getCurrentImage());
-    updateNavBarButtons();
+    runImageOperation("Cropping image...", "Crop applied",
+                      [this, toCrop]() {
+        editor->crop(toCrop.x(), toCrop.y(), toCrop.width(), toCrop.height());
+    });
 }
 
 void MainWindow::applyMergeByScaling(const QString& overlayPath, int alpha){
-    try {
+    runImageOperation("Merging images...", "Images merged",
+                      [this, overlayPath, alpha]() {
         editor->applyMergeByScaling(overlayPath.toStdString(), alpha);
-        editorDropArea->setImage(editor->getCurrentImage());
-        updateNavBarButtons();
-    } catch(const std::runtime_error &e){
-        QMessageBox::warning(this, "Error!", e.what());
-    } catch(const std::exception &e){
-        QMessageBox::critical(this, "Error!", e.what());
-    }
+    });
 }
 
 void MainWindow::applyMergeByCommonArea(const QString& overlayPath, int alpha, int offsetX, int offsetY){
-    try {
+    runImageOperation("Merging images...", "Images merged",
+                      [this, overlayPath, alpha, offsetX, offsetY]() {
         editor->applyMergeByCommonArea(overlayPath.toStdString(), alpha, offsetX, offsetY);
-        editorDropArea->setImage(editor->getCurrentImage());
-        updateNavBarButtons();
-    } catch(const std::runtime_error &e){
-        QMessageBox::warning(this, "Error!", e.what());
-    } catch(const std::exception &e){
-        QMessageBox::critical(this, "Error!", e.what());
-    }
+    });
 }
 //=======================================================================
 //Adjustments Functions
@@ -309,20 +328,20 @@ void MainWindow::applyMergeByCommonArea(const QString& overlayPath, int alpha, i
 
 void MainWindow::applyAdjust(int brightness, int contrast, int saturation){
     // Live preview only: computed from the image before the first slider move.
-    editor->previewAdjust(brightness, contrast, saturation);
-
-    editorDropArea->setImage(editor->getCurrentImage());
-
+    runImageOperation("Applying adjustments...", "Adjustments previewed",
+                      [this, brightness, contrast, saturation]() {
+        editor->previewAdjust(brightness, contrast, saturation);
+    });
 }
 
 void MainWindow::commitAdjust(){
-    editor->commitAdjust();
-    updateNavBarButtons();
+    runImageOperation("Applying adjustments...", "Adjustments applied",
+                      [this]() { editor->commitAdjust(); });
 }
 
 void MainWindow::cancelAdjust(){
-    editor->cancelAdjust();
-    editorDropArea->setImage(editor->getCurrentImage());
+    runImageOperation("Cancelling adjustments...", "Adjustments cancelled",
+                      [this]() { editor->cancelAdjust(); });
 }
 
 //=======================================================================
@@ -367,4 +386,71 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     default:
         return;
     }
+}
+
+void MainWindow::updateImageInfo()
+{
+    statusMenu->setImageInfo(editor->isImageLoaded() ? &editor->getCurrentImage() : nullptr);
+}
+
+void MainWindow::setImageOperationRunning(bool running)
+{
+    navBar->setEnabled(!running);
+    sideBar->setEnabled(!running);
+    editorDropArea->setEnabled(!running);
+}
+
+void MainWindow::runImageOperation(const QString &statusText,
+                                   const QString &finishedText,
+                                   std::function<void()> operation)
+{
+    if (imageOperationThread) {
+        return;
+    }
+
+    statusMenu->setOperationStatus(statusText, true);
+    setImageOperationRunning(true);
+
+    imageOperationThread = QThread::create(
+        [this, operation = std::move(operation), finishedText]() {
+            QString errorMessage;
+            try {
+                operation();
+            } catch (const std::exception &error) {
+                errorMessage = QString::fromUtf8(error.what());
+            } catch (...) {
+                errorMessage = "An unknown error occurred while processing the image.";
+            }
+
+            QMetaObject::invokeMethod(
+                this,
+                [this, errorMessage, finishedText]() {
+                    QThread *completedThread = imageOperationThread;
+                    imageOperationThread = nullptr;
+                    if (completedThread) {
+                        completedThread->wait();
+                        completedThread->deleteLater();
+                    }
+
+                    setImageOperationRunning(false);
+                    const bool hasImage = editor->isImageLoaded();
+                    if (hasImage) {
+                        editorDropArea->setImage(editor->getCurrentImage());
+                    } else if (!errorMessage.isEmpty()) {
+                        editorDropArea->removeImage();
+                    }
+                    sideBar->setButtonsEnabled(hasImage);
+                    updateNavBarButtons();
+                    updateImageInfo();
+
+                    if (errorMessage.isEmpty()) {
+                        statusMenu->setOperationStatus(finishedText, false);
+                    } else {
+                        statusMenu->setOperationStatus("Operation failed", false);
+                        QMessageBox::warning(this, "Image operation failed", errorMessage);
+                    }
+                },
+                Qt::QueuedConnection);
+        });
+    imageOperationThread->start();
 }

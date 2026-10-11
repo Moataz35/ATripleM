@@ -8,9 +8,11 @@
 #include <QIcon>
 #include <QFrame>
 
-
 Navbar::Navbar(QWidget *parent)
     : QWidget(parent)
+    , undoAction(nullptr)
+    , redoAction(nullptr)
+    , resetAction(nullptr)
 {
     setFixedHeight(52);
 
@@ -37,51 +39,16 @@ Navbar::Navbar(QWidget *parent)
 
     layout->addWidget(fileButton);
 
+    // =========================================================
+    // EDIT BUTTON
+    // =========================================================
+
+    QToolButton *editButton = createNavButton("Edit");
+    editButton->setMenu(createEditMenu());
+    editButton->setPopupMode(QToolButton::InstantPopup);
+    layout->addWidget(editButton);
 
     layout->addStretch();
-
-    // =========================================================
-    // TOOLS BUTTON
-    // =========================================================
-    undoButton = createNavButton("");
-    undoButton->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
-    undoButton->setToolTip("Undo (Ctrl + Z)");
-    undoButton->setShortcut(QKeySequence("Ctrl+Z"));
-    // undoButton->setEnabled(false);
-    connect(undoButton, &QToolButton::clicked, this, &Navbar::undoRequested);
-    layout->addWidget(undoButton);
-
-
-    redoButton = createNavButton("");
-    redoButton->setIcon(style()->standardIcon(QStyle::SP_ArrowForward));
-    redoButton->setToolTip("Redo (Ctrl+Y)");
-    redoButton->setShortcut(QKeySequence("Ctrl+Y"));
-    // redoButton,setEnabled(false);
-    connect(redoButton, &QToolButton::clicked, this, &Navbar::redoRequested);
-    layout->addWidget(redoButton);
-
-    //=======================================
-    //seperate Buttons
-     QFrame *seperator = new QFrame(this);
-     seperator->setFrameShape(QFrame::VLine);
-     seperator->setFrameShadow(QFrame::Sunken);
-     layout->addWidget(seperator);
-
-
-    //=======================================
-    resetButton = createNavButton("");
-    resetButton->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
-    resetButton->setToolTip("Reset (Ctrl+R)");
-    resetButton->setShortcut(QKeySequence("Ctrl+R"));
-    // redoButton->setEnabled(false);
-    connect(resetButton, &QToolButton::clicked, this, &Navbar::resetRequested);
-    layout->addWidget(resetButton);
-    // =========================================================
-    // Stretch
-    // =========================================================
-
-    layout->addStretch();
-
 
     // =========================================================
     // STYLE
@@ -241,11 +208,49 @@ QMenu *Navbar::createFileMenu()
     return menu;
 }
 
+QMenu *Navbar::createEditMenu()
+{
+    QMenu *menu = new QMenu(this);
+
+    undoAction = new QAction(
+        style()->standardIcon(QStyle::SP_ArrowBack),
+        "Undo",
+        this
+        );
+    undoAction->setShortcut(QKeySequence("Ctrl+Z"));
+    connect(undoAction, &QAction::triggered,
+            this, &Navbar::undoRequested);
+
+    redoAction = new QAction(
+        style()->standardIcon(QStyle::SP_ArrowForward),
+        "Redo",
+        this
+        );
+    redoAction->setShortcut(QKeySequence("Ctrl+Y"));
+    connect(redoAction, &QAction::triggered,
+            this, &Navbar::redoRequested);
+
+    resetAction = new QAction(
+        style()->standardIcon(QStyle::SP_BrowserReload),
+        "Reset",
+        this
+        );
+    resetAction->setShortcut(QKeySequence("Ctrl+R"));
+    connect(resetAction, &QAction::triggered,
+            this, &Navbar::resetRequested);
+
+    menu->addAction(undoAction);
+    menu->addAction(redoAction);
+    menu->addSeparator();
+    menu->addAction(resetAction);
+
+    return menu;
+}
 
 void Navbar::setButtonEnabled(bool canUndo, bool canRedo, bool hasImage){
-    undoButton->setEnabled(canUndo);
-    redoButton->setEnabled(canRedo);
-    resetButton->setEnabled(hasImage);
+    undoAction->setEnabled(canUndo);
+    redoAction->setEnabled(canRedo);
+    resetAction->setEnabled(hasImage);
 }
 
 QToolButton *Navbar::createNavButton(const QString &text)
@@ -258,7 +263,6 @@ QToolButton *Navbar::createNavButton(const QString &text)
 
     return button;
 }
-
 
 
 

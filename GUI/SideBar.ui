@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>789</width>
-    <height>585</height>
+    <height>722</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -31,7 +31,7 @@
      <x>-10</x>
      <y>20</y>
      <width>101</width>
-     <height>518</height>
+     <height>551</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
@@ -352,19 +352,6 @@ QPushButton:pressed {
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
         <widget class="QPushButton" name="btnMergeCommanArea">
          <property name="toolTip">
           <string>Megr Comman Area</string>
@@ -383,6 +370,19 @@ QPushButton:pressed {
           </size>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

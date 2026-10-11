@@ -10,6 +10,8 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QToolTip>
+#include <QScrollArea>
+#include <QEvent>
 
 #include "ImageFilter.h"
 
@@ -33,6 +35,7 @@ class SideBar : public QWidget
 
 
     signals:
+        void stackedMenuVisibilityChanged(bool visible);
         void filterRequested(FilterType type);
         void adjustRequested(int brightness, int contrast, int saturation);
         void adjustApplied();
@@ -100,9 +103,15 @@ class SideBar : public QWidget
         void on_ConfirmCrop_clicked(QAbstractButton *button);
 
 
+    protected:
+        void resizeEvent(QResizeEvent *event) override;
+        bool eventFilter(QObject *watched, QEvent *event) override;
+
     private:
         void setSidebarLocked(bool locked);
+        void setupScrollableSidebar();
         Ui::SideBar *ui;
+        QScrollArea *sideBarScrollArea;
         void resetAdjustSliders();
         void resetMergeInputs();
         QColor currentFrameColor = Qt::white;
