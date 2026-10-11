@@ -441,7 +441,6 @@ void MainWindow::setImageOperationRunning(bool running)
 {
     navBar->setEnabled(!running);
     sideBar->setEnabled(!running);
-    editorDropArea->setEnabled(!running);
 }
 
 void MainWindow::runImageOperation(const QString &statusText,
