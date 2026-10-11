@@ -4,7 +4,6 @@
 #include <QToolButton>
 #include <QMenu>
 #include <QAction>
-#include <QStyle>
 #include <QIcon>
 #include <QFrame>
 
@@ -119,7 +118,7 @@ QMenu *Navbar::createFileMenu()
     // ---------------------------------------------------------
 
     QAction *openAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogOpenButton),
+        QIcon(":/icons/file.svg"),
         "Open File",
         this
         );
@@ -135,7 +134,7 @@ QMenu *Navbar::createFileMenu()
     // ---------------------------------------------------------
 
     QAction *saveAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogSaveButton),
+        QIcon(":/icons/save.svg"),
         "Save File",
         this
         );
@@ -151,7 +150,7 @@ QMenu *Navbar::createFileMenu()
     // ---------------------------------------------------------
 
     QAction *closeAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogCloseButton),
+        QIcon(":/icons/x.svg"),
         "Close File",
         this
         );
@@ -165,7 +164,7 @@ QMenu *Navbar::createFileMenu()
     // ---------------------------------------------------------
 
     QAction *exitAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogCancelButton),
+        QIcon(":/icons/exit.svg"),
         "Exit",
         this
         );
@@ -197,7 +196,7 @@ QMenu *Navbar::createEditMenu()
     QMenu *menu = new QMenu(this);
 
     undoAction = new QAction(
-        style()->standardIcon(QStyle::SP_ArrowBack),
+        QIcon(":/icons/undo.svg"),
         "Undo",
         this
         );
@@ -206,7 +205,7 @@ QMenu *Navbar::createEditMenu()
             this, &Navbar::undoRequested);
 
     redoAction = new QAction(
-        style()->standardIcon(QStyle::SP_ArrowForward),
+        QIcon(":/icons/redo.svg"),
         "Redo",
         this
         );
@@ -215,7 +214,7 @@ QMenu *Navbar::createEditMenu()
             this, &Navbar::redoRequested);
 
     resetAction = new QAction(
-        style()->standardIcon(QStyle::SP_BrowserReload),
+        QIcon(":/icons/reset.svg"),
         "Reset",
         this
         );
@@ -247,6 +246,4 @@ QToolButton *Navbar::createNavButton(const QString &text)
 
     return button;
 }
-
-
 

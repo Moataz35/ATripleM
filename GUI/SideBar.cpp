@@ -9,6 +9,52 @@ SideBar::SideBar(QWidget *parent)
     , sideBarScrollArea(nullptr)
 {
     ui->setupUi(this);
+    setStyleSheet(R"(
+        QPushButton#btnFilters,
+        QPushButton#btnAdjust,
+        QPushButton#btnRotate,
+        QPushButton#btnFlip,
+        QPushButton#btnSkew,
+        QPushButton#AddFrame,
+        QPushButton#Resize,
+        QPushButton#Crop,
+        QPushButton#btnMerge,
+        QPushButton#btnMergeCommanArea {
+            color: #eeeeee;
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 9px;
+            padding: 5px;
+        }
+
+        QPushButton#btnFilters:hover,
+        QPushButton#btnAdjust:hover,
+        QPushButton#btnRotate:hover,
+        QPushButton#btnFlip:hover,
+        QPushButton#btnSkew:hover,
+        QPushButton#AddFrame:hover,
+        QPushButton#Resize:hover,
+        QPushButton#Crop:hover,
+        QPushButton#btnMerge:hover,
+        QPushButton#btnMergeCommanArea:hover {
+            background-color: rgba(238, 238, 238, 0.10);
+            border-color: #444444;
+        }
+
+        QPushButton#btnFilters:pressed,
+        QPushButton#btnAdjust:pressed,
+        QPushButton#btnRotate:pressed,
+        QPushButton#btnFlip:pressed,
+        QPushButton#btnSkew:pressed,
+        QPushButton#AddFrame:pressed,
+        QPushButton#Resize:pressed,
+        QPushButton#Crop:pressed,
+        QPushButton#btnMerge:pressed,
+        QPushButton#btnMergeCommanArea:pressed {
+            background-color: rgba(238, 238, 238, 0.18);
+            border-color: #555555;
+        }
+    )");
     setupScrollableSidebar();
     ui->stackedWidget->installEventFilter(this);
     ui->stackedWidget->setVisible(false);
