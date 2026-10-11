@@ -18,5 +18,6 @@
         <file>icons/skew.svg</file>
         <file>icons/undo.svg</file>
         <file>icons/x.svg</file>
+        <file>icons/upload.svg</file>
     </qresource>
 </RCC>
