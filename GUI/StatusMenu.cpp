@@ -4,7 +4,10 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QComboBox>
+#include <QLineEdit>
 #include <QPainter>
+#include <QSignalBlocker>
 #include <QTimer>
 
 namespace {
@@ -69,6 +72,8 @@ StatusMenu::StatusMenu(QWidget *parent)
     , spinner(new SpinnerWidget(this))
     , operationStatusLabel(new QLabel("Ready", this))
     , imageInfoLabel(new QLabel("No image", this))
+    , zoomLabel(new QLabel("Zoom:", this))
+    , zoomCombo(new QComboBox(this))
 {
     setObjectName("imageStatusPanel");
     setAttribute(Qt::WA_StyledBackground, true);
@@ -81,18 +86,49 @@ StatusMenu::StatusMenu(QWidget *parent)
     operationStatusLabel->setObjectName("operationStatusLabel");
     imageInfoLabel->setObjectName("imageInfoLabel");
     imageInfoLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    zoomLabel->setObjectName("zoomLabel");
+    zoomCombo->setObjectName("zoomCombo");
+    zoomCombo->setEditable(true);
+    zoomCombo->setInsertPolicy(QComboBox::NoInsert);
+    zoomCombo->setFixedWidth(78);
+    zoomCombo->addItems({"10%", "25%", "50%", "75%", "100%", "125%",
+                         "150%", "200%", "300%", "400%"});
+    zoomCombo->setCurrentText("100%");
 
     spinner->setObjectName("spinner");
 
     statusLayout->addWidget(spinner);
     statusLayout->addWidget(operationStatusLabel);
     statusLayout->addStretch();
+    statusLayout->addWidget(zoomLabel);
+    statusLayout->addWidget(zoomCombo);
     statusLayout->addWidget(imageInfoLabel);
 
     setStyleSheet(
         "#imageStatusPanel { background-color: #252526; border-top: 1px solid #333333; }"
-        "#operationStatusLabel, #imageInfoLabel { color: #b8b8b8; font-size: 11px; background-color : transparent}"
+        "#operationStatusLabel, #imageInfoLabel, #zoomLabel { color: #b8b8b8; font-size: 11px; background-color : transparent}"
+        "QComboBox#zoomCombo { color: #dddddd; background-color: #2d2d2d; border: 1px solid #454545; border-radius: 3px; padding: 2px 4px; }"
+        "QComboBox#zoomCombo QAbstractItemView { color: #dddddd; background-color: #252526; selection-background-color: #3a3a3a; }"
         "#spinner {background-color : transparent}");
+
+    const auto applyZoomText = [this]() {
+        QString text = zoomCombo->currentText().trimmed();
+        if (text.endsWith('%')) {
+            text.chop(1);
+        }
+        bool ok = false;
+        const int percent = text.toInt(&ok);
+        if (ok) {
+            emit zoomRequested(percent);
+        } else {
+            setZoomPercent(currentZoomPercent);
+        }
+    };
+    connect(zoomCombo, qOverload<int>(&QComboBox::activated),
+            this, [applyZoomText](int) { applyZoomText(); });
+    connect(zoomCombo->lineEdit(), &QLineEdit::editingFinished,
+            this, applyZoomText);
+    zoomCombo->setEnabled(false);
     spinner->setSpinning(false);
 }
 
@@ -106,9 +142,13 @@ void StatusMenu::setImageInfo(const Image *image)
 {
     if (!image || !image->imageData) {
         imageInfoLabel->setText("No image");
+        zoomCombo->setEnabled(false);
+        zoomLabel->setEnabled(false);
         return;
     }
 
+    zoomCombo->setEnabled(true);
+    zoomLabel->setEnabled(true);
     const qint64 memorySize = static_cast<qint64>(image->width)
                               * image->height * image->channels;
     const QString colorMode = image->channels == 1 ? "Grayscale (8-bit)" : "RGB (24-bit)";
@@ -118,4 +158,14 @@ void StatusMenu::setImageInfo(const Image *image)
             .arg(image->width)
             .arg(image->height)
             .arg(imageSizeText(memorySize)));
+}
+
+void StatusMenu::setZoomPercent(int percent)
+{
+    currentZoomPercent = percent;
+    const QSignalBlocker blocker(zoomCombo);
+    const QString text = QString("%1%").arg(percent);
+    int index = zoomCombo->findText(text);
+    zoomCombo->setCurrentIndex(index);
+    zoomCombo->setEditText(text);
 }

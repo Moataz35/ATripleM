@@ -5,6 +5,7 @@
 #include <QString>
 
 class QLabel;
+class QComboBox;
 class SpinnerWidget;
 class Image;
 
@@ -17,11 +18,18 @@ public:
 
     void setOperationStatus(const QString &text, bool running);
     void setImageInfo(const Image *image);
+    void setZoomPercent(int percent);
+
+signals:
+    void zoomRequested(int percent);
 
 private:
     SpinnerWidget *spinner;
     QLabel *operationStatusLabel;
     QLabel *imageInfoLabel;
+    QLabel *zoomLabel;
+    QComboBox *zoomCombo;
+    int currentZoomPercent = 100;
 };
 
 #endif // STATUSMENU_H

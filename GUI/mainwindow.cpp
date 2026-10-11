@@ -160,6 +160,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sideBar, &SideBar::skewRequested, this, &MainWindow::applySkew);
     connect(sideBar, &SideBar::mergeByScalingRequested, this, &MainWindow::applyMergeByScaling);
     connect(sideBar, &SideBar::mergeByCommonAreaRequested, this, &MainWindow::applyMergeByCommonArea);
+    connect(statusMenu, &StatusMenu::zoomRequested,
+            editorDropArea, &EditorDropArea::setZoomPercent);
+    connect(editorDropArea, &EditorDropArea::zoomChanged,
+            statusMenu, &StatusMenu::setZoomPercent);
 
 
     updateNavBarButtons();

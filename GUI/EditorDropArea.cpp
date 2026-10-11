@@ -13,6 +13,11 @@
 #include <QPainter>
 #include <QImageReader>
 #include <QDebug>
+#include <QWheelEvent>
+#include <QScrollBar>
+#include <QShortcut>
+#include <QKeySequence>
+#include <QtMath>
 
 EditorDropArea::EditorDropArea(QWidget *parent)
     : QFrame(parent)
@@ -128,17 +133,47 @@ EditorDropArea::EditorDropArea(QWidget *parent)
     graphicsView->setFrameShape(QFrame::NoFrame);
 
     graphicsView->setHorizontalScrollBarPolicy(
-        Qt::ScrollBarAlwaysOff
+        Qt::ScrollBarAsNeeded
         );
 
     graphicsView->setVerticalScrollBarPolicy(
-        Qt::ScrollBarAlwaysOff
+        Qt::ScrollBarAsNeeded
         );
+    graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+    graphicsView->viewport()->setCursor(Qt::OpenHandCursor);
+    graphicsView->viewport()->installEventFilter(this);
 
     graphicsView->setStyleSheet(
         "QGraphicsView {"
         "    background-color: #111111;"
         "    border: none;"
+        "}"
+        "QScrollBar:vertical, QScrollBar:horizontal {"
+        "    border: none;"
+        "    background: transparent;"
+        "    margin: 0px;"
+        "}"
+        "QScrollBar:vertical { width: 10px; }"
+        "QScrollBar:horizontal { height: 10px; }"
+        "QScrollBar::handle:vertical, QScrollBar::handle:horizontal {"
+        "    background: rgba(110, 110, 110, 180);"
+        "    border-radius: 5px;"
+        "    min-width: 28px;"
+        "    min-height: 28px;"
+        "}"
+        "QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {"
+        "    background: rgba(140, 140, 140, 220);"
+        "}"
+        "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,"
+        "QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,"
+        "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,"
+        "QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal,"
+        "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical,"
+        "QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {"
+        "    background: none;"
+        "    border: none;"
+        "    width: 0px;"
+        "    height: 0px;"
         "}"
         );
 
@@ -147,6 +182,16 @@ EditorDropArea::EditorDropArea(QWidget *parent)
     graphicsView->setScene(scene);
 
     pixmapItem = nullptr;
+
+    auto *fitViewShortcut = new QShortcut(QKeySequence("Ctrl+0"), this);
+    fitViewShortcut->setContext(Qt::ApplicationShortcut);
+    connect(fitViewShortcut, &QShortcut::activated, this, [this]() {
+        if (!pixmapItem) {
+            return;
+        }
+        fitToView = true;
+        fitImageToView();
+    });
 
 
     QVBoxLayout *imageLayout = new QVBoxLayout(imageWidget);
@@ -334,18 +379,85 @@ void EditorDropArea::setImage(const Image& image)
 
     showImageState();
 
-    graphicsView->fitInView(
-        pixmapItem,
-        Qt::KeepAspectRatio
-        );
+    if (fitToView) {
+        fitImageToView();
+    } else {
+        setZoomPercent(zoomPercent);
+    }
+}
+
+void EditorDropArea::setZoomPercent(int percent)
+{
+    if (!pixmapItem) {
+        return;
+    }
+
+    zoomPercent = qBound(MinZoomPercent, percent, MaxZoomPercent);
+    fitToView = false;
+    graphicsView->resetTransform();
+    const qreal scale = zoomPercent / 100.0;
+    graphicsView->scale(scale, scale);
+    graphicsView->centerOn(pixmapItem);
+    emit zoomChanged(zoomPercent);
+}
+
+bool EditorDropArea::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == graphicsView->viewport()
+        && event->type() == QEvent::Wheel
+        && pixmapItem) {
+        auto *wheelEvent = static_cast<QWheelEvent *>(event);
+        if (wheelEvent->modifiers().testFlag(Qt::ControlModifier)) {
+            const QPoint cursorPosition =
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+                wheelEvent->position().toPoint();
+#else
+                wheelEvent->pos();
+#endif
+            const QPointF scenePosition = graphicsView->mapToScene(cursorPosition);
+            const qreal wheelSteps = wheelEvent->angleDelta().y() / 120.0;
+            const int requestedZoom = qRound(zoomPercent * qPow(1.15, wheelSteps));
+
+            setZoomPercent(requestedZoom);
+
+            const QPoint imagePosition = graphicsView->mapFromScene(scenePosition);
+            graphicsView->horizontalScrollBar()->setValue(
+                graphicsView->horizontalScrollBar()->value()
+                + imagePosition.x() - cursorPosition.x());
+            graphicsView->verticalScrollBar()->setValue(
+                graphicsView->verticalScrollBar()->value()
+                + imagePosition.y() - cursorPosition.y());
+
+            wheelEvent->accept();
+            return true;
+        }
+    }
+
+    return QFrame::eventFilter(watched, event);
+}
+
+void EditorDropArea::fitImageToView()
+{
+    if (!pixmapItem) {
+        return;
+    }
+
+    graphicsView->fitInView(pixmapItem, Qt::KeepAspectRatio);
+    zoomPercent = qBound(MinZoomPercent,
+                         qRound(graphicsView->transform().m11() * 100.0),
+                         MaxZoomPercent);
+    emit zoomChanged(zoomPercent);
 }
 
 void EditorDropArea::removeImage(){
     currentQImage = QImage();
+    fitToView = true;
+    zoomPercent = 100;
 
     scene->clear();
     pixmapItem = nullptr;
     cropBox = nullptr;
+    emit zoomChanged(zoomPercent);
 
     showEmptyState();
 
@@ -407,12 +519,8 @@ void EditorDropArea::resizeEvent(QResizeEvent *event)
 {
     QFrame::resizeEvent(event);
 
-    if (pixmapItem)
-    {
-        graphicsView->fitInView(
-            pixmapItem,
-            Qt::KeepAspectRatio
-            );
+    if (pixmapItem && fitToView) {
+        fitImageToView();
     }
 }
 

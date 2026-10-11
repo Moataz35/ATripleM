@@ -13,6 +13,7 @@
 class QLabel;
 class QPushButton;
 class QResizeEvent;
+class QEvent;
 
 class EditorDropArea : public QFrame
 {
@@ -32,11 +33,16 @@ signals:
     void imageSelected(const QString& filePath);
     void imageRemoved();
     void cropRequested(QRect cropRect);
+    void zoomChanged(int percent);
 
 private slots:
     void browseImage();
 
+public slots:
+    void setZoomPercent(int percent);
+
 protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
@@ -49,6 +55,7 @@ private:
     void showImageState();
     void setNormalStyle();
     void setDragStyle();
+    void fitImageToView();
 
     QStackedLayout *stackedLayout;
 
@@ -72,6 +79,11 @@ private:
     QPushButton *removeButton;
 
     QImage currentQImage;
+    int zoomPercent = 100;
+    bool fitToView = true;
+
+    static constexpr int MinZoomPercent = 10;
+    static constexpr int MaxZoomPercent = 400;
 };
 
 #endif
