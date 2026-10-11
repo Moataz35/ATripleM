@@ -56,6 +56,7 @@ private:
     void setNormalStyle();
     void setDragStyle();
     void fitImageToView();
+    void setCropInteractionEnabled(bool enabled);
 
     QStackedLayout *stackedLayout;
 

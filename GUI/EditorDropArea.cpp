@@ -365,6 +365,7 @@ void EditorDropArea::setImage(const Image& image)
 {
     currentQImage = imageToQImage(image);
 
+    setCropInteractionEnabled(false);
     scene->clear();
     pixmapItem = nullptr;
     cropBox = nullptr;
@@ -398,6 +399,9 @@ void EditorDropArea::setZoomPercent(int percent)
     const qreal scale = zoomPercent / 100.0;
     graphicsView->scale(scale, scale);
     graphicsView->centerOn(pixmapItem);
+    if (cropBox) {
+        cropBox->setViewScale(graphicsView->transform().m11());
+    }
     emit zoomChanged(zoomPercent);
 }
 
@@ -443,6 +447,9 @@ void EditorDropArea::fitImageToView()
     }
 
     graphicsView->fitInView(pixmapItem, Qt::KeepAspectRatio);
+    if (cropBox) {
+        cropBox->setViewScale(graphicsView->transform().m11());
+    }
     zoomPercent = qBound(MinZoomPercent,
                          qRound(graphicsView->transform().m11() * 100.0),
                          MaxZoomPercent);
@@ -454,6 +461,7 @@ void EditorDropArea::removeImage(){
     fitToView = true;
     zoomPercent = 100;
 
+    setCropInteractionEnabled(false);
     scene->clear();
     pixmapItem = nullptr;
     cropBox = nullptr;
@@ -469,14 +477,17 @@ void EditorDropArea::showCropBox() {
         return;
     }
 
+    setCropInteractionEnabled(true);
     if (pixmapItem && !cropBox) {
         cropBox = new CropBox(pixmapItem->boundingRect());
         scene->addItem(cropBox);
+        cropBox->setViewScale(graphicsView->transform().m11());
     } else if (cropBox) {
         if (cropBox->scene() != scene) {
             scene->addItem(cropBox);
         }
         cropBox->changeBound(pixmapItem->boundingRect());
+        cropBox->setViewScale(graphicsView->transform().m11());
     }
 }
 
@@ -503,6 +514,7 @@ void EditorDropArea::cropConfirmed() {
         delete cropBox;
         cropBox = nullptr;
     }
+    setCropInteractionEnabled(false);
 
 }
 
@@ -512,6 +524,15 @@ void EditorDropArea::cropCancelled() {
         delete cropBox;
         cropBox = nullptr;
     }
+    setCropInteractionEnabled(false);
+}
+
+void EditorDropArea::setCropInteractionEnabled(bool enabled)
+{
+    graphicsView->setDragMode(enabled ? QGraphicsView::NoDrag
+                                      : QGraphicsView::ScrollHandDrag);
+    graphicsView->viewport()->setCursor(enabled ? Qt::ArrowCursor
+                                                : Qt::OpenHandCursor);
 }
 
 

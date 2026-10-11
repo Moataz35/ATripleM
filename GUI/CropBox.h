@@ -14,6 +14,7 @@
 #include <QPen>
 #include <QBrush>
 #include <QCursor>
+#include <cmath>
 
 class CropBox : public QGraphicsRectItem
 {
@@ -32,12 +33,45 @@ public:
         imageBounds = newBounds;
     }
 
+    void setViewScale(qreal scale) {
+        viewScale = std::max(0.001, std::abs(scale));
+        update();
+    }
+
+    void paint(QPainter *painter,
+               const QStyleOptionGraphicsItem *option,
+               QWidget *widget = nullptr) override
+    {
+        QGraphicsRectItem::paint(painter, option, widget);
+
+        const QRectF bounds = rect();
+        const qreal area = getEffectiveGrabArea();
+        const QRectF handle(bounds.right() - area,
+                            bounds.bottom() - area,
+                            area,
+                            area);
+        const qreal penWidth = 1.5 / viewScale;
+
+        painter->save();
+        painter->setPen(QPen(QColor("#007acc"), penWidth));
+        painter->setBrush(QColor(0, 122, 204, 210));
+        painter->drawRect(handle);
+
+        const qreal inset = area * 0.28;
+        painter->setPen(QPen(Qt::white, penWidth));
+        painter->drawLine(handle.left() + inset, handle.bottom() - inset,
+                          handle.right() - inset, handle.top() + inset);
+        painter->drawLine(handle.left() + area * 0.48, handle.bottom() - inset,
+                          handle.right() - inset, handle.top() + area * 0.48);
+        painter->restore();
+    }
+
 protected:
-    
+
     qreal getEffectiveGrabArea() const {
-        QRectF br = rect();
-        
-        return std::max(5.0, std::min(15.0, std::min(br.width(), br.height()) / 3.0));
+        const QRectF bounds = rect();
+        return std::min(24.0 / viewScale,
+                        std::min(bounds.width(), bounds.height()) / 3.0);
     }
 
     void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override {
@@ -166,6 +200,7 @@ private:
     bool isMoving = false;
     QPointF startPos;
     QRectF startRect;
+    qreal viewScale = 1.0;
 };
 
 #endif // CROPBOX_H
