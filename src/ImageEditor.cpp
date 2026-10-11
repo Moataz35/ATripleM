@@ -284,9 +284,25 @@ void ImageEditor::applyMergeByScaling(Image& overlayImage , int alpha){
     ImageFilter::MergeByScaling(currentImage , overlayImage , alpha);
 }
 
+void ImageEditor::applyMergeByScaling(const std::string& overlayPath, int alpha){
+    if (!isImageLoaded()) {
+        throw std::runtime_error("ERROR! No image loaded.");
+    }
+    Image overlay(overlayPath);
+    applyMergeByScaling(overlay, alpha);
+}
+
 void ImageEditor::applyMergeByCommonArea(Image& overlayImage , int alpha , int offsetX , int offsetY){
     saveState();
     ImageFilter::MergeByCommonArea(currentImage , overlayImage , alpha , offsetX , offsetY);
+}
+
+void ImageEditor::applyMergeByCommonArea(const std::string& overlayPath, int alpha, int offsetX, int offsetY){
+    if (!isImageLoaded()) {
+        throw std::runtime_error("ERROR! No image loaded.");
+    }
+    Image overlay(overlayPath);
+    applyMergeByCommonArea(overlay, alpha, offsetX, offsetY);
 }
 
 void ImageEditor::applyEdgeDetection(unsigned char threshold) {

@@ -45,6 +45,8 @@ class SideBar : public QWidget
         void skewRequested(int degree);
         void skewApplied();
         void skewCancelled();
+        void mergeByScalingRequested(const QString& overlayPath, int alpha);
+        void mergeByCommonAreaRequested(const QString& overlayPath, int alpha, int offsetX, int offsetY);
 
 
     private slots:
@@ -76,6 +78,12 @@ class SideBar : public QWidget
         // Merge ===
         void on_btnMerge_clicked();
         void on_btnMergeCommanArea_clicked();
+        void on_btnBrowseMerge_clicked();
+        void on_btnBrowseMergeCommon_clicked();
+        void on_confirmMerge_clicked(QAbstractButton *button);
+        void on_confirmMergeCommanArea_clicked(QAbstractButton *button);
+        void on_alphaSlider_valueChanged(int value);
+        void on_alphaSliderCommanArea_valueChanged(int value);
         //==================================
         void on_skewSlider_valueChanged(int degree);
         void on_confirmSkew_clicked(QAbstractButton *button);
@@ -96,6 +104,7 @@ class SideBar : public QWidget
         void setSidebarLocked(bool locked);
         Ui::SideBar *ui;
         void resetAdjustSliders();
+        void resetMergeInputs();
         QColor currentFrameColor = Qt::white;
         void resetSkewSlider();
 };

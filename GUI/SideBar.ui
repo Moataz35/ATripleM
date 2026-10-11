@@ -943,6 +943,20 @@ QPushButton:pressed {
    <widget class="QWidget" name="Merge">
     <layout class="QVBoxLayout" name="verticalLayout_8">
      <item>
+      <widget class="QLineEdit" name="mergeImagePath">
+       <property name="placeholderText">
+        <string>Overlay Image</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnBrowseMerge">
+       <property name="text">
+        <string>Upload Image</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLineEdit" name="AlphaDegree">
        <property name="text">
         <string>Alpha Degree</string>
@@ -955,7 +969,7 @@ QPushButton:pressed {
      <item>
       <widget class="QSlider" name="alphaSlider">
        <property name="maximum">
-        <number>255</number>
+        <number>100</number>
        </property>
        <property name="orientation">
         <enum>Qt::Orientation::Horizontal</enum>
@@ -987,6 +1001,20 @@ QPushButton:pressed {
    <widget class="QWidget" name="MergeCommanArea">
     <layout class="QVBoxLayout" name="verticalLayout_12">
      <item>
+      <widget class="QLineEdit" name="mergeCommonImagePath">
+       <property name="placeholderText">
+        <string>Overlay Image</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnBrowseMergeCommon">
+       <property name="text">
+        <string>Upload Image</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLineEdit" name="AlphaDegree_2">
        <property name="text">
         <string>Alpha Degree</string>
@@ -999,7 +1027,7 @@ QPushButton:pressed {
      <item>
       <widget class="QSlider" name="alphaSliderCommanArea">
        <property name="maximum">
-        <number>255</number>
+        <number>100</number>
        </property>
        <property name="orientation">
         <enum>Qt::Orientation::Horizontal</enum>
@@ -1019,9 +1047,12 @@ QPushButton:pressed {
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="offset_Y">
+        <widget class="QSpinBox" name="offSet_X">
          <property name="cursor">
           <cursorShape>ArrowCursor</cursorShape>
+         </property>
+         <property name="minimum">
+          <number>-3000</number>
          </property>
          <property name="maximum">
           <number>3000</number>
@@ -1039,9 +1070,12 @@ QPushButton:pressed {
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="offSet_X">
+        <widget class="QSpinBox" name="offset_Y">
          <property name="cursor">
           <cursorShape>ArrowCursor</cursorShape>
+         </property>
+         <property name="minimum">
+          <number>-3000</number>
          </property>
          <property name="maximum">
           <number>3000</number>

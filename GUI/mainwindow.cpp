@@ -99,6 +99,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(sideBar, &SideBar::cropCancelled, editorDropArea, &EditorDropArea::cropCancelled);
     connect(sideBar, &SideBar::skewRequested, this, &MainWindow::applySkew);
+    connect(sideBar, &SideBar::mergeByScalingRequested, this, &MainWindow::applyMergeByScaling);
+    connect(sideBar, &SideBar::mergeByCommonAreaRequested, this, &MainWindow::applyMergeByCommonArea);
 
 
     updateNavBarButtons();
@@ -242,6 +244,30 @@ void MainWindow::crop(QRect toCrop) {
     editor->crop(toCrop.x(), toCrop.y(), toCrop.width(), toCrop.height());
     editorDropArea->setImage(editor->getCurrentImage());
     updateNavBarButtons();
+}
+
+void MainWindow::applyMergeByScaling(const QString& overlayPath, int alpha){
+    try {
+        editor->applyMergeByScaling(overlayPath.toStdString(), alpha);
+        editorDropArea->setImage(editor->getCurrentImage());
+        updateNavBarButtons();
+    } catch(const std::runtime_error &e){
+        QMessageBox::warning(this, "Error!", e.what());
+    } catch(const std::exception &e){
+        QMessageBox::critical(this, "Error!", e.what());
+    }
+}
+
+void MainWindow::applyMergeByCommonArea(const QString& overlayPath, int alpha, int offsetX, int offsetY){
+    try {
+        editor->applyMergeByCommonArea(overlayPath.toStdString(), alpha, offsetX, offsetY);
+        editorDropArea->setImage(editor->getCurrentImage());
+        updateNavBarButtons();
+    } catch(const std::runtime_error &e){
+        QMessageBox::warning(this, "Error!", e.what());
+    } catch(const std::exception &e){
+        QMessageBox::critical(this, "Error!", e.what());
+    }
 }
 //=======================================================================
 //Adjustments Functions

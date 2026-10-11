@@ -9,6 +9,17 @@ SideBar::SideBar(QWidget *parent)
     ui->setupUi(this);
     ui->stackedWidget->setVisible(false);
     setButtonsEnabled(false);
+
+    ui->alphaSlider->setRange(0, 100);
+    ui->alphaSlider->setValue(50);
+    ui->AlphaDegree->setText("Alpha: 50%");
+
+    ui->alphaSliderCommanArea->setRange(0, 100);
+    ui->alphaSliderCommanArea->setValue(50);
+    ui->AlphaDegree_2->setText("Alpha: 50%");
+
+    ui->offSet_X->setRange(-3000, 3000);
+    ui->offset_Y->setRange(-3000, 3000);
 }
 
 SideBar::~SideBar()
@@ -28,6 +39,7 @@ void SideBar::setButtonsEnabled(bool hasImage)
     ui->btnSkew->setEnabled(hasImage);
     if (!hasImage) {
         resetAdjustSliders();
+        resetMergeInputs();
         ui->stackedWidget->setVisible(false);
     }
     ui->btnMerge->setEnabled(hasImage);
@@ -190,6 +202,20 @@ void SideBar::resetSkewSlider(){
     ui->SkewDegree->setText("Skew Degree: 0");
 }
 
+void SideBar::resetMergeInputs() {
+    ui->mergeImagePath->clear();
+    const QSignalBlocker b1(ui->alphaSlider);
+    ui->alphaSlider->setValue(50);
+    ui->AlphaDegree->setText("Alpha: 50%");
+
+    ui->mergeCommonImagePath->clear();
+    const QSignalBlocker b2(ui->alphaSliderCommanArea);
+    ui->alphaSliderCommanArea->setValue(50);
+    ui->AlphaDegree_2->setText("Alpha: 50%");
+    ui->offSet_X->setValue(0);
+    ui->offset_Y->setValue(0);
+}
+
 void SideBar::on_BrightnessSlider_valueChanged(int value) {
     ui->Brightness->setText(QString("Brightness: %1").arg(value));
 
@@ -210,6 +236,14 @@ void SideBar::on_SaturationSlider_valueChanged(int value) {
 
 void SideBar::on_skewSlider_valueChanged(int degree){
     ui->SkewDegree->setText(QString("Skew: %1").arg(degree));
+}
+
+void SideBar::on_alphaSlider_valueChanged(int value) {
+    ui->AlphaDegree->setText(QString("Alpha: %1%").arg(value));
+}
+
+void SideBar::on_alphaSliderCommanArea_valueChanged(int value) {
+    ui->AlphaDegree_2->setText(QString("Alpha: %1%").arg(value));
 }
 
 //=======================================================================================
@@ -270,6 +304,64 @@ void SideBar::on_ApplyFrame_clicked(QAbstractButton *button) {
         emit frameRequested(width, isFancy, currentFrameColor);
         ui->stackedWidget->setVisible(false);
     }else{
+        ui->stackedWidget->setVisible(false);
+    }
+}
+
+void SideBar::on_btnBrowseMerge_clicked() {
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        "Select Overlay Image",
+        "",
+        "Image Files (*.png *.jpg *.jpeg *.bmp *.webp *.ppm);;All Files (*)"
+    );
+
+    if (!filePath.isEmpty()) {
+        ui->mergeImagePath->setText(filePath);
+    }
+}
+
+void SideBar::on_btnBrowseMergeCommon_clicked() {
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        "Select Overlay Image",
+        "",
+        "Image Files (*.png *.jpg *.jpeg *.bmp *.webp *.ppm);;All Files (*)"
+    );
+
+    if (!filePath.isEmpty()) {
+        ui->mergeCommonImagePath->setText(filePath);
+    }
+}
+
+void SideBar::on_confirmMerge_clicked(QAbstractButton *button) {
+    if (ui->confirmMerge->buttonRole(button) == QDialogButtonBox::ApplyRole) {
+        QString path = ui->mergeImagePath->text().trimmed();
+        if (path.isEmpty()) {
+            QMessageBox::warning(this, "Error", "Please select an overlay image first.");
+            return;
+        }
+        int alpha = ui->alphaSlider->value();
+        emit mergeByScalingRequested(path, alpha);
+        ui->stackedWidget->setVisible(false);
+    } else {
+        ui->stackedWidget->setVisible(false);
+    }
+}
+
+void SideBar::on_confirmMergeCommanArea_clicked(QAbstractButton *button) {
+    if (ui->confirmMergeCommanArea->buttonRole(button) == QDialogButtonBox::ApplyRole) {
+        QString path = ui->mergeCommonImagePath->text().trimmed();
+        if (path.isEmpty()) {
+            QMessageBox::warning(this, "Error", "Please select an overlay image first.");
+            return;
+        }
+        int alpha = ui->alphaSliderCommanArea->value();
+        int offsetX = ui->offSet_X->value();
+        int offsetY = ui->offset_Y->value();
+        emit mergeByCommonAreaRequested(path, alpha, offsetX, offsetY);
+        ui->stackedWidget->setVisible(false);
+    } else {
         ui->stackedWidget->setVisible(false);
     }
 }

@@ -54,8 +54,10 @@ public:
     void addFrame(Color frameColor, int frameThickness, bool fancy);
 
     void applyMergeByScaling(Image& overlayImage , int alpha);
+    void applyMergeByScaling(const std::string& overlayPath, int alpha);
 
     void applyMergeByCommonArea(Image& overlayImage , int alpha , int offsetX , int offsetY);
+    void applyMergeByCommonArea(const std::string& overlayPath, int alpha, int offsetX, int offsetY);
 
     void applyEdgeDetection(unsigned char threshold = 100);
 

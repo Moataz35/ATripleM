@@ -30,6 +30,8 @@ private slots:
     void applyFrame(int width, bool isFancy, QColor color);
     void applySkew(double degree);
     void crop(QRect toCrop);
+    void applyMergeByScaling(const QString& overlayPath, int alpha);
+    void applyMergeByCommonArea(const QString& overlayPath, int alpha, int offsetX, int offsetY);
     void undo();
     void redo();
     void reset();
