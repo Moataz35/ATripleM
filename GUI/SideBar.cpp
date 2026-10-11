@@ -10,6 +10,7 @@ SideBar::SideBar(QWidget *parent)
 {
     ui->setupUi(this);
     setupScrollableSidebar();
+    ui->stackedWidget->installEventFilter(this);
     ui->stackedWidget->setVisible(false);
     setButtonsEnabled(false);
 
@@ -28,6 +29,19 @@ SideBar::SideBar(QWidget *parent)
 SideBar::~SideBar()
 {
     delete ui;
+}
+
+bool SideBar::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->stackedWidget) {
+        if (event->type() == QEvent::Show) {
+            emit stackedMenuVisibilityChanged(true);
+        } else if (event->type() == QEvent::Hide) {
+            emit stackedMenuVisibilityChanged(false);
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
 }
 
 void SideBar::setupScrollableSidebar()

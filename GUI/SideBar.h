@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QToolTip>
 #include <QScrollArea>
+#include <QEvent>
 
 #include "ImageFilter.h"
 
@@ -34,6 +35,7 @@ class SideBar : public QWidget
 
 
     signals:
+        void stackedMenuVisibilityChanged(bool visible);
         void filterRequested(FilterType type);
         void adjustRequested(int brightness, int contrast, int saturation);
         void adjustApplied();
@@ -103,6 +105,7 @@ class SideBar : public QWidget
 
     protected:
         void resizeEvent(QResizeEvent *event) override;
+        bool eventFilter(QObject *watched, QEvent *event) override;
 
     private:
         void setSidebarLocked(bool locked);
