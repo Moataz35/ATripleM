@@ -32,6 +32,7 @@ class SideBar : public QWidget
         ~SideBar() ;
 
         void setButtonsEnabled(bool hasImage);
+        void setResizeDimensions(int width, int height);
 
 
     signals:
@@ -83,24 +84,31 @@ class SideBar : public QWidget
         void on_btnMergeCommanArea_clicked();
         void on_btnBrowseMerge_clicked();
         void on_btnBrowseMergeCommon_clicked();
-        void on_confirmMerge_clicked(QAbstractButton *button);
-        void on_confirmMergeCommanArea_clicked(QAbstractButton *button);
+        void on_confirmMergeApply_clicked();
+        void on_confirmMergeCancel_clicked();
+        void on_confirmMergeCommanAreaApply_clicked();
+        void on_confirmMergeCommanAreaCancel_clicked();
         void on_alphaSlider_valueChanged(int value);
         void on_alphaSliderCommanArea_valueChanged(int value);
         //==================================
         void on_skewSlider_valueChanged(int degree);
-        void on_confirmSkew_clicked(QAbstractButton *button);
+        void on_confirmSkewApply_clicked();
+        void on_confirmSkewCancel_clicked();
 
         void on_BrightnessSlider_valueChanged(int value);
         void on_ContrastSlider_valueChanged(int value);
         void on_SaturationSlider_valueChanged(int value);
 
-        void on_confirmAdjust_clicked(QAbstractButton *button);
-        void on_ApplyFrame_clicked(QAbstractButton *button);
-        void on_confirmResize_clicked(QAbstractButton *button);
+        void on_confirmAdjustApply_clicked();
+        void on_confirmAdjustCancel_clicked();
+        void on_ApplyFrameApply_clicked();
+        void on_ApplyFrameCancel_clicked();
+        void on_confirmResizeApply_clicked();
+        void on_confirmResizeCancel_clicked();
 
         void on_Crop_clicked();
-        void on_ConfirmCrop_clicked(QAbstractButton *button);
+        void on_ConfirmCropApply_clicked();
+        void on_ConfirmCropCancel_clicked();
 
 
     protected:

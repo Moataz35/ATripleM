@@ -404,7 +404,7 @@
    </property>
    <property name="maximumSize">
     <size>
-     <width>100</width>
+     <width>150</width>
      <height>16777215</height>
     </size>
    </property>
@@ -418,7 +418,7 @@
     <enum>QFrame::Shadow::Plain</enum>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>8</number>
    </property>
    <widget class="QWidget" name="FiltersMenu">
     <property name="toolTip">
@@ -620,17 +620,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmAdjust">
-       <property name="cursor">
-        <cursorShape>ArrowCursor</cursorShape>
+      <layout class="QVBoxLayout" name="confirmAdjustButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
-       </property>
-       <property name="centerButtons">
-        <bool>false</bool>
-       </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmAdjustApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmAdjustCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_7">
@@ -758,11 +766,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="ApplyFrame">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="ApplyFrameButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="ApplyFrameApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ApplyFrameCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_5">
@@ -794,7 +816,7 @@
      <item>
       <widget class="QSpinBox" name="inputWidth">
        <property name="minimum">
-        <number>16</number>
+        <number>1</number>
        </property>
        <property name="maximum">
         <number>1200</number>
@@ -814,7 +836,7 @@
      <item>
       <widget class="QSpinBox" name="inputHight">
        <property name="minimum">
-        <number>16</number>
+        <number>1</number>
        </property>
        <property name="maximum">
         <number>1800</number>
@@ -822,11 +844,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmResize">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="confirmResizeButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmResizeApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmResizeCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_6">
@@ -853,11 +889,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="ConfirmCrop">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="ConfirmCropButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="ConfirmCropApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ConfirmCropCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_9">
@@ -903,11 +953,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmSkew">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="confirmSkewButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmSkewApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmSkewCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_10">
@@ -961,11 +1025,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmMerge">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="confirmMergeButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmMergeApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmMergeCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_8">
@@ -1069,11 +1147,25 @@
       </layout>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmMergeCommanArea">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="confirmMergeCommanAreaButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmMergeCommanAreaApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmMergeCommanAreaCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_11">

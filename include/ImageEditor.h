@@ -14,6 +14,7 @@ private:
     std::deque<Image> changes;
     std::stack<Image> changesUndone;
     bool modified = false;
+    bool canReachInitialState = true;
     std::string originalFilePath;
     Image adjustBase;          // image before the current adjust session started
     bool adjusting = false;    // true while sliders are being previewed
@@ -24,6 +25,8 @@ public:
 
     int getWidth() const;
     int getHeight() const;
+    
+    std::string getOriginalImagePath();
 
     Image& getCurrentImage();
 
@@ -52,6 +55,7 @@ public:
     void cancelAdjust();
 
     void addFrame(Color frameColor, int frameThickness, bool fancy);
+    void resizeImage(int width, int height);
 
     void applyMergeByScaling(Image& overlayImage , int alpha);
     void applyMergeByScaling(const std::string& overlayPath, int alpha);

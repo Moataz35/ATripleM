@@ -13,11 +13,12 @@ class Navbar : public QWidget
 
 public:
     explicit Navbar(QWidget *parent = nullptr);
-    void setButtonEnabled(bool canUndo, bool canRedo,bool hasImage);
+    void setButtonEnabled(bool canUndo, bool canRedo, bool hasImage);
 
 signals:
     void openFileRequested();
     void saveFileRequested();
+    void saveNewFileRequested();
     void closeFileRequested();
     void exitRequested();
     void undoRequested();
@@ -33,6 +34,9 @@ private:
     QAction *undoAction;
     QAction *redoAction;
     QAction *resetAction;
+    QAction *saveAction;
+    QAction *saveAsAction;
+    QAction *closeAction;
 
 };
 

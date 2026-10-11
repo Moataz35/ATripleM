@@ -71,6 +71,7 @@ StatusMenu::StatusMenu(QWidget *parent)
     , imageInfoLabel(new QLabel("No image", this))
 {
     setObjectName("imageStatusPanel");
+    setAttribute(Qt::WA_StyledBackground, true);
     setFixedHeight(34);
 
     auto *statusLayout = new QHBoxLayout(this);
@@ -81,6 +82,8 @@ StatusMenu::StatusMenu(QWidget *parent)
     imageInfoLabel->setObjectName("imageInfoLabel");
     imageInfoLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
+    spinner->setObjectName("spinner");
+
     statusLayout->addWidget(spinner);
     statusLayout->addWidget(operationStatusLabel);
     statusLayout->addStretch();
@@ -88,7 +91,8 @@ StatusMenu::StatusMenu(QWidget *parent)
 
     setStyleSheet(
         "#imageStatusPanel { background-color: #252526; border-top: 1px solid #333333; }"
-        "#operationStatusLabel, #imageInfoLabel { color: #b8b8b8; font-size: 11px; }");
+        "#operationStatusLabel, #imageInfoLabel { color: #b8b8b8; font-size: 11px; background-color : transparent}"
+        "#spinner {background-color : transparent}");
     spinner->setSpinning(false);
 }
 

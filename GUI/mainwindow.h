@@ -27,11 +27,13 @@ public:
     ~MainWindow() override;
 
 private slots:
+    void closeImage();
     void applyFilter(FilterType type);
     void applyAdjust(int brightness, int contrast, int saturation);
     void commitAdjust();
     void cancelAdjust();
     void applyFrame(int width, bool isFancy, QColor color);
+    void applyResize(int width, int height);
     void applySkew(double degree);
     void crop(QRect toCrop);
     void applyMergeByScaling(const QString& overlayPath, int alpha);
@@ -39,6 +41,10 @@ private slots:
     void undo();
     void redo();
     void reset();
+
+protected:
+    void closeEvent(QCloseEvent* event) override;
+
 private:
     Ui::MainWindow *ui;
     ImageEditor *editor;
@@ -52,8 +58,9 @@ private:
     void loadFile(const QString filePath);
     void openFile();
     void saveFile();
+    void saveNewFile();
     void removeImage();
-    void exit();
+    bool confirmSaveBeforeClosing();
     void updateNavBarButtons();
     void updateImageInfo();
     void runImageOperation(const QString &statusText,

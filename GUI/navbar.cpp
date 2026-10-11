@@ -12,7 +12,12 @@ Navbar::Navbar(QWidget *parent)
     , undoAction(nullptr)
     , redoAction(nullptr)
     , resetAction(nullptr)
+    , saveAction(nullptr)
+    , saveAsAction(nullptr)
+    , closeAction(nullptr)
 {
+    setObjectName("navbar");
+    setAttribute(Qt::WA_StyledBackground, true);
     setFixedHeight(52);
 
     // =========================================================
@@ -54,9 +59,9 @@ Navbar::Navbar(QWidget *parent)
     // =========================================================
 
     setStyleSheet(R"(
-        Navbar {
+        QWidget#navbar {
             background-color: #252526;
-            border-bottom: 1px solid #333333;
+            border-bottom: 1px solid #454545;
         }
 
         QToolButton {
@@ -101,6 +106,14 @@ Navbar::Navbar(QWidget *parent)
             background-color: #3a3a3a;
         }
 
+        QMenu::item:disabled {
+            color: #686868;
+        }
+
+        QMenu::item:disabled:selected {
+            background-color: transparent;
+        }
+
         QMenu::separator {
             height: 1px;
             background: #3a3a3a;
@@ -133,7 +146,7 @@ QMenu *Navbar::createFileMenu()
     // Save
     // ---------------------------------------------------------
 
-    QAction *saveAction = new QAction(
+    saveAction = new QAction(
         QIcon(":/icons/save.svg"),
         "Save File",
         this
@@ -146,10 +159,25 @@ QMenu *Navbar::createFileMenu()
 
 
     // ---------------------------------------------------------
+    // Save As
+    // ---------------------------------------------------------
+
+    saveAsAction = new QAction(
+        QIcon(":/icons/save-as.svg"),
+        "Save As",
+        this
+        );
+
+    saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+
+    connect(saveAsAction, &QAction::triggered,
+            this, &Navbar::saveNewFileRequested);
+
+    // ---------------------------------------------------------
     // Close
     // ---------------------------------------------------------
 
-    QAction *closeAction = new QAction(
+    closeAction = new QAction(
         QIcon(":/icons/x.svg"),
         "Close File",
         this
@@ -179,6 +207,7 @@ QMenu *Navbar::createFileMenu()
 
     menu->addAction(openAction);
     menu->addAction(saveAction);
+    menu->addAction(saveAsAction);
 
     menu->addSeparator();
 
@@ -234,6 +263,9 @@ void Navbar::setButtonEnabled(bool canUndo, bool canRedo, bool hasImage){
     undoAction->setEnabled(canUndo);
     redoAction->setEnabled(canRedo);
     resetAction->setEnabled(hasImage);
+    saveAction->setEnabled(hasImage);
+    saveAsAction->setEnabled(hasImage);
+    closeAction->setEnabled(hasImage);
 }
 
 QToolButton *Navbar::createNavButton(const QString &text)
@@ -246,4 +278,3 @@ QToolButton *Navbar::createNavButton(const QString &text)
 
     return button;
 }
-

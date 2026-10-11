@@ -27,6 +27,7 @@ set(PROJECT_SOURCES
     EditorDropArea.cpp
     CropBox.h
     SideBar.ui
+    MainWindow.ui
     resources.qrc
     ${SOURCE_FILES}
 )
