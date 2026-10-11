@@ -25,6 +25,8 @@ public:
 
     int getWidth() const;
     int getHeight() const;
+    
+    std::string getOriginalImagePath();
 
     Image& getCurrentImage();
 

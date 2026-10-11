@@ -27,6 +27,10 @@ int ImageEditor::getHeight() const {
     return currentImage.height;
 }
 
+std::string ImageEditor::getOriginalImagePath() {
+    return originalFilePath;
+}
+
 Image& ImageEditor::getCurrentImage(){
     return currentImage;
 }

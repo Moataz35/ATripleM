@@ -7,6 +7,8 @@
 #include "EditorDropArea.h"
 // #include <QDebug>
 #include <QtCore>
+#include <filesystem>
+#include <QFileInfo>
 
 
 //======================================================
@@ -61,6 +63,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(navBar , &Navbar::saveFileRequested,
             this , &MainWindow::saveFile);
+
+    connect(navBar, &Navbar::saveNewFileRequested,
+            this, &MainWindow::saveNewFile);
 
     connect(navBar, &Navbar::closeFileRequested,
             editorDropArea, &EditorDropArea::removeImage);
@@ -122,7 +127,7 @@ void MainWindow::openFile()
         nullptr,                         // Parent widget
         "Select an Image",               // Dialog title
         "",                              // Starting directory (empty uses current default)
-        "Image Files (*.png *.jpg *.bmp);;All Files (*)"
+        "Image Files (*.png *.jpg *.jpeg *.bmp *.tga);;All Files (*)"
     );
 
     loadFile(filePath);
@@ -154,6 +159,48 @@ void MainWindow::saveFile(){
     }
 
 }
+
+void MainWindow::saveNewFile() {
+
+    std::string originalImagePath = editor->getOriginalImagePath();
+    std::filesystem::path originalPath(originalImagePath);
+
+    std::filesystem::path dir = originalPath.parent_path();
+    std::string stem = originalPath.stem().string();
+    std::string ext = originalPath.extension().string();
+
+    int counter = 1;
+    QString candidatePath;
+
+    do {
+        std::string newFileName = stem + "(" + std::to_string(counter) + ")" + ext;
+        std::filesystem::path fullPath = dir / newFileName;
+        candidatePath = QString::fromStdString(fullPath.string());
+        counter++;
+    } while (QFileInfo::exists(candidatePath));
+
+    QString filePath = QFileDialog::getSaveFileName(
+        this,
+        "Choose the new file path",
+        candidatePath,
+        "Image Files (*.png *.jpg *.jpeg *.bmp *.tga)"
+        );
+
+    qDebug() << filePath << "\n";
+
+    if (filePath.size() == 0) {
+        return;
+    }
+
+
+    try {
+        editor->saveNewCopy(filePath.toStdString());
+    }
+    catch (...) {
+        QMessageBox::warning(this, "Fail", "Failed to save the image. Maybe the path is invalid or not accessible.");
+    }
+}
+
 
 void MainWindow::undo(){
     try{

@@ -17,6 +17,7 @@ public:
 signals:
     void openFileRequested();
     void saveFileRequested();
+    void saveNewFileRequested();
     void closeFileRequested();
     void exitRequested();
     void undoRequested();

@@ -51,6 +51,7 @@ private:
     void loadFile(const QString filePath);
     void openFile();
     void saveFile();
+    void saveNewFile();
     void removeImage();
     void updateNavBarButtons();
 

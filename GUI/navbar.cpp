@@ -180,6 +180,21 @@ QMenu *Navbar::createFileMenu()
 
 
     // ---------------------------------------------------------
+    // Save As
+    // ---------------------------------------------------------
+
+    QAction *saveAsAction = new QAction(
+        style()->standardIcon(QStyle::SP_DialogSaveAllButton),
+        "Save As",
+        this
+        );
+
+    saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+
+    connect(saveAsAction, &QAction::triggered,
+            this, &Navbar::saveNewFileRequested);
+
+    // ---------------------------------------------------------
     // Close
     // ---------------------------------------------------------
 
@@ -213,6 +228,7 @@ QMenu *Navbar::createFileMenu()
 
     menu->addAction(openAction);
     menu->addAction(saveAction);
+    menu->addAction(saveAsAction);
 
     menu->addSeparator();
 
