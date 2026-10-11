@@ -423,31 +423,6 @@ void MainWindow::updateNavBarButtons(){
 
 
 
-void MainWindow::closeEvent(QCloseEvent* event) {
-    if (!editor->isModified()) {
-        event->accept();
-        return;
-    }
-
-    QMessageBox warningMessage;
-    warningMessage.setText("Do you want to save the changes made to the current image?");
-    warningMessage.setStandardButtons(QMessageBox::Cancel | QMessageBox::Discard | QMessageBox::Save);
-
-    int buttonCode = warningMessage.exec();
-    switch (buttonCode) {
-    case QMessageBox::Cancel:
-        event->ignore();
-        return;
-    case QMessageBox::Discard:
-        event->accept();
-        return;
-    case QMessageBox::Save:
-        this->saveFile();
-        event->accept();
-        return;
-    default:
-        return;
-    }
 
 void MainWindow::updateImageInfo()
 {
