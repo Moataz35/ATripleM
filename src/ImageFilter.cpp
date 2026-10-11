@@ -547,3 +547,117 @@ void ImageFilter::OldTV(Image& image) {
         }
     }
 }
+
+
+void ImageFilter::Oil(Image& image, int radius , int levels){
+    Image finalImg = image;
+    int width = image.width;
+    int height = image.height;
+
+    for(int y =0; y<height; y++){
+        for(int x=0; x<width; x++){
+            int intensityCount[256] = {0};
+            int sumR[256] ={0}, sumG[256] ={0}, sumB[256] = {0};
+
+            for(int dy=-radius; dy<=radius; dy++){
+                for(int dx = -radius; dx<=radius; dx++){
+                    int newX = x +dx;
+                    int newY = y+dy;
+
+                    if(newX >= 0 && newY>=0 && newY < height && newX < width){
+                        int r = image.getPixel(newX, newY, 0);
+                        int g = image.getPixel(newX, newY, 1);
+                        int b = image.getPixel(newX, newY, 2);
+
+                        int current_intesity = (((r+g+b)/3) *levels) /256;
+
+                        intensityCount[current_intesity]++;
+                        sumR[current_intesity] += r;
+                        sumG[current_intesity] += g;
+                        sumB[current_intesity] += b;
+
+
+
+
+                    }
+                }
+            }
+                int maxCount = 0, maxIntensity = 0;
+                for(int i=0; i<levels; i++){
+                    if(intensityCount[i] > maxCount){
+                        maxCount = intensityCount[i];
+                        maxIntensity = i;
+                    }
+
+                }
+    
+                if(maxCount < 1) maxCount =1;
+                int finalR = sumR[maxIntensity] / maxCount;
+                int finalG = sumG[maxIntensity] / maxCount;
+                int finalB = sumB[maxIntensity] / maxCount;
+
+                finalImg.setPixel(x, y, 0, finalR);
+                finalImg.setPixel(x, y, 1, finalG);
+                finalImg.setPixel(x, y, 2, finalB);
+
+
+
+        }
+    }
+    image = finalImg;
+
+
+
+}
+
+
+void ImageFilter::Skew(Image& image, double skewDegree) {
+    // x-axis shear
+    skewDegree = std::max(-45.0, std::min(45.0, skewDegree));
+    const double PI = 3.14159265;
+    const double skewFactor = std::tan(skewDegree * PI / 180);
+
+    int firstPixelX = 0, firstPixelY = 0;
+    int lastPixelX = image.width - 1, lastPixelY = image.height - 1;
+
+    if (skewDegree < 0) {
+        /*
+            *
+
+        *
+        */
+        firstPixelX = firstPixelX + (lastPixelY * skewFactor);
+        lastPixelX = lastPixelX + (firstPixelY * skewFactor);
+    }
+    else {
+        /*
+        *
+
+            *
+        */
+        firstPixelX = firstPixelX + (firstPixelY * skewFactor);
+        lastPixelX = lastPixelX + (lastPixelY * skewFactor);
+    }
+
+    int newWidth = lastPixelX - firstPixelX;
+    int offsetX = std::abs(firstPixelX);
+
+    Image newImage(newWidth, image.height);
+
+    for (int y = 0; y < image.height; y++) {
+        for (int x = 0; x < image.width; x++) {
+            int newX = x + (y * skewFactor) + offsetX;
+            
+            if (newX >= newWidth || newX < 0) {
+                 continue;
+            }
+
+            for (int c = 0; c < image.channels; c++) {
+                unsigned char pixelValue = image.getPixel(x, y, c);
+                newImage.setPixel(newX, y, c, pixelValue);
+            }
+        }
+    }
+
+    image = newImage;
+}

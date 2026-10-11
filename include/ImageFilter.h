@@ -16,8 +16,8 @@ const Color BLUE = {0, 0, 255};
 
 enum FilterType {
     Grayscale = 1, BlackAndWhite, InvertImage, AddFrame, FlipVertically , FlipHorizontally ,
-    Rotate90, Rotate180, Rotate270, Darken, Lighten, Resize, MergeByScaling , MergeByCommonArea, DetectEdges, Crop, Blur, SunLight,
-    OldTV, PurpleEffect, Infrared, Skew, Oil
+    Rotate90, Rotate180, Rotate270, Darken, Lighten, Resize, MergeByScaling , MergeByCommonArea, DetectEdges, Blur, SunLight,
+    OldTV, PurpleEffect, Infrared, Oil
 };
 
 enum AdjustmentType{
@@ -51,4 +51,7 @@ namespace ImageFilter {
 	void sunLightEffect(Image& image);
 	void PurpleEffect(Image& image);
 	void OldTV(Image& image);
+
+	void Oil(Image& image, int radius, int levels);
+	void Skew(Image& image, double skewDegree = 45.0);
 }

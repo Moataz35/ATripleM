@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/contrast.svg</file>
+        <file>icons/crop.svg</file>
+        <file>icons/exit.svg</file>
+        <file>icons/file.svg</file>
+        <file>icons/filters.svg</file>
+        <file>icons/flip.svg</file>
+        <file>icons/frame.svg</file>
+        <file>icons/layers-plus.svg</file>
+        <file>icons/merge.svg</file>
+        <file>icons/redo.svg</file>
+        <file>icons/reset.svg</file>
+        <file>icons/resize.svg</file>
+        <file>icons/rotate-ccw.svg</file>
+        <file>icons/save-as.svg</file>
+        <file>icons/save.svg</file>
+        <file>icons/skew.svg</file>
+        <file>icons/undo.svg</file>
+        <file>icons/x.svg</file>
+    </qresource>
+</RCC>
