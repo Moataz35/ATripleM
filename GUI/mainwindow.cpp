@@ -6,6 +6,7 @@
 #include "navbar.h"
 #include "EditorDropArea.h"
 // #include <QDebug>
+#include <QtCore>
 
 
 //======================================================
@@ -65,7 +66,8 @@ MainWindow::MainWindow(QWidget *parent)
             editorDropArea, &EditorDropArea::removeImage);
 
     connect(navBar, &Navbar::exitRequested,
-            this, &MainWindow::exit);
+            this, [&]() {this->close();} );
+
 
     connect(navBar, &Navbar::undoRequested,
             this, &MainWindow::undo);
@@ -146,8 +148,6 @@ void MainWindow::loadFile(const QString filePath){
 void MainWindow::saveFile(){
     try{
         editor->saveToSameImage();
-
-        QMessageBox::information(this , "error" , "Wrong path");
     }
     catch(...){
         QMessageBox::warning(this , "error" , "No image to save");
@@ -199,20 +199,6 @@ void MainWindow::removeImage(){
 
 }
 
-
-void MainWindow::exit(){
-    QMessageBox msgBox;
-    msgBox.setText("exit");
-    msgBox.setText("Are you sure do you want to exit?");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Yes);
-
-    int res = msgBox.exec();
-
-    if(res == QMessageBox::Yes){
-        this->close();
-    }
-}
 
 //===================================================================================
 // Apply Filters
@@ -306,4 +292,32 @@ void MainWindow::updateNavBarButtons(){
     //qDebug() << "hasImage:" << hasImage << " | canUndo:" << canUndo << " | canRedo:" << canRedo;
     navBar->setButtonEnabled(canUndo, canRedo, hasImage);
 
+}
+
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+    if (!editor->isModified()) {
+        event->accept();
+        return;
+    }
+
+    QMessageBox warningMessage;
+    warningMessage.setText("Do you want to save the changes made to the current image?");
+    warningMessage.setStandardButtons(QMessageBox::Cancel | QMessageBox::Discard | QMessageBox::Save);
+
+    int buttonCode = warningMessage.exec();
+    switch (buttonCode) {
+    case QMessageBox::Cancel:
+        event->ignore();
+        return;
+    case QMessageBox::Discard:
+        event->accept();
+        return;
+    case QMessageBox::Save:
+        this->saveFile();
+        event->accept();
+        return;
+    default:
+        return;
+    }
 }

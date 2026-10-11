@@ -35,6 +35,10 @@ private slots:
     void undo();
     void redo();
     void reset();
+
+protected:
+    void closeEvent(QCloseEvent* event) override;
+
 private:
     Ui::MainWindow *ui;
     ImageEditor *editor;
@@ -48,7 +52,6 @@ private:
     void openFile();
     void saveFile();
     void removeImage();
-    void exit();
     void updateNavBarButtons();
 
     QImage preview;

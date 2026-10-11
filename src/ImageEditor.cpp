@@ -44,11 +44,14 @@ void ImageEditor::saveState() {
 
     if (changes.size() == 5) {
         changes.pop_front();
+        canReachInitialState = false;
     }
 
     changes.push_back(currentImage);
     
     while(!changesUndone.empty()) changesUndone.pop();
+
+    modified = true;
 }
 
 bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
@@ -78,6 +81,9 @@ void ImageEditor::reset() {
     while (!changesUndone.empty()) { 
         changesUndone.pop();
     }
+
+    modified = false;
+    canReachInitialState = true;
 }
 
 
@@ -93,6 +99,10 @@ void ImageEditor::undo() {
     changesUndone.push(currentImage);
     currentImage = changes.back();
     changes.pop_back();
+
+    if (changes.empty() && canReachInitialState) {
+        modified = false;
+    }
 }
 
 void ImageEditor::redo() {
@@ -108,6 +118,8 @@ void ImageEditor::redo() {
     changes.push_back(currentImage);
     currentImage = changesUndone.top();
     changesUndone.pop();
+
+    modified = true;
 }
 
 bool ImageEditor::isModified(){
@@ -186,7 +198,7 @@ void ImageEditor::applyFilter(FilterType filterType) {
             throw std::invalid_argument("Unsupported Filter");
         
         }
-        modified = true;
+        
 }
 void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
     saveState();
@@ -207,7 +219,7 @@ void ImageEditor::applyAdjust(AdjustmentType adjustType, int value) {
 
             
     }
-    modified = true;
+    
 }
 
 void ImageEditor::previewAdjust(int brightness, int contrast, int saturation) {
@@ -244,7 +256,6 @@ void ImageEditor::commitAdjust() {
 
     adjustBase = Image();
     adjusting = false;
-    modified = true;
 }
 
 void ImageEditor::cancelAdjust() {
@@ -276,6 +287,7 @@ void ImageEditor::unloadImage() {
         changesUndone.pop();
     }
     modified = false;
+    canReachInitialState = true;
     originalFilePath = "";
 }
 

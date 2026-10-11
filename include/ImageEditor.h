@@ -14,6 +14,7 @@ private:
     std::deque<Image> changes;
     std::stack<Image> changesUndone;
     bool modified = false;
+    bool canReachInitialState = true;
     std::string originalFilePath;
     Image adjustBase;          // image before the current adjust session started
     bool adjusting = false;    // true while sliders are being previewed
