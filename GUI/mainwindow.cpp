@@ -15,6 +15,7 @@
 #include <filesystem>
 #include <QFileInfo>
 
+
 namespace {
 
 QString filterName(FilterType type)
@@ -66,22 +67,28 @@ MainWindow::MainWindow(QWidget *parent)
     navBar = new Navbar(ui->centralwidget);
     sideBar = new SideBar(ui->centralwidget);
     sideBar->setMinimumWidth(90);
+    sideBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
 
     // 3. Main vertical layout
     QVBoxLayout *mainLayout =
         new QVBoxLayout(ui->centralwidget);
 
-    mainLayout->setContentsMargins(20, 20, 20, 20); //20,20,20,20
-    mainLayout->setSpacing(15);//15
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(0);
 
     // 4. Content layout: sidebar + editor
     QHBoxLayout *contentLayout = new QHBoxLayout();
-    contentLayout->setContentsMargins(0, 0, 0, 0); // 0,0,0,0
-    contentLayout->setSpacing(50);
+    contentLayout->setContentsMargins(0, 0, 0, 0);
+    contentLayout->setSpacing(0);
 
     contentLayout->addWidget(sideBar);
-    contentLayout->addWidget(editorDropArea, 1);
+    QWidget *editorContainer = new QWidget(ui->centralwidget);
+    QVBoxLayout *editorContainerLayout = new QVBoxLayout(editorContainer);
+    editorContainerLayout->setContentsMargins(20, 20, 20, 20);
+    editorContainerLayout->setSpacing(0);
+    editorContainerLayout->addWidget(editorDropArea);
+    contentLayout->addWidget(editorContainer, 1);
 
 
     // 5. Assemble the main layout
@@ -90,6 +97,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 6. Add the status panel below the editor content.
     statusMenu = new StatusMenu(ui->centralwidget);
+    mainLayout->addSpacing(0);
     mainLayout->addWidget(statusMenu);
 
 
@@ -106,7 +114,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::saveNewFile);
 
     connect(navBar, &Navbar::closeFileRequested,
-            editorDropArea, &EditorDropArea::removeImage);
+            this, &MainWindow::closeImage);
 
     connect(navBar, &Navbar::exitRequested,
             this, [&]() {this->close();} );
@@ -140,6 +148,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sideBar , &SideBar::adjustCancelled , this , &MainWindow::cancelAdjust);
 
     connect(sideBar , &SideBar::frameRequested , this , &MainWindow::applyFrame);
+    connect(sideBar, &SideBar::resizeRequested, this, &MainWindow::applyResize);
 
     connect(editorDropArea, &EditorDropArea::cropRequested, this, &MainWindow::crop);
 
@@ -270,8 +279,52 @@ void MainWindow::removeImage(){
 
     sideBar->setButtonsEnabled(false);
     updateNavBarButtons();
-
+    updateImageInfo();
+    statusMenu->setOperationStatus("Image closed", false);
 }
+
+void MainWindow::closeImage()
+{
+    if (!editor->isImageLoaded() || !confirmSaveBeforeClosing()) {
+        return;
+    }
+
+    editorDropArea->removeImage();
+}
+
+bool MainWindow::confirmSaveBeforeClosing()
+{
+    if (!editor->isModified()) {
+        return true;
+    }
+
+    QMessageBox warningMessage(this);
+    warningMessage.setWindowTitle("Unsaved Changes");
+    warningMessage.setText("Do you want to save the changes made to the current image?");
+    warningMessage.setStandardButtons(QMessageBox::Cancel | QMessageBox::Discard | QMessageBox::Save);
+    warningMessage.setDefaultButton(QMessageBox::Save);
+
+    switch (warningMessage.exec()) {
+    case QMessageBox::Save:
+        try {
+            editor->saveToSameImage();
+            return true;
+        } catch (const std::exception &error) {
+            QMessageBox::warning(this, "Save Failed", QString::fromUtf8(error.what()));
+            return false;
+        } catch (...) {
+            QMessageBox::warning(this, "Save Failed", "An unknown error occurred while saving the image.");
+            return false;
+        }
+    case QMessageBox::Discard:
+        return true;
+    case QMessageBox::Cancel:
+    default:
+        return false;
+    }
+}
+
+
 
 
 //===================================================================================
@@ -292,6 +345,14 @@ void MainWindow::applyFrame(int width, bool isFancy, QColor color){
     runImageOperation("Adding frame...", "Frame applied",
                       [this, frameColor, width, isFancy]() {
         editor->addFrame(frameColor, width, isFancy);
+    });
+}
+
+void MainWindow::applyResize(int width, int height)
+{
+    runImageOperation("Resizing image...", "Image resized",
+                      [this, width, height]() {
+        editor->resizeImage(width, height);
     });
 }
 
@@ -361,6 +422,7 @@ void MainWindow::updateNavBarButtons(){
 }
 
 
+
 void MainWindow::closeEvent(QCloseEvent* event) {
     if (!editor->isModified()) {
         event->accept();
@@ -386,11 +448,14 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     default:
         return;
     }
-}
 
 void MainWindow::updateImageInfo()
 {
-    statusMenu->setImageInfo(editor->isImageLoaded() ? &editor->getCurrentImage() : nullptr);
+    const bool hasImage = editor->isImageLoaded();
+    statusMenu->setImageInfo(hasImage ? &editor->getCurrentImage() : nullptr);
+    if (hasImage) {
+        sideBar->setResizeDimensions(editor->getWidth(), editor->getHeight());
+    }
 }
 
 void MainWindow::setImageOperationRunning(bool running)
@@ -453,4 +518,9 @@ void MainWindow::runImageOperation(const QString &statusText,
                 Qt::QueuedConnection);
         });
     imageOperationThread->start();
+}
+
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+    event->setAccepted(confirmSaveBeforeClosing());
 }

@@ -4,7 +4,6 @@
 #include <QToolButton>
 #include <QMenu>
 #include <QAction>
-#include <QStyle>
 #include <QIcon>
 #include <QFrame>
 
@@ -13,7 +12,12 @@ Navbar::Navbar(QWidget *parent)
     , undoAction(nullptr)
     , redoAction(nullptr)
     , resetAction(nullptr)
+    , saveAction(nullptr)
+    , saveAsAction(nullptr)
+    , closeAction(nullptr)
 {
+    setObjectName("navbar");
+    setAttribute(Qt::WA_StyledBackground, true);
     setFixedHeight(52);
 
     // =========================================================
@@ -55,9 +59,9 @@ Navbar::Navbar(QWidget *parent)
     // =========================================================
 
     setStyleSheet(R"(
-        Navbar {
+        QWidget#navbar {
             background-color: #252526;
-            border-bottom: 1px solid #333333;
+            border-bottom: 1px solid #454545;
         }
 
         QToolButton {
@@ -102,6 +106,14 @@ Navbar::Navbar(QWidget *parent)
             background-color: #3a3a3a;
         }
 
+        QMenu::item:disabled {
+            color: #686868;
+        }
+
+        QMenu::item:disabled:selected {
+            background-color: transparent;
+        }
+
         QMenu::separator {
             height: 1px;
             background: #3a3a3a;
@@ -119,7 +131,7 @@ QMenu *Navbar::createFileMenu()
     // ---------------------------------------------------------
 
     QAction *openAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogOpenButton),
+        QIcon(":/icons/file.svg"),
         "Open File",
         this
         );
@@ -134,8 +146,8 @@ QMenu *Navbar::createFileMenu()
     // Save
     // ---------------------------------------------------------
 
-    QAction *saveAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogSaveButton),
+    saveAction = new QAction(
+        QIcon(":/icons/save.svg"),
         "Save File",
         this
         );
@@ -150,8 +162,8 @@ QMenu *Navbar::createFileMenu()
     // Save As
     // ---------------------------------------------------------
 
-    QAction *saveAsAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogSaveAllButton),
+    saveAsAction = new QAction(
+        QIcon(":/icons/save-as.svg"),
         "Save As",
         this
         );
@@ -165,8 +177,8 @@ QMenu *Navbar::createFileMenu()
     // Close
     // ---------------------------------------------------------
 
-    QAction *closeAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogCloseButton),
+    closeAction = new QAction(
+        QIcon(":/icons/x.svg"),
         "Close File",
         this
         );
@@ -180,7 +192,7 @@ QMenu *Navbar::createFileMenu()
     // ---------------------------------------------------------
 
     QAction *exitAction = new QAction(
-        style()->standardIcon(QStyle::SP_DialogCancelButton),
+        QIcon(":/icons/exit.svg"),
         "Exit",
         this
         );
@@ -213,7 +225,7 @@ QMenu *Navbar::createEditMenu()
     QMenu *menu = new QMenu(this);
 
     undoAction = new QAction(
-        style()->standardIcon(QStyle::SP_ArrowBack),
+        QIcon(":/icons/undo.svg"),
         "Undo",
         this
         );
@@ -222,7 +234,7 @@ QMenu *Navbar::createEditMenu()
             this, &Navbar::undoRequested);
 
     redoAction = new QAction(
-        style()->standardIcon(QStyle::SP_ArrowForward),
+        QIcon(":/icons/redo.svg"),
         "Redo",
         this
         );
@@ -231,7 +243,7 @@ QMenu *Navbar::createEditMenu()
             this, &Navbar::redoRequested);
 
     resetAction = new QAction(
-        style()->standardIcon(QStyle::SP_BrowserReload),
+        QIcon(":/icons/reset.svg"),
         "Reset",
         this
         );
@@ -251,6 +263,9 @@ void Navbar::setButtonEnabled(bool canUndo, bool canRedo, bool hasImage){
     undoAction->setEnabled(canUndo);
     redoAction->setEnabled(canRedo);
     resetAction->setEnabled(hasImage);
+    saveAction->setEnabled(hasImage);
+    saveAsAction->setEnabled(hasImage);
+    closeAction->setEnabled(hasImage);
 }
 
 QToolButton *Navbar::createNavButton(const QString &text)
@@ -263,6 +278,3 @@ QToolButton *Navbar::createNavButton(const QString &text)
 
     return button;
 }
-
-
-

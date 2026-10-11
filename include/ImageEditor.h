@@ -55,6 +55,7 @@ public:
     void cancelAdjust();
 
     void addFrame(Color frameColor, int frameThickness, bool fancy);
+    void resizeImage(int width, int height);
 
     void applyMergeByScaling(Image& overlayImage , int alpha);
     void applyMergeByScaling(const std::string& overlayPath, int alpha);

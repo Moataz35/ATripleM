@@ -277,6 +277,18 @@ void ImageEditor::addFrame(Color frameColor, int frameThickness, bool fancy) {
     ImageFilter::AddFrame(currentImage, frameColor, frameThickness, fancy);
 }
 
+void ImageEditor::resizeImage(int width, int height) {
+    if (!isImageLoaded()) {
+        throw std::runtime_error("ERROR! No image loaded.");
+    }
+    if (width <= 0 || height <= 0) {
+        throw std::invalid_argument("Image dimensions must be greater than zero.");
+    }
+
+    saveState();
+    ImageFilter::Resize(currentImage, width, height);
+}
+
 void ImageEditor::unloadImage() {
     if (!isImageLoaded()) {
         return;

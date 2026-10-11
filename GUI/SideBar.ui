@@ -93,7 +93,7 @@
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/filter.png</normaloff>:/icons/filter.png</iconset>
+           <normaloff>:/icons/filters.svg</normaloff>:/icons/filters.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -120,28 +120,12 @@
          <property name="toolTip">
           <string extracomment="Adjustments ">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adjustments&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-    border: none;
-    border-radius: 6px;
-    background-color: transparent;
-    padding: 6px;
-}
-
-QPushButton:hover {
-    background-color: rgba(0, 0, 0, 0.08); 
-}
-
-QPushButton:pressed {
-    background-color: rgba(0, 0, 0, 0.15); 
-}</string>
-         </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/Exposure.png</normaloff>:/icons/Exposure.png</iconset>
+           <normaloff>:/icons/contrast.svg</normaloff>:/icons/contrast.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -173,7 +157,7 @@ QPushButton:pressed {
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/rotate.png</normaloff>:/icons/rotate.png</iconset>
+           <normaloff>:/icons/rotate-ccw.svg</normaloff>:/icons/rotate-ccw.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -193,7 +177,7 @@ QPushButton:pressed {
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/skew.png</normaloff>:/icons/skew.png</iconset>
+           <normaloff>:/icons/skew.svg</normaloff>:/icons/skew.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -225,7 +209,7 @@ QPushButton:pressed {
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/flip.png</normaloff>:/icons/flip.png</iconset>
+           <normaloff>:/icons/flip.svg</normaloff>:/icons/flip.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -257,7 +241,7 @@ QPushButton:pressed {
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/frame.png</normaloff>:/icons/frame.png</iconset>
+           <normaloff>:/icons/frame.svg</normaloff>:/icons/frame.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -289,7 +273,7 @@ QPushButton:pressed {
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/Resize.png</normaloff>:/icons/Resize.png</iconset>
+           <normaloff>:/icons/resize.svg</normaloff>:/icons/resize.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -321,7 +305,7 @@ QPushButton:pressed {
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/crop.png</normaloff>:/icons/crop.png</iconset>
+           <normaloff>:/icons/crop.svg</normaloff>:/icons/crop.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -341,7 +325,7 @@ QPushButton:pressed {
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/merge.png</normaloff>:/icons/merge.png</iconset>
+           <normaloff>:/icons/merge.svg</normaloff>:/icons/merge.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -361,7 +345,7 @@ QPushButton:pressed {
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/merge comman area.png</normaloff>:/icons/merge comman area.png</iconset>
+           <normaloff>:/icons/layers-plus.svg</normaloff>:/icons/layers-plus.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -420,7 +404,7 @@ QPushButton:pressed {
    </property>
    <property name="maximumSize">
     <size>
-     <width>100</width>
+     <width>150</width>
      <height>16777215</height>
     </size>
    </property>
@@ -636,17 +620,25 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmAdjust">
-       <property name="cursor">
-        <cursorShape>ArrowCursor</cursorShape>
+      <layout class="QVBoxLayout" name="confirmAdjustButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
-       </property>
-       <property name="centerButtons">
-        <bool>false</bool>
-       </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmAdjustApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmAdjustCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_7">
@@ -774,11 +766,25 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="ApplyFrame">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="ApplyFrameButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="ApplyFrameApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ApplyFrameCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_5">
@@ -810,7 +816,7 @@ QPushButton:pressed {
      <item>
       <widget class="QSpinBox" name="inputWidth">
        <property name="minimum">
-        <number>16</number>
+        <number>1</number>
        </property>
        <property name="maximum">
         <number>1200</number>
@@ -830,7 +836,7 @@ QPushButton:pressed {
      <item>
       <widget class="QSpinBox" name="inputHight">
        <property name="minimum">
-        <number>16</number>
+        <number>1</number>
        </property>
        <property name="maximum">
         <number>1800</number>
@@ -838,11 +844,25 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmResize">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="confirmResizeButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmResizeApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmResizeCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_6">
@@ -863,17 +883,40 @@ QPushButton:pressed {
     <layout class="QVBoxLayout" name="verticalLayout_9">
      <item>
       <widget class="QLineEdit" name="cropConfirmtitle">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
         <string>Crop Confirming</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="ConfirmCrop">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="ConfirmCropButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="ConfirmCropApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ConfirmCropCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_9">
@@ -900,6 +943,9 @@ QPushButton:pressed {
        <property name="text">
         <string>Skew Deree</string>
        </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -919,11 +965,25 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmSkew">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="confirmSkewButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmSkewApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmSkewCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_10">
@@ -944,6 +1004,9 @@ QPushButton:pressed {
     <layout class="QVBoxLayout" name="verticalLayout_8">
      <item>
       <widget class="QLineEdit" name="mergeImagePath">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
        <property name="placeholderText">
         <string>Overlay Image</string>
        </property>
@@ -951,8 +1014,58 @@ QPushButton:pressed {
      </item>
      <item>
       <widget class="QPushButton" name="btnBrowseMerge">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>238</red>
+             <green>238</green>
+             <blue>238</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>238</red>
+             <green>238</green>
+             <blue>238</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>238</red>
+             <green>238</green>
+             <blue>238</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upload second Image &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string>Upload Image</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/icons/upload.svg</normaloff>:/icons/upload.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -977,11 +1090,25 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmMerge">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="confirmMergeButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmMergeApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmMergeCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_8">
@@ -1002,6 +1129,9 @@ QPushButton:pressed {
     <layout class="QVBoxLayout" name="verticalLayout_12">
      <item>
       <widget class="QLineEdit" name="mergeCommonImagePath">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
        <property name="placeholderText">
         <string>Overlay Image</string>
        </property>
@@ -1052,10 +1182,10 @@ QPushButton:pressed {
           <cursorShape>ArrowCursor</cursorShape>
          </property>
          <property name="minimum">
-          <number>-3000</number>
+          <number>0</number>
          </property>
          <property name="maximum">
-          <number>3000</number>
+          <number>10000</number>
          </property>
         </widget>
        </item>
@@ -1075,21 +1205,35 @@ QPushButton:pressed {
           <cursorShape>ArrowCursor</cursorShape>
          </property>
          <property name="minimum">
-          <number>-3000</number>
+          <number>0</number>
          </property>
          <property name="maximum">
-          <number>3000</number>
+          <number>10000</number>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="confirmMergeCommanArea">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel</set>
+      <layout class="QVBoxLayout" name="confirmMergeCommanAreaButtonsLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
-      </widget>
+       <item>
+        <widget class="QPushButton" name="confirmMergeCommanAreaApply">
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="confirmMergeCommanAreaCancel">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer_11">

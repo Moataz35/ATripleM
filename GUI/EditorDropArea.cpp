@@ -185,6 +185,7 @@ EditorDropArea::EditorDropArea(QWidget *parent)
     stackedLayout->addWidget(imageWidget);
 
     stackedLayout->setCurrentWidget(emptyWidget);
+    
 
 
     connect(
@@ -289,7 +290,7 @@ void EditorDropArea::setNormalStyle()
 {
     setStyleSheet(
         "EditorDropArea {"
-        "    background-color: #171717;"
+        "    background-color: #2d2d30;"
         "    border: 2px dashed #383838;"
         "    border-radius: 16px;"
         "}"
@@ -320,7 +321,7 @@ void EditorDropArea::setImage(const Image& image)
     currentQImage = imageToQImage(image);
 
     scene->clear();
-
+    pixmapItem = nullptr;
     cropBox = nullptr;
 
     QPixmap pixmap = QPixmap::fromImage(currentQImage);
@@ -343,7 +344,7 @@ void EditorDropArea::removeImage(){
     currentQImage = QImage();
 
     scene->clear();
-
+    pixmapItem = nullptr;
     cropBox = nullptr;
 
     showEmptyState();
@@ -352,6 +353,10 @@ void EditorDropArea::removeImage(){
 }
 
 void EditorDropArea::showCropBox() {
+    if (!pixmapItem) {
+        return;
+    }
+
     if (pixmapItem && !cropBox) {
         cropBox = new CropBox(pixmapItem->boundingRect());
         scene->addItem(cropBox);

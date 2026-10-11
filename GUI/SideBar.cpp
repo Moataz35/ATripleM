@@ -9,7 +9,130 @@ SideBar::SideBar(QWidget *parent)
     , sideBarScrollArea(nullptr)
 {
     ui->setupUi(this);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+
+    setStyleSheet(R"(
+        SideBar {
+            background-color: #252526;
+            border-left: 1px solid #454545;
+        }
+
+        SideBar QWidget {
+            color: #cccccc;
+        }
+
+        QFrame#SideBarFrame {
+            background-color: #252526;
+            border: none;
+        }
+
+        QStackedWidget {
+            background-color: #252526;
+            border: 1px solid #3c3c3c;
+            border-radius: 8px;
+        }
+
+        QPushButton {
+            color: #eeeeee;
+            font-size : 12px;
+            background-color: #2d2d30;
+            border: 1px solid #3c3c3c;
+            border-radius: 6px;
+            padding: 7px 10px;
+        }
+
+        QPushButton:hover {
+            background-color: #37373d;
+            border-color: #555555;
+        }
+
+        QPushButton:pressed {
+            background-color: #094771;
+            border-color: #1177bb;
+        }
+
+        QPushButton:disabled {
+            color: #686868;
+            background-color: #29292c;
+            border-color: #353538;
+        }
+
+        QLineEdit, QSpinBox {
+            color: #eeeeee;
+            background-color: #1e1e1e;
+            border: 1px solid #3c3c3c;
+            border-radius: 5px;
+            padding: 4px 6px;
+            selection-background-color: #264f78;
+        }
+
+        QLineEdit:focus, QSpinBox:focus {
+            border-color: #007acc;
+        }
+
+        QPushButton#btnFilters,
+        QPushButton#btnAdjust,
+        QPushButton#btnRotate,
+        QPushButton#btnFlip,
+        QPushButton#btnSkew,
+        QPushButton#AddFrame,
+        QPushButton#Resize,
+        QPushButton#Crop,
+        QPushButton#btnMerge,
+        QPushButton#btnMergeCommanArea {
+            color: #eeeeee;
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 9px;
+            padding: 4px;
+        }
+
+        QPushButton#btnFilters:hover,
+        QPushButton#btnAdjust:hover,
+        QPushButton#btnRotate:hover,
+        QPushButton#btnFlip:hover,
+        QPushButton#btnSkew:hover,
+        QPushButton#AddFrame:hover,
+        QPushButton#Resize:hover,
+        QPushButton#Crop:hover,
+        QPushButton#btnMerge:hover,
+        QPushButton#btnMergeCommanArea:hover {
+            background-color: rgba(238, 238, 238, 0.10);
+            border-color: #444444;
+        }
+
+        QPushButton#btnFilters:pressed,
+        QPushButton#btnAdjust:pressed,
+        QPushButton#btnRotate:pressed,
+        QPushButton#btnFlip:pressed,
+        QPushButton#btnSkew:pressed,
+        QPushButton#AddFrame:pressed,
+        QPushButton#Resize:pressed,
+        QPushButton#Crop:pressed,
+        QPushButton#btnMerge:pressed,
+        QPushButton#btnMergeCommanArea:pressed {
+            background-color: rgba(238, 238, 238, 0.18);
+            border-color: #555555;
+        }
+
+        QPushButton#btnFilters:disabled,
+        QPushButton#btnAdjust:disabled,
+        QPushButton#btnRotate:disabled,
+        QPushButton#btnFlip:disabled,
+        QPushButton#btnSkew:disabled,
+        QPushButton#AddFrame:disabled,
+        QPushButton#Resize:disabled,
+        QPushButton#Crop:disabled,
+        QPushButton#btnMerge:disabled,
+        QPushButton#btnMergeCommanArea:disabled {
+            color: #686868;
+            background-color: transparent;
+            border-color: transparent;
+        }
+    )");
     setupScrollableSidebar();
+    ui->SideBarFrame->setFrameShape(QFrame::NoFrame);
+    ui->SideBarFrame->setLineWidth(0);
     ui->stackedWidget->installEventFilter(this);
     ui->stackedWidget->setVisible(false);
     setButtonsEnabled(false);
@@ -136,6 +259,14 @@ void SideBar::setButtonsEnabled(bool hasImage)
     }
     ui->btnMerge->setEnabled(hasImage);
     ui->btnMergeCommanArea->setEnabled(hasImage);
+}
+
+void SideBar::setResizeDimensions(int width, int height)
+{
+    ui->inputWidth->setMaximum(qMax(ui->inputWidth->maximum(), width));
+    ui->inputHight->setMaximum(qMax(ui->inputHight->maximum(), height));
+    ui->inputWidth->setValue(width);
+    ui->inputHight->setValue(height);
 }
 
 //=================================================
@@ -341,63 +472,63 @@ void SideBar::on_alphaSliderCommanArea_valueChanged(int value) {
 //=======================================================================================
 // Confirm Buttons
 //======================================================================================
-void SideBar::on_confirmResize_clicked(QAbstractButton *button) {
-    if (ui->confirmResize->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        int w = ui->inputWidth->value();
-        int h = ui->inputHight->value();
-        emit resizeRequested(w, h);
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(false);
-    }
-
+void SideBar::on_confirmResizeApply_clicked() {
+    int w = ui->inputWidth->value();
+    int h = ui->inputHight->value();
+    emit resizeRequested(w, h);
+    ui->stackedWidget->setVisible(false);
 }
 
-void SideBar::on_confirmSkew_clicked(QAbstractButton *button) {
-    if (ui->confirmSkew->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        int degree = ui->skewSlider->value();
-        emit skewRequested(degree);
-        ui->stackedWidget->setVisible(false);
-    } else {
-        emit skewCancelled();
-        ui->stackedWidget->setVisible(false);
-    }
+void SideBar::on_confirmResizeCancel_clicked() {
+    ui->stackedWidget->setVisible(false);
+}
+
+void SideBar::on_confirmSkewApply_clicked() {
+    int degree = ui->skewSlider->value();
+    emit skewRequested(degree);
+    ui->stackedWidget->setVisible(false);
     resetSkewSlider();
 }
 
-void SideBar::on_ConfirmCrop_clicked(QAbstractButton *button) {
-
-    setSidebarLocked(false);
-
-    if (ui->ConfirmCrop->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        emit cropConfirmed();
-        ui->stackedWidget->setVisible(false);
-    } else {
-        emit cropCancelled();
-        ui->stackedWidget->setVisible(false);
-    }
+void SideBar::on_confirmSkewCancel_clicked() {
+    emit skewCancelled();
+    ui->stackedWidget->setVisible(false);
+    resetSkewSlider();
 }
 
-void SideBar::on_confirmAdjust_clicked(QAbstractButton *button) {
-    if (ui->confirmAdjust->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        emit adjustApplied();
-    }else{
-        emit adjustCancelled();
-    }
+void SideBar::on_ConfirmCropApply_clicked() {
+    setSidebarLocked(false);
+    emit cropConfirmed();
+    ui->stackedWidget->setVisible(false);
+}
+
+void SideBar::on_ConfirmCropCancel_clicked() {
+    setSidebarLocked(false);
+    emit cropCancelled();
+    ui->stackedWidget->setVisible(false);
+}
+
+void SideBar::on_confirmAdjustApply_clicked() {
+    emit adjustApplied();
     resetAdjustSliders();
     ui->stackedWidget->setVisible(false);
 }
 
-void SideBar::on_ApplyFrame_clicked(QAbstractButton *button) {
-    if (ui->ApplyFrame->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        int width = ui->FrameWidth->value();
-        bool isFancy = ui->checkFancy->isChecked();
-        emit frameRequested(width, isFancy, currentFrameColor);
-        ui->stackedWidget->setVisible(false);
-    }else{
-        ui->stackedWidget->setVisible(false);
-    }
+void SideBar::on_confirmAdjustCancel_clicked() {
+    emit adjustCancelled();
+    resetAdjustSliders();
+    ui->stackedWidget->setVisible(false);
+}
+
+void SideBar::on_ApplyFrameApply_clicked() {
+    int width = ui->FrameWidth->value();
+    bool isFancy = ui->checkFancy->isChecked();
+    emit frameRequested(width, isFancy, currentFrameColor);
+    ui->stackedWidget->setVisible(false);
+}
+
+void SideBar::on_ApplyFrameCancel_clicked() {
+    ui->stackedWidget->setVisible(false);
 }
 
 void SideBar::on_btnBrowseMerge_clicked() {
@@ -426,36 +557,36 @@ void SideBar::on_btnBrowseMergeCommon_clicked() {
     }
 }
 
-void SideBar::on_confirmMerge_clicked(QAbstractButton *button) {
-    if (ui->confirmMerge->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        QString path = ui->mergeImagePath->text().trimmed();
-        if (path.isEmpty()) {
-            QMessageBox::warning(this, "Error", "Please select an overlay image first.");
-            return;
-        }
-        int alpha = ui->alphaSlider->value();
-        emit mergeByScalingRequested(path, alpha);
-        ui->stackedWidget->setVisible(false);
-    } else {
-        ui->stackedWidget->setVisible(false);
+void SideBar::on_confirmMergeApply_clicked() {
+    QString path = ui->mergeImagePath->text().trimmed();
+    if (path.isEmpty()) {
+        QMessageBox::warning(this, "Error", "Please select an overlay image first.");
+        return;
     }
+    int alpha = ui->alphaSlider->value();
+    emit mergeByScalingRequested(path, alpha);
+    ui->stackedWidget->setVisible(false);
 }
 
-void SideBar::on_confirmMergeCommanArea_clicked(QAbstractButton *button) {
-    if (ui->confirmMergeCommanArea->buttonRole(button) == QDialogButtonBox::ApplyRole) {
-        QString path = ui->mergeCommonImagePath->text().trimmed();
-        if (path.isEmpty()) {
-            QMessageBox::warning(this, "Error", "Please select an overlay image first.");
-            return;
-        }
-        int alpha = ui->alphaSliderCommanArea->value();
-        int offsetX = ui->offSet_X->value();
-        int offsetY = ui->offset_Y->value();
-        emit mergeByCommonAreaRequested(path, alpha, offsetX, offsetY);
-        ui->stackedWidget->setVisible(false);
-    } else {
-        ui->stackedWidget->setVisible(false);
+void SideBar::on_confirmMergeCancel_clicked() {
+    ui->stackedWidget->setVisible(false);
+}
+
+void SideBar::on_confirmMergeCommanAreaApply_clicked() {
+    QString path = ui->mergeCommonImagePath->text().trimmed();
+    if (path.isEmpty()) {
+        QMessageBox::warning(this, "Error", "Please select an overlay image first.");
+        return;
     }
+    int alpha = ui->alphaSliderCommanArea->value();
+    int offsetX = ui->offSet_X->value();
+    int offsetY = ui->offset_Y->value();
+    emit mergeByCommonAreaRequested(path, alpha, offsetX, offsetY);
+    ui->stackedWidget->setVisible(false);
+}
+
+void SideBar::on_confirmMergeCommanAreaCancel_clicked() {
+    ui->stackedWidget->setVisible(false);
 }
 //===========================================================================
 
@@ -472,7 +603,12 @@ void SideBar::on_btnPickColor_clicked() {
 
     if(color.isValid()){
         currentFrameColor = color;
-        QString style = QString("background-color: %1; color: white;").arg(color.name());
+        QString style = QString(
+            "QPushButton#btnPickColor { background-color: %1; color: #eeeeee; "
+            "border: 1px solid #555555; border-radius: 6px; padding: 7px 10px; } "
+            "QPushButton#btnPickColor:hover { border-color: #eeeeee; } "
+            "QPushButton#btnPickColor:pressed { background-color: %2; }"
+        ).arg(color.name(), color.darker(125).name());
         ui->btnPickColor->setStyleSheet(style);
     }
 }
