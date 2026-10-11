@@ -425,6 +425,9 @@ void MainWindow::updateNavBarButtons(){
 
 }
 
+
+
+
 void MainWindow::updateImageInfo()
 {
     const bool hasImage = editor->isImageLoaded();
