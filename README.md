@@ -1,4 +1,4 @@
-# 🎨 ImageNightmare
+# 🎨 ATripleM
 
 <p align="center">
   <strong>A modern, lightweight, and high-performance desktop image editor and processing suite built with C++17 and Qt.</strong>
@@ -39,9 +39,9 @@
 
 ## 🌟 Overview
 
-**ImageNightmare** is an open-source, feature-packed desktop image processing application. Developed using **modern C++ (C++17)** and the **Qt Framework (Qt 6 / Qt 5 Widgets)**, it provides users with an intuitive, responsive graphical interface alongside a robust set of pixel-manipulation algorithms.
+**ATripleM** is an open-source, feature-packed desktop image processing application. Developed using **modern C++ (C++17)** and the **Qt Framework (Qt 6 / Qt 5 Widgets)**, it provides users with an intuitive, responsive graphical interface alongside a robust set of pixel-manipulation algorithms.
 
-Under the hood, ImageNightmare relies on lightweight, header-only image loaders ([`stb_image`](lib/include/stb_image.h) & [`stb_image_write`](lib/include/stb_image_write.h)) eliminating bulky external dependencies. All image processing operations are executed on background threads (`QThread`) to ensure the user interface remains smooth, fluid, and responsive at all times.
+Under the hood, ATripleM relies on lightweight, header-only image loaders ([`stb_image`](lib/include/stb_image.h) & [`stb_image_write`](lib/include/stb_image_write.h)) eliminating bulky external dependencies. All image processing operations are executed on background threads (`QThread`) to ensure the user interface remains smooth, fluid, and responsive at all times.
 
 ---
 
@@ -96,7 +96,7 @@ Under the hood, ImageNightmare relies on lightweight, header-only image loaders 
 
 ## 🏛️ Technical Architecture
 
-ImageNightmare is structured with a clean separation of concerns:
+ATripleM is structured with a clean separation of concerns:
 
 ```mermaid
 flowchart TD
@@ -149,7 +149,7 @@ flowchart TD
 ## 📁 Project Directory Structure
 
 ```plaintext
-ImageNightmare/
+ATripleM/
 ├── GUI/                         # Qt User Interface
 │   ├── icons/                   # Vector SVG icons
 │   ├── CMakeLists.txt           # Build instructions for GUI executable
@@ -262,7 +262,7 @@ cmake --build . --config Release
 
 ## 🖼️ Supported Image Formats
 
-Thanks to integration with `stb_image` and `stb_image_write`, ImageNightmare supports loading and exporting the following standard image formats:
+Thanks to integration with `stb_image` and `stb_image_write`, ATripleM supports loading and exporting the following standard image formats:
 
 - **PNG** (`.png`)
 - **JPEG / JPG** (`.jpg`, `.jpeg`)
@@ -289,5 +289,5 @@ Special thanks to:
 ---
 
 <p align="center">
-  <sub>ImageNightmare • Engineered with C++ & Qt</sub>
+  <sub>ATripleM • Engineered with C++ & Qt</sub>
 </p>
