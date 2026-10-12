@@ -1,15 +1,15 @@
 ==============================================================================
-                               ImageNightmare
+                               ATripleM
        Modern Lightweight Desktop Image Editor Application (C++17 / Qt)
 ==============================================================================
 
-PROJECT NAME : ImageNightmare
+PROJECT NAME : ATripleM
 COURSE: CS213 Object Oriented Programming
 PROFESSOR: Mohammed El-Ramly
 PLATFORMS    : Windows / Linux / macOS
 CORE TECH    : C++17, Qt 6.x (Qt Widgets), CMake 3.16+
 THIRD PARTY  : stb_image.h & stb_image_write.h (Header-only image I/O)
-REPOSITORY   : https://github.com/Moataz35/ImageNightmare.git
+REPOSITORY   : https://github.com/Moataz35/ATripleM.git
 DOCUMENTATION: https://docs.google.com/document/d/1F4fwBcmW47qdQ9xvXMfu8xSqQZQj8xk13apHzpT5D08/edit?tab=t.0#heading=h.fn5z8ywyuhpj
 
 
@@ -36,7 +36,7 @@ Academic Attribution:
 ==============================================================================
 2. PROJECT OVERVIEW
 ==============================================================================
-ImageNightmare is a full-featured, responsive desktop image editing and
+ATripleM is a full-featured, responsive desktop image editing and
 processing application. Developed in modern C++ (C++17) with the Qt Widgets
 framework, it pairs an intuitive, clean graphical user interface with an
 extensive collection of algorithmic pixel manipulation filters.
@@ -173,15 +173,15 @@ METHOD 1: USING QT CREATOR (RECOMMENDED)
 ----------------------------------------
 1. Launch Qt Creator.
 2. Go to: File -> Open File or Project...
-3. Select "D:/projects/ImageNightmare/GUI/CMakeLists.txt".
+3. Select "D:/projects/ATripleM/GUI/CMakeLists.txt".
 4. Choose your configured Kit (e.g., Desktop Qt 6.x MinGW 64-bit).
 5. Click "Configure Project".
-6. Press Run Button to build and start ImageNightmare.
+6. Press Run Button to build and start ATripleM.
 
 METHOD 2: USING CMAKE COMMAND LINE
 ----------------------------------
 1. Open terminal / PowerShell:
-   cd D:\projects\ImageNightmare\GUI\
+   cd D:\projects\ATripleM\GUI\
 
 2. Create and enter build directory:
    mkdir build
@@ -232,7 +232,7 @@ METHOD 2: USING CMAKE COMMAND LINE
 ==============================================================================
 8. SUPPORTED FILE FORMATS
 ==============================================================================
-ImageNightmare natively reads and writes:
+ATripleM natively reads and writes:
 - Portable Network Graphics (.png)
 - JPG and JPEG (.jpg, .jpeg)
 - Windows Bitmap (.bmp)
@@ -244,7 +244,7 @@ All loaded files are normalized to standard 24-bit RGB (3 channels).
 ==============================================================================
 9. PROJECT DIRECTORY STRUCTURE
 ==============================================================================
-ImageNightmare/
+ATripleM/
 |-- GUI/                         # Qt graphical user interface
 |   |-- icons/                   # Vector SVG icons
 |   |-- CMakeLists.txt           # Build configuration
