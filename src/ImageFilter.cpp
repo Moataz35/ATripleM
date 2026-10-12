@@ -58,7 +58,7 @@ void Adjustments::Brightness(Image& image, int brightness) {
 
 void Adjustments::Contrast(Image &image, int contrast){
     contrast = std::max(-100, std::min(100, contrast));
-    double factor = ((259.0*(contrast +255.0)))/(255.0*(259.0-contrast));
+    double factor = (contrast + 100.0)/ 100.0;
     for (int w = 0; w < image.width; w++) {
         for (int h = 0; h < image.height; h++) {
             for (int c = 0; c < image.channels; c++) {
