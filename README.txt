@@ -1,41 +1,49 @@
 ==============================================================================
-                               IMAGENIGHTMARE
-       Modern Lightweight Desktop Image Processing Suite (C++17 / Qt)
+                               ImageNightmare
+       Modern Lightweight Desktop Image Editor Application (C++17 / Qt)
 ==============================================================================
 
 PROJECT NAME : ImageNightmare
+COURSE: CS213 Object Oriented Programming
+PROFESSOR: Mohammed El-Ramly
 PLATFORMS    : Windows / Linux / macOS
-CORE TECH    : C++17, Qt 6.x / Qt 5.x (Qt Widgets), CMake 3.16+
+CORE TECH    : C++17, Qt 6.x (Qt Widgets), CMake 3.16+
 THIRD PARTY  : stb_image.h & stb_image_write.h (Header-only image I/O)
 REPOSITORY   : https://github.com/Moataz35/ImageNightmare.git
+DOCUMENTATION: https://docs.google.com/document/d/1F4fwBcmW47qdQ9xvXMfu8xSqQZQj8xk13apHzpT5D08/edit?tab=t.0#heading=h.fn5z8ywyuhpj
 
 
 ==============================================================================
-1. PROJECT OVERVIEW
+1. TEAM MEMBERS & CONTRIBUTORS
+==============================================================================
+Developed by students from the Faculty of Computers and Artificial
+Intelligence (FCAI), Cairo University:
+
+-------------------------------------------------------------------------------------------------------------
+|        Name        |     ID     |  Section  |                           Filters                           |
+-------------------------------------------------------------------------------------------------------------
+| Moustafa Mahmoud   | 20250646   | S9,10     | Grayscale, Flip, Merge, Sunlight                            |
+| Moataz Mohamed     | 20250908   | S9,10     | Black&White, Rotate, Edge Detection, Old TV, Skew           |
+| Abdullah Ibrahim   | 20250928   | S9,10     | Invert, Darken&Lighten, Crop, Purple Effect, Oil Painting   |
+| Mohamed Sherif     | 20251334   | S9,10     | Add Frame, Blur, Resize, Infrared                           |
+-------------------------------------------------------------------------------------------------------------
+
+Academic Attribution:
+- Dr. Mohamed El-Ramly and the FCAI teaching team for foundational Image
+  class architecture.
+
+
+==============================================================================
+2. PROJECT OVERVIEW
 ==============================================================================
 ImageNightmare is a full-featured, responsive desktop image editing and
 processing application. Developed in modern C++ (C++17) with the Qt Widgets
 framework, it pairs an intuitive, clean graphical user interface with an
 extensive collection of algorithmic pixel manipulation filters.
 
-All image processing algorithms are executed asynchronously using Qt worker
+All image processing algorithms are executed asynchronously using Qt
 threads (QThread) to ensure the user interface remains smooth, responsive,
 and completely unblocked even when operating on large high-resolution images.
-
-
-==============================================================================
-2. TEAM MEMBERS & CONTRIBUTORS
-==============================================================================
-Developed by students from the Faculty of Computers and Artificial
-Intelligence (FCAI), Cairo University:
-
-- Moustafa Mahmoud
-- Moataz (Moataz35)
-- Abdullah (Abdullahh-16)
-- Mohamed Sherif 
-Academic Attribution:
-- Dr. Mohamed El-Ramely and the FCAI teaching team for foundational Image
-  class architecture.
 
 
 ==============================================================================
@@ -152,7 +160,7 @@ Academic Attribution:
 5. SYSTEM REQUIREMENTS & PREREQUISITES
 ==============================================================================
 - Compiler: C++17 compliant (MinGW GCC 11+, Clang 13+, or MSVC 2019+)
-- Framework: Qt 6.x or Qt 5.15+ (Widgets module required)
+- Framework: Qt 6.x (Widgets module required)
 - Build System: CMake 3.16+
 - Supported OS: Windows 10/11, Ubuntu 20.04+, macOS 11+
 
@@ -165,15 +173,15 @@ METHOD 1: USING QT CREATOR (RECOMMENDED)
 ----------------------------------------
 1. Launch Qt Creator.
 2. Go to: File -> Open File or Project...
-3. Select "D:/projects/QT/GUI/CMakeLists.txt".
+3. Select "D:/projects/ImageNightmare/GUI/CMakeLists.txt".
 4. Choose your configured Kit (e.g., Desktop Qt 6.x MinGW 64-bit).
 5. Click "Configure Project".
-6. Press Ctrl + R (or click Run) to build and start ImageNightmare.
+6. Press Run Button to build and start ImageNightmare.
 
 METHOD 2: USING CMAKE COMMAND LINE
 ----------------------------------
 1. Open terminal / PowerShell:
-   cd D:\projects\QT
+   cd D:\projects\ImageNightmare\GUI\
 
 2. Create and enter build directory:
    mkdir build
@@ -226,7 +234,7 @@ METHOD 2: USING CMAKE COMMAND LINE
 ==============================================================================
 ImageNightmare natively reads and writes:
 - Portable Network Graphics (.png)
-- JPEG / JPG (.jpg, .jpeg)
+- JPG and JPEG (.jpg, .jpeg)
 - Windows Bitmap (.bmp)
 - Truevision TGA (.tga)
 
