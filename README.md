@@ -283,7 +283,7 @@ Developed with ❤️ by:
 
 Special thanks to:
 - **FCAI - Cairo University** (Faculty of Computers and Artificial Intelligence)
-- Dr. Mohamed El-Ramely and the original course teaching team for foundational class definitions.
+- Dr. Mohamed El-Ramly and the original course teaching team for foundational class definitions.
 - Sean Barrett and contributors for the [`stb`](https://github.com/nothings/stb) single-file public domain libraries.
 
 ---
