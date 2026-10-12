@@ -11,6 +11,7 @@ CORE TECH    : C++17, Qt 6.x (Qt Widgets), CMake 3.16+
 THIRD PARTY  : stb_image.h & stb_image_write.h (Header-only image I/O)
 REPOSITORY   : https://github.com/Moataz35/ATripleM.git
 DOCUMENTATION: https://docs.google.com/document/d/1F4fwBcmW47qdQ9xvXMfu8xSqQZQj8xk13apHzpT5D08/edit?tab=t.0#heading=h.fn5z8ywyuhpj
+VIDEO LINK: https://drive.google.com/file/d/1X-0XWrW1ul7vAgtM8A7SJH1m9vYhpN6M/view
 
 
 ==============================================================================
