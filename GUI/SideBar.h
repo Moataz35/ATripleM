@@ -12,6 +12,8 @@
 #include <QToolTip>
 #include <QScrollArea>
 #include <QEvent>
+#include <QButtonGroup>
+#include <QAbstractButton>
 
 #include "ImageFilter.h"
 
@@ -118,8 +120,11 @@ class SideBar : public QWidget
     private:
         void setSidebarLocked(bool locked);
         void setupScrollableSidebar();
+        void closeSidebarPanel();
+        void toggleSidebarTab(QAbstractButton *button, int index);
         Ui::SideBar *ui;
         QScrollArea *sideBarScrollArea;
+        QButtonGroup *tabGroup;
         void resetAdjustSliders();
         void resetMergeInputs();
         QColor currentFrameColor = Qt::white;

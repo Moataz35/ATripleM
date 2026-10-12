@@ -34,6 +34,16 @@ set(PROJECT_SOURCES
 
 add_executable(GUI ${PROJECT_SOURCES})
 
+if(WIN32)
+    set(APP_ICON_RESOURCE "${CMAKE_CURRENT_BINARY_DIR}/app_icon.rc")
+    file(GENERATE
+        OUTPUT "${APP_ICON_RESOURCE}"
+        CONTENT "#define IDI_APP_ICON 1\nIDI_APP_ICON ICON \"${CMAKE_CURRENT_SOURCE_DIR}/icons/app_icon.ico\"\n"
+    )
+    set_source_files_properties("${APP_ICON_RESOURCE}" PROPERTIES GENERATED TRUE LANGUAGE RC)
+    target_sources(GUI PRIVATE "${APP_ICON_RESOURCE}")
+endif()
+
 target_link_libraries(GUI PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(GUI PROPERTIES

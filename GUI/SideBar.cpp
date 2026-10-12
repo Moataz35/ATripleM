@@ -7,6 +7,7 @@ SideBar::SideBar(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SideBar)
     , sideBarScrollArea(nullptr)
+    , tabGroup(nullptr)
 {
     ui->setupUi(this);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -96,7 +97,17 @@ SideBar::SideBar(QWidget *parent)
         QPushButton#Resize:hover,
         QPushButton#Crop:hover,
         QPushButton#btnMerge:hover,
-        QPushButton#btnMergeCommanArea:hover {
+        QPushButton#btnMergeCommanArea:hover,
+        QPushButton#btnFilters:checked,
+        QPushButton#btnAdjust:checked,
+        QPushButton#btnRotate:checked,
+        QPushButton#btnFlip:checked,
+        QPushButton#btnSkew:checked,
+        QPushButton#AddFrame:checked,
+        QPushButton#Resize:checked,
+        QPushButton#Crop:checked,
+        QPushButton#btnMerge:checked,
+        QPushButton#btnMergeCommanArea:checked {
             background-color: rgba(238, 238, 238, 0.10);
             border-color: #444444;
         }
@@ -215,6 +226,22 @@ void SideBar::setupScrollableSidebar()
     ui->SideBarFrame->setMinimumWidth(50);
     ui->SideBarFrame->setMaximumWidth(70);
 
+    tabGroup = new QButtonGroup(this);
+    tabGroup->setExclusive(true);
+    tabGroup->addButton(ui->btnFilters);
+    tabGroup->addButton(ui->btnAdjust);
+    tabGroup->addButton(ui->btnRotate);
+    tabGroup->addButton(ui->btnFlip);
+    tabGroup->addButton(ui->btnSkew);
+    tabGroup->addButton(ui->AddFrame);
+    tabGroup->addButton(ui->Resize);
+    tabGroup->addButton(ui->Crop);
+    tabGroup->addButton(ui->btnMerge);
+    tabGroup->addButton(ui->btnMergeCommanArea);
+    for (QAbstractButton *button : tabGroup->buttons()) {
+        button->setCheckable(true);
+    }
+
     if (ui->centralwidget) {
         ui->centralwidget->hide();
     }
@@ -255,7 +282,7 @@ void SideBar::setButtonsEnabled(bool hasImage)
     if (!hasImage) {
         resetAdjustSliders();
         resetMergeInputs();
-        ui->stackedWidget->setVisible(false);
+        closeSidebarPanel();
     }
     ui->btnMerge->setEnabled(hasImage);
     ui->btnMergeCommanArea->setEnabled(hasImage);
@@ -269,114 +296,75 @@ void SideBar::setResizeDimensions(int width, int height)
     ui->inputHight->setValue(height);
 }
 
+void SideBar::closeSidebarPanel()
+{
+    ui->stackedWidget->setVisible(false);
+
+    tabGroup->setExclusive(false);
+    for (QAbstractButton *button : tabGroup->buttons()) {
+        button->setChecked(false);
+    }
+    tabGroup->setExclusive(true);
+}
+
+void SideBar::toggleSidebarTab(QAbstractButton *button, int index)
+{
+    if (ui->stackedWidget->currentIndex() == index && ui->stackedWidget->isVisible()) {
+        closeSidebarPanel();
+        return;
+    }
+
+    ui->stackedWidget->setCurrentIndex(index);
+    ui->stackedWidget->setVisible(true);
+}
+
 //=================================================
 //   Sidebar main Buttons actions
 //=================================================
 
 void SideBar::on_btnFilters_clicked(){
-    if(ui->stackedWidget->currentIndex() == 0 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(0);
-
-    }
-
-
+    toggleSidebarTab(ui->btnFilters, 0);
 }
 void SideBar::on_btnAdjust_clicked(){
-    if(ui->stackedWidget->currentIndex()==1 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(1);
-    }
+    toggleSidebarTab(ui->btnAdjust, 1);
 }
 void SideBar::on_btnRotate_clicked()  {
-    if(ui->stackedWidget->currentIndex()==2 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(2);
-    }
+    toggleSidebarTab(ui->btnRotate, 2);
 }
 void SideBar::on_btnFlip_clicked(){
-    if(ui->stackedWidget->currentIndex()==3 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(3);
-    }
-
+    toggleSidebarTab(ui->btnFlip, 3);
 }
 void SideBar::on_AddFrame_clicked()   {
-    if(ui->stackedWidget->currentIndex()==4 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(4);
-    }
+    toggleSidebarTab(ui->AddFrame, 4);
 }
 
 void SideBar::on_Resize_clicked()     {
-    if(ui->stackedWidget->currentIndex()==5 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(5);
-    }
+    toggleSidebarTab(ui->Resize, 5);
 }
 
 
 void SideBar::on_Crop_clicked() {
-    if(ui->stackedWidget->currentIndex() == 6 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(6);
+    const bool closingCurrentTab =
+        ui->stackedWidget->currentIndex() == 6 && ui->stackedWidget->isVisible();
+    toggleSidebarTab(ui->Crop, 6);
+
+    if (!closingCurrentTab) {
+        setSidebarLocked(true);
+        emit cropRequested();
     }
-
-
-    setSidebarLocked(true);
-
-    emit cropRequested();
 }
 
 
 void SideBar::on_btnSkew_clicked(){
-    if(ui->stackedWidget->currentIndex() == 7 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(7);
-    }
+    toggleSidebarTab(ui->btnSkew, 7);
 }
 
 void SideBar::on_btnMerge_clicked(){
-    if(ui->stackedWidget->currentIndex()==8 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(8);
-    }
+    toggleSidebarTab(ui->btnMerge, 8);
 }
 
 void SideBar::on_btnMergeCommanArea_clicked(){
-    if(ui->stackedWidget->currentIndex()==9 && ui->stackedWidget->isVisible()){
-        ui->stackedWidget->setVisible(false);
-    }
-    else{
-        ui->stackedWidget->setVisible(true);
-        ui->stackedWidget->setCurrentIndex(9);
-    }
+    toggleSidebarTab(ui->btnMergeCommanArea, 9);
 }
 //============================================================================================
 // Send Signals
@@ -476,59 +464,59 @@ void SideBar::on_confirmResizeApply_clicked() {
     int w = ui->inputWidth->value();
     int h = ui->inputHight->value();
     emit resizeRequested(w, h);
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_confirmResizeCancel_clicked() {
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_confirmSkewApply_clicked() {
     int degree = ui->skewSlider->value();
     emit skewRequested(degree);
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
     resetSkewSlider();
 }
 
 void SideBar::on_confirmSkewCancel_clicked() {
     emit skewCancelled();
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
     resetSkewSlider();
 }
 
 void SideBar::on_ConfirmCropApply_clicked() {
     setSidebarLocked(false);
     emit cropConfirmed();
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_ConfirmCropCancel_clicked() {
     setSidebarLocked(false);
     emit cropCancelled();
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_confirmAdjustApply_clicked() {
     emit adjustApplied();
     resetAdjustSliders();
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_confirmAdjustCancel_clicked() {
     emit adjustCancelled();
     resetAdjustSliders();
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_ApplyFrameApply_clicked() {
     int width = ui->FrameWidth->value();
     bool isFancy = ui->checkFancy->isChecked();
     emit frameRequested(width, isFancy, currentFrameColor);
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_ApplyFrameCancel_clicked() {
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_btnBrowseMerge_clicked() {
@@ -565,11 +553,11 @@ void SideBar::on_confirmMergeApply_clicked() {
     }
     int alpha = ui->alphaSlider->value();
     emit mergeByScalingRequested(path, alpha);
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_confirmMergeCancel_clicked() {
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_confirmMergeCommanAreaApply_clicked() {
@@ -582,11 +570,11 @@ void SideBar::on_confirmMergeCommanAreaApply_clicked() {
     int offsetX = ui->offSet_X->value();
     int offsetY = ui->offset_Y->value();
     emit mergeByCommonAreaRequested(path, alpha, offsetX, offsetY);
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 
 void SideBar::on_confirmMergeCommanAreaCancel_clicked() {
-    ui->stackedWidget->setVisible(false);
+    closeSidebarPanel();
 }
 //===========================================================================
 

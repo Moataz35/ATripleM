@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 #include "StatusMenu.h"
 #include <QFileDialog>
+#include <QIcon>
 #include <QHBoxLayout>
 #include <QThread>
 #include <QVBoxLayout>
@@ -10,7 +11,6 @@
 #include "QMessageBox"
 #include "navbar.h"
 #include "EditorDropArea.h"
-// #include <QDebug>
 #include <QtCore>
 #include <filesystem>
 #include <QFileInfo>
@@ -61,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     // 1. Initialize the MainWindow UI
     ui->setupUi(this);
+    setWindowIcon(QIcon(":/icons/app_icon.svg"));
 
 
     // 2. Create the components
@@ -244,7 +245,6 @@ void MainWindow::saveNewFile() {
         "Image Files (*.png *.jpg *.jpeg *.bmp *.tga)"
         );
 
-    qDebug() << filePath << "\n";
 
     if (filePath.size() == 0) {
         return;
@@ -420,7 +420,6 @@ void MainWindow::updateNavBarButtons(){
     bool canUndo = hasImage && editor->canUndo();
     bool canRedo = hasImage && editor->canRedo();
 
-    //qDebug() << "hasImage:" << hasImage << " | canUndo:" << canUndo << " | canRedo:" << canRedo;
     navBar->setButtonEnabled(canUndo, canRedo, hasImage);
 
 }

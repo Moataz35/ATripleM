@@ -12,7 +12,6 @@
 #include <QStyle>
 #include <QPainter>
 #include <QImageReader>
-#include <QDebug>
 #include <QWheelEvent>
 #include <QScrollBar>
 #include <QShortcut>
@@ -501,8 +500,6 @@ void EditorDropArea::cropConfirmed() {
 
         cropRect = cropRect.intersected(QRect(0, 0, currentQImage.width(), currentQImage.height()));
 
-
-        qDebug() << cropRect.x() << " " << cropRect.y() << " " << cropRect.width() << " " << cropRect.height() << "\n";
 
         if (cropRect.width() > 0 && cropRect.height() > 0) {
             emit cropRequested(cropRect);
