@@ -65,10 +65,9 @@ bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
 }
 
 bool ImageEditor::isImageLoaded() {
-    if (currentImage.imageData == nullptr) {
-        return false;
-    }
-    return true;
+    return currentImage.imageData != nullptr
+        && currentImage.width > 0
+        && currentImage.height > 0;
 }
 
 
@@ -231,14 +230,11 @@ void ImageEditor::previewAdjust(int brightness, int contrast, int saturation) {
         throw std::runtime_error("ERROR! No image loaded.");
     }
 
-    // First slider move of this session: remember the untouched image.
     if (!adjusting) {
         adjustBase = currentImage;
         adjusting = true;
     }
 
-    // Always start from the base, so the result depends only on the
-    // current slider values and not on previous slider positions.
     currentImage = adjustBase;
 
     if (brightness != 0) Adjustments::Brightness(currentImage, brightness);
@@ -251,7 +247,6 @@ void ImageEditor::commitAdjust() {
         return;
     }
 
-    // Undo returns to the image from before the adjust session.
     if (changes.size() == 5) {
         changes.pop_front();
     }
