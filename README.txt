@@ -1,9 +1,9 @@
 ==============================================================================
-                               ATripleM
+                               ImageNightmare
        Modern Lightweight Desktop Image Editor Application (C++17 / Qt)
 ==============================================================================
 
-PROJECT NAME : ATripleM
+PROJECT NAME : ImageNightmare
 COURSE: CS213 Object Oriented Programming
 PROFESSOR: Mohammed El-Ramly
 PLATFORMS    : Windows / Linux / macOS
