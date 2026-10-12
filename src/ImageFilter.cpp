@@ -556,25 +556,27 @@ void ImageFilter::Oil(Image& image, int radius , int levels){
 
     for(int y =0; y<height; y++){
         for(int x=0; x<width; x++){
+
             int intensityCount[256] = {0};
             int sumR[256] ={0}, sumG[256] ={0}, sumB[256] = {0};
 
             for(int dy=-radius; dy<=radius; dy++){
                 for(int dx = -radius; dx<=radius; dx++){
-                    int newX = x +dx;
-                    int newY = y+dy;
-
+                    int newX = x + dx;
+                    int newY = y + dy;
+ 
                     if(newX >= 0 && newY>=0 && newY < height && newX < width){
                         int r = image.getPixel(newX, newY, 0);
                         int g = image.getPixel(newX, newY, 1);
                         int b = image.getPixel(newX, newY, 2);
 
-                        int current_intesity = (((r+g+b)/3) *levels) /256;
+                        // int current_intesity = (((r+g+b)/3) *levels) /256;
+                        int current_intensity = (r+g+b) / 3;
 
-                        intensityCount[current_intesity]++;
-                        sumR[current_intesity] += r;
-                        sumG[current_intesity] += g;
-                        sumB[current_intesity] += b;
+                        intensityCount[current_intensity]++;
+                        sumR[current_intensity] += r;
+                        sumG[current_intensity] += g;
+                        sumB[current_intensity] += b;
 
 
 
