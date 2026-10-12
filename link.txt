@@ -1,7 +1,6 @@
-
 ==============================================================================
-                               ImageNightmare
-       Modern Lightweight Desktop Image Processing Suite (C++17 / Qt)
+                               ATripleM
+       Modern Lightweight Desktop Image Editor Application (C++17 / Qt)
 ==============================================================================
 _______________________________________________________________________________________________________________
 | link Docs : "https://docs.google.com/document/d/1F4fwBcmW47qdQ9xvXMfu8xSqQZQj8xk13apHzpT5D08/edit?usp=sharing"|

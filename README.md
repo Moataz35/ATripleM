@@ -1,4 +1,4 @@
-# 🎨 ImageNightmare
+# 🎨 ATripleM
 
 <p align="center">
   <strong>A modern, lightweight, and high-performance desktop image editor and processing suite built with C++17 and Qt.</strong>
