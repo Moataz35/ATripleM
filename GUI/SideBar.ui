@@ -338,7 +338,7 @@
        <item>
         <widget class="QPushButton" name="btnMergeCommanArea">
          <property name="toolTip">
-          <string>Megr Comman Area</string>
+          <string>Merge Common Area</string>
          </property>
          <property name="text">
           <string/>
@@ -1139,8 +1139,58 @@
      </item>
      <item>
       <widget class="QPushButton" name="btnBrowseMergeCommon">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>238</red>
+             <green>238</green>
+             <blue>238</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>238</red>
+             <green>238</green>
+             <blue>238</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>238</red>
+             <green>238</green>
+             <blue>238</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upload second Image &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string>Upload Image</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/icons/upload.svg</normaloff>:/icons/upload.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
        </property>
       </widget>
      </item>

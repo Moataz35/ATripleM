@@ -65,10 +65,9 @@ bool ImageEditor::saveNewCopy(const std::string& newFilePath) {
 }
 
 bool ImageEditor::isImageLoaded() {
-    if (currentImage.imageData == nullptr) {
-        return false;
-    }
-    return true;
+    return currentImage.imageData != nullptr
+        && currentImage.width > 0
+        && currentImage.height > 0;
 }
 
 
