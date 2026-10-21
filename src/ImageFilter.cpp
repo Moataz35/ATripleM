@@ -353,8 +353,6 @@ void ImageFilter::Crop(Image& image, int x, int y, int newWidth, int newHight){
 
 
     Image croppedImage(newWidth, newHight);
-    croppedImage.channels = image.channels;
-    croppedImage.imageData = new unsigned char[newWidth * newHight * image.channels];
 
     for(int w=0; w < croppedImage.width; w++){
         for(int h=0; h< croppedImage.height; h++){
